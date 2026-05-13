@@ -1352,8 +1352,8 @@ section#section5 .opt:hover {
 </div>
 </section>
 <!-- SECTION 1: Student Info -->
-<form id="appForm" action="https://script.google.com/macros/s/AKfycbyBGl8f0NOsDTOtlOoTxq38YavUM0QbfUSlvbC3E8bOEMLGHgNEQvegaEHYmIv0Lr5AGQ/exec" method="POST">
-  <!-- optional anti-bot honeypot: -->
+<form id="appForm" autocomplete="off" action="https://script.google.com/macros/s/AKfycbyBGl8f0NOsDTOtlOoTxq38YavUM0QbfUSlvbC3E8bOEMLGHgNEQvegaEHYmIv0Lr5AGQ/exec" method="POST">
+   <!-- optional anti-bot honeypot: -->
   <input type="text" name="_honeypot" style="display:none" tabindex="-1" autocomplete="off">
    <section id="section1">
 <h2>Student Information</h2><p aria-live="polite" class="step-subline">Step 2 of 6</p>
@@ -1562,7 +1562,7 @@ section#section5 .opt:hover {
 <div id="saiSection" style="margin-top:12px; display:none">
 <label for="sai">What is your Student Aid Index (SAI)?</label>
 <p class="hint" style="margin-top:4px; margin-bottom:8px;">Your SAI appears on your Student Aid Report. If you haven't received it yet, you may enter your best estimate or leave blank.</p>
-<input id="sai" name="sai" oninput="autoSave()" placeholder="0" type="number"/>
+<input id="sai" name="sai" oninput="autoSave()" placeholder="0" type="number" autocomplete="off"/>
 </div>
 </div>
 <div style="grid-column: 1/-1;">
@@ -2208,6 +2208,7 @@ function validatePhone(input) {
     }
 
     function loadSavedData() {
+       document.getElementById('appForm').reset();
       try {
         var saved = localStorage.getItem('campusReadyForm');
         var savedSection = localStorage.getItem('campusReadySection');
@@ -2547,6 +2548,8 @@ signaturePads[canvasId] = {
     }
     
 function submitApplication() {
+      if (window._isSubmitting) return;
+      window._isSubmitting = true;
       console.log('Submitting application...');
    // Show progress bar
 showProgressBar();
