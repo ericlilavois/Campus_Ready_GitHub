@@ -2656,30 +2656,41 @@ if (!appPad || !appPad.hasInk) {
       
      console.log('Form data collected:', formData);
 
-// Update the original form with our processed checkbox data
-var originalForm = document.getElementById('appForm');
-
-// Remove existing checkbox inputs to avoid duplicates
-var existingCheckboxes = originalForm.querySelectorAll('input[type="checkbox"]');
-for (var i = 0; i < existingCheckboxes.length; i++) {
-  existingCheckboxes[i].remove();
-}
-
-// Add our processed checkbox data as hidden inputs
+// Build URL-encoded body from already-collected formData and send via proxy
+// Exclude JS-only fields that were never part of the original form submission
+var excludeFromProxy = { submissionId: true, submissionDate: true, applicantSignature: true };
+var formBody = new URLSearchParams();
 for (var key in formData) {
+  if (excludeFromProxy[key]) continue;
   if (Array.isArray(formData[key])) {
-    for (var j = 0; j < formData[key].length; j++) {
-      var hiddenInput = document.createElement('input');
-      hiddenInput.type = 'hidden';
-      hiddenInput.name = key;
-      hiddenInput.value = formData[key][j];
-      originalForm.appendChild(hiddenInput);
-    }
+    formData[key].forEach(function(val) { formBody.append(key, val); });
+  } else {
+    formBody.append(key, formData[key]);
   }
 }
 
-// Now submit the form normally
-originalForm.submit();
+fetch('/api/apply', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: formBody.toString()
+})
+.then(function(response) { return response.text(); })
+.then(function(html) {
+  var match = html.match(/CR_\d+_[a-z0-9]{6}/);
+  var firstName = (formData.student_name || '').trim().split(' ')[0];
+  var params = new URLSearchParams({
+    name:    firstName,
+    college: formData.college        || '',
+    email:   formData.student_email  || '',
+    id:      match ? match[0] : 'Check your confirmation email'
+  });
+  window.location.href = '/apply/success?' + params.toString();
+})
+.catch(function(err) {
+  console.error('Submission error:', err);
+  alert('There was a problem submitting your application. Please try again or contact apply@campusready.foundation.');
+  window._isSubmitting = false;
+});
     }
 
     // Handle browser back/forward buttons
@@ -2889,7 +2900,7 @@ window.addEventListener('resize', () => {
     window.submitApplication = function(){
       var fields = [];
       var e1 = document.getElementById('student_email'); if (e1) fields.push(e1);
-      var e2 = document.getElementById('pg_email'); if (e2) fields.push(e2);
+      var e2 = document.getElementById('pg_email'); if (e2 && e2.value.trim()) fields.push(e2);
       if (fields.length === 0) {
         fields = Array.prototype.slice.call(document.querySelectorAll('input[type=\"email\"]'));
       }
