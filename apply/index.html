@@ -2900,7 +2900,7 @@ window.addEventListener('resize', () => {
     window.submitApplication = function(){
       var fields = [];
       var e1 = document.getElementById('student_email'); if (e1) fields.push(e1);
-      var e2 = document.getElementById('pg_email'); if (e2) fields.push(e2);
+      var e2 = document.getElementById('pg_email'); if (e2 && e2.value.trim()) fields.push(e2);
       if (fields.length === 0) {
         fields = Array.prototype.slice.call(document.querySelectorAll('input[type=\"email\"]'));
       }
