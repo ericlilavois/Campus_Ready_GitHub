@@ -2673,9 +2673,15 @@ fetch('/api/apply', {
 })
 .then(function(response) { return response.text(); })
 .then(function(html) {
-  document.open();
-  document.write(html);
-  document.close();
+  var match = html.match(/CR_\d+_[a-z0-9]{6}/);
+  var firstName = (formData.student_name || '').trim().split(' ')[0];
+  var params = new URLSearchParams({
+    name:    firstName,
+    college: formData.college        || '',
+    email:   formData.student_email  || '',
+    id:      match ? match[0] : 'Check your confirmation email'
+  });
+  window.location.href = '/apply/success?' + params.toString();
 })
 .catch(function(err) {
   console.error('Submission error:', err);
