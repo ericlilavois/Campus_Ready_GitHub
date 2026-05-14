@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Submitted — Campus Ready Foundation</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/assets/site.webmanifest">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      max-width: 600px;
+      width: 100%;
+      padding: 48px;
+    }
+    .icon {
+      width: 80px;
+      height: 80px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .icon svg {
+      width: 40px;
+      height: 40px;
+      stroke: #ffffff;
+      stroke-width: 3;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    h1 {
+      color: #1f2937;
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      color: #6b7280;
+      font-size: 18px;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    .details-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .detail-row:first-child {
+      padding-top: 0;
+    }
+    .detail-label {
+      color: #6b7280;
+      font-size: 14px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .detail-value {
+      color: #1f2937;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: right;
+      max-width: 60%;
+      word-break: break-word;
+    }
+    .next-steps-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .next-steps-box h3 {
+      color: #1e40af;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .next-steps-box ol {
+      padding-left: 20px;
+    }
+    .next-steps-box li {
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .next-steps-box li:last-child {
+      margin-bottom: 0;
+    }
+    .next-steps-box li strong {
+      color: #1e40af;
+    }
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .btn-primary {
+      flex: 1;
+      background: #14b8a6;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      display: block;
+    }
+    .btn-primary:hover { background: #0d9488; }
+    .btn-secondary {
+      flex: 1;
+      background: #ffffff;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      display: block;
+    }
+    .btn-secondary:hover { background: #f9fafb; }
+    .contact {
+      border-top: 1px solid #e5e7eb;
+      padding-top: 24px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .contact a {
+      color: #14b8a6;
+      text-decoration: none;
+    }
+    .contact a:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; }
+      h1 { font-size: 26px; }
+      .subtitle { font-size: 16px; }
+      .buttons { flex-direction: column; }
+      .detail-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .detail-value { text-align: left; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+
+    <h1>Application Submitted!</h1>
+    <p class="subtitle" id="subtitle">Thank you! Your application has been received.</p>
+
+    <div class="details-box">
+      <div class="detail-row">
+        <span class="detail-label">Application ID</span>
+        <span class="detail-value" id="detail-id">Check your confirmation email</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Submitted</span>
+        <span class="detail-value" id="detail-date"></span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">College</span>
+        <span class="detail-value" id="detail-college">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Email</span>
+        <span class="detail-value" id="detail-email">—</span>
+      </div>
+    </div>
+
+    <div class="next-steps-box">
+      <h3>What Happens Next</h3>
+      <ol>
+        <li><strong>Email Confirmation:</strong> You'll receive a confirmation email within the next few minutes</li>
+        <li><strong>Review Period:</strong> Our board will review all applications after the May 15th deadline</li>
+        <li><strong>Decision Notification:</strong> All applicants will be notified of decisions by June 1st</li>
+        <li><strong>If Selected:</strong> We'll contact you about your Campus Ready grant and next steps</li>
+      </ol>
+    </div>
+
+    <div class="buttons">
+      <a href="https://campusready.foundation" class="btn-primary">Return to Campus Ready</a>
+      <button onclick="window.print()" class="btn-secondary">Save This Page</button>
+    </div>
+
+    <div class="contact">
+      <p>Questions? Contact us at <a href="mailto:apply@campusready.foundation">apply@campusready.foundation</a></p>
+      <p style="margin-top: 8px;"><strong>Important:</strong> Please save your Application ID for future reference.</p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var name    = params.get('name')    || '';
+      var college = params.get('college') || '';
+      var email   = params.get('email')   || '';
+      var id      = params.get('id')      || 'Check your confirmation email';
+
+      if (name) {
+        document.getElementById('subtitle').textContent =
+          'Thank you, ' + name + '! Your application has been received.';
+      }
+
+      document.getElementById('detail-id').textContent = id;
+
+      document.getElementById('detail-date').textContent = new Date().toLocaleString('en-US', {
+        month: 'long', day: 'numeric', year: 'numeric',
+        hour: 'numeric', minute: '2-digit', hour12: true
+      });
+
+      if (college) document.getElementById('detail-college').textContent = college;
+      if (email)   document.getElementById('detail-email').textContent   = email;
+    })();
+  </script>
+</body>
+</html>
