@@ -2657,8 +2657,11 @@ if (!appPad || !appPad.hasInk) {
      console.log('Form data collected:', formData);
 
 // Build URL-encoded body from already-collected formData and send via proxy
+// Exclude JS-only fields that were never part of the original form submission
+var excludeFromProxy = { submissionId: true, submissionDate: true, applicantSignature: true };
 var formBody = new URLSearchParams();
 for (var key in formData) {
+  if (excludeFromProxy[key]) continue;
   if (Array.isArray(formData[key])) {
     formData[key].forEach(function(val) { formBody.append(key, val); });
   } else {
