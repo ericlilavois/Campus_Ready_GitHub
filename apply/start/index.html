@@ -272,7 +272,7 @@
           <div class="timeline-step">
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Step 1</p>
             <p class="font-semibold text-slate-900 text-lg">You apply</p>
-            <p class="text-slate-500 text-sm mt-1 leading-relaxed">Jan 1 – May 15. Takes about 20–30 minutes, and you can save your progress and return any time before the deadline.</p>
+            <p class="text-slate-500 text-sm mt-1 leading-relaxed">March 15 – May 15. Takes about 20–30 minutes, and you can save your progress and return any time before the deadline.</p>
           </div>
           <div class="timeline-step">
             <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Step 2</p>
@@ -375,9 +375,437 @@
     });
   </script>
 
-  <!-- Application gating modal preserved exactly as original -->
-  <!-- NOTE: Cloudflare email obfuscation scripts removed from static copy;
-       they will be re-injected by Cloudflare on live server -->
+  <!-- APPLICATION GATING MODAL -->
+  <!-- Intercepts clicks on /apply/ links when outside the application window. -->
+  <div id="applicationGateModal" class="gate-modal-overlay">
+    <div class="gate-modal-content">
+      <button class="gate-modal-close" onclick="closeApplicationGate()" aria-label="Close">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 6l12 12M18 6l-12 12"/>
+        </svg>
+      </button>
+
+      <div class="gate-modal-header">
+        <div class="gate-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h2 id="gateModalTitle">Thanks for checking in</h2>
+      </div>
+
+      <div id="gateClosedMessage" class="gate-closed-message">
+        <p>Applications for 2026 are currently closed. Applications for the 2027 grant cycle will be open March 15 – May 15, 2027. Set a reminder below, or join our list and we'll let you know the day applications open.</p>
+      </div>
+
+      <div class="gate-countdown-container">
+        <div class="gate-countdown-label" id="gateCountdownLabel">Applications open in:</div>
+        <div class="gate-countdown" id="gateCountdown">
+          <div class="gate-countdown-unit">
+            <span class="gate-countdown-value" id="days">000</span>
+            <span class="gate-countdown-label-small">days</span>
+          </div>
+          <div class="gate-countdown-unit">
+            <span class="gate-countdown-value" id="hours">00</span>
+            <span class="gate-countdown-label-small">hours</span>
+          </div>
+          <div class="gate-countdown-unit">
+            <span class="gate-countdown-value" id="minutes">00</span>
+            <span class="gate-countdown-label-small">minutes</span>
+          </div>
+          <div class="gate-countdown-unit">
+            <span class="gate-countdown-value" id="seconds">00</span>
+            <span class="gate-countdown-label-small">seconds</span>
+          </div>
+        </div>
+        <div class="gate-opening-date" id="gateOpeningDate">March 15, 2027 at 12:00 AM PT</div>
+      </div>
+
+      <div class="gate-actions">
+        <button class="gate-btn gate-btn-primary" onclick="downloadCalendarReminder()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          Download Calendar Reminder
+        </button>
+
+        <button class="gate-btn gate-btn-secondary" onclick="showEmailSignup()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          Get Email Notification
+        </button>
+      </div>
+
+      <div id="emailSignupForm" class="gate-email-form" style="display: none;">
+        <div class="gate-form-divider">or</div>
+        <h3>Get Notified When Applications Open</h3>
+        <form onsubmit="submitEmailSignup(event)">
+          <div class="gate-form-group">
+            <label for="signupName">Your Name</label>
+            <input type="text" id="signupName" name="name" placeholder="First and Last Name" required>
+          </div>
+          <div class="gate-form-group">
+            <label for="signupEmail">Email Address</label>
+            <input type="email" id="signupEmail" name="email" placeholder="you@example.com" required>
+          </div>
+          <button type="submit" class="gate-btn gate-btn-submit">
+            Sign Me Up
+          </button>
+        </form>
+        <div id="emailSignupSuccess" class="gate-success-message" style="display: none;">
+          You're on the list. We'll reach out when applications open.
+        </div>
+      </div>
+
+      <div class="gate-footer-note">
+        Questions? Reach us at <a href="mailto:apply@campusready.foundation" style="color: #0d9488; text-decoration: underline;">apply@campusready.foundation</a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .gate-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      animation: gateModalFadeIn 0.3s ease;
+    }
+    .gate-modal-overlay.show { display: flex; }
+    @keyframes gateModalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .gate-modal-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      z-index: 10001;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: gateModalSlideUp 0.4s ease;
+    }
+    @keyframes gateModalSlideUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .gate-modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .gate-modal-close:hover { background: white; border-color: #14b8a6; transform: scale(1.05); }
+    .gate-modal-close svg { color: #6b7280; }
+
+    .gate-modal-header {
+      background: linear-gradient(135deg, #14b8a6 0%, #0891b2 100%);
+      color: white;
+      padding: 40px 40px 32px;
+      text-align: center;
+      border-radius: 20px 20px 0 0;
+      position: relative;
+      z-index: 1;
+    }
+    .gate-icon {
+      width: 80px; height: 80px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    .gate-icon svg { color: white; }
+    .gate-modal-header h2 { margin: 0 0 12px; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+
+    .gate-closed-message { padding: 24px 40px 8px; text-align: center; }
+    .gate-closed-message p { color: #374151; font-size: 16px; line-height: 1.6; margin: 0; }
+
+    .gate-countdown-container {
+      padding: 32px 40px;
+      text-align: center;
+      background: linear-gradient(to bottom, #f0fdfa, white);
+    }
+    .gate-countdown-label {
+      font-size: 14px; color: #6b7280; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+    .gate-countdown { display: flex; justify-content: center; gap: 16px; margin-bottom: 20px; }
+    .gate-countdown-unit {
+      background: white;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px 12px;
+      min-width: 85px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .gate-countdown-value {
+      display: block; font-size: 32px; font-weight: 700;
+      color: #14b8a6; font-variant-numeric: tabular-nums; line-height: 1;
+    }
+    .gate-countdown-label-small {
+      display: block; font-size: 12px; color: #6b7280; margin-top: 8px;
+      text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+    }
+    .gate-opening-date { color: #374151; font-size: 14px; font-weight: 600; }
+
+    .gate-actions { padding: 0 40px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .gate-btn {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 16px 28px;
+      border-radius: 12px;
+      font-weight: 600; font-size: 16px;
+      cursor: pointer; transition: all 0.2s;
+      border: none; width: 100%;
+    }
+    .gate-btn svg { flex-shrink: 0; width: 20px; height: 20px; }
+    .gate-btn-primary {
+      background: linear-gradient(135deg, #14b8a6, #0d9488);
+      color: white;
+      box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+    }
+    .gate-btn-primary:hover {
+      background: linear-gradient(135deg, #0d9488, #0f766e);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
+    }
+    .gate-btn-secondary { background: white; color: #374151; border: 2px solid #e5e7eb; }
+    .gate-btn-secondary:hover { background: #f9fafb; border-color: #14b8a6; color: #14b8a6; }
+    .gate-btn-submit { background: linear-gradient(135deg, #14b8a6, #0d9488); color: white; margin-top: 8px; }
+    .gate-btn-submit:hover { background: linear-gradient(135deg, #0d9488, #0f766e); transform: translateY(-2px); }
+
+    .gate-email-form {
+      padding: 32px 40px;
+      background: #f9fafb;
+      border-top: 1px solid #e5e7eb;
+      animation: gateFormSlideDown 0.3s ease;
+    }
+    @keyframes gateFormSlideDown {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 500px; }
+    }
+    .gate-form-divider {
+      text-align: center; color: #9ca3af; font-size: 14px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 24px; position: relative;
+    }
+    .gate-form-divider::before, .gate-form-divider::after {
+      content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: #e5e7eb;
+    }
+    .gate-form-divider::before { left: 0; }
+    .gate-form-divider::after { right: 0; }
+    .gate-email-form h3 { margin: 0 0 20px; font-size: 20px; color: #1f2937; text-align: center; }
+    .gate-form-group { margin-bottom: 16px; }
+    .gate-form-group label { display: block; font-size: 14px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .gate-form-group input {
+      width: 100%; padding: 12px 16px;
+      border: 2px solid #e5e7eb; border-radius: 8px;
+      font-size: 16px; transition: all 0.2s;
+    }
+    .gate-form-group input:focus { outline: none; border-color: #14b8a6; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1); }
+    .gate-success-message {
+      background: #ecfdf5; border: 2px solid #86efac; border-radius: 12px;
+      padding: 20px; text-align: center; color: #065f46;
+      font-weight: 600; line-height: 1.5;
+      animation: gateSuccessPulse 0.5s ease;
+    }
+    @keyframes gateSuccessPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+
+    .gate-footer-note {
+      padding: 24px 40px 32px;
+      font-size: 13px; color: #6b7280; line-height: 1.6;
+      text-align: left;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    @media (max-width: 640px) {
+      .gate-modal-overlay { align-items: flex-start; padding-top: 80px; }
+      .gate-modal-content { border-radius: 16px; margin: 10px; }
+      .gate-modal-header { padding: 40px 24px 32px; }
+      .gate-modal-header h2 { font-size: 24px; }
+      .gate-closed-message { padding: 20px 24px 8px; }
+      .gate-countdown-container { padding: 24px; }
+      .gate-countdown { gap: 8px; }
+      .gate-countdown-unit { min-width: 70px; padding: 10px 6px; }
+      .gate-countdown-value { font-size: 20px; }
+      .gate-countdown-label-small { font-size: 10px; }
+      .gate-actions, .gate-email-form, .gate-footer-note { padding-left: 24px; padding-right: 24px; }
+      .gate-btn { font-size: 15px; padding: 14px 20px; }
+    }
+  </style>
+
+  <script>
+    // 2027 application window. Update these constants for future cycles.
+    var WINDOW_OPEN = new Date('2027-03-15T00:00:00-07:00');
+    var WINDOW_CLOSE = new Date('2027-05-16T00:00:00-07:00');
+    var countdownInterval;
+
+    function isWindowOpen() {
+      var now = new Date();
+      return now >= WINDOW_OPEN && now < WINDOW_CLOSE;
+    }
+
+    function updateCountdown() {
+      if (isWindowOpen()) {
+        document.getElementById('gateCountdown').innerHTML = '<div style="font-size: 24px; color: #14b8a6; font-weight: 700;">Applications are now open!</div>';
+        clearInterval(countdownInterval);
+        return;
+      }
+      var diff = WINDOW_OPEN - new Date();
+      if (diff <= 0) {
+        document.getElementById('gateCountdown').innerHTML = '<div style="font-size: 24px; color: #14b8a6; font-weight: 700;">Applications are now open!</div>';
+        clearInterval(countdownInterval);
+        setTimeout(function() { location.reload(); }, 2000);
+        return;
+      }
+      var days = Math.floor(diff / 86400000);
+      var hours = Math.floor((diff % 86400000) / 3600000);
+      var minutes = Math.floor((diff % 3600000) / 60000);
+      var seconds = Math.floor((diff % 60000) / 1000);
+      document.getElementById('days').textContent = String(days).padStart(3, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    function initApplicationGate() {
+      document.addEventListener('click', function(e) {
+        var target = e.target.closest('a[href*="/apply/"], button[onclick*="apply"]');
+        if (target && target.getAttribute('href') === '/apply/') {
+          if (isWindowOpen()) return;
+          e.preventDefault();
+          openApplicationGate();
+        }
+      });
+      if (!isWindowOpen()) {
+        updateCountdown();
+        countdownInterval = setInterval(updateCountdown, 1000);
+      }
+    }
+
+    function openApplicationGate() {
+      document.getElementById('applicationGateModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeApplicationGate() {
+      document.getElementById('applicationGateModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('applicationGateModal')?.addEventListener('click', function(e) {
+      if (e.target === this) closeApplicationGate();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        var modal = document.getElementById('applicationGateModal');
+        if (modal && modal.classList.contains('show')) closeApplicationGate();
+      }
+    });
+
+    function downloadCalendarReminder() {
+      var icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Campus Ready Foundation//Application Reminder//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        'UID:campus-ready-application-' + Date.now() + '@campusready.foundation',
+        'DTSTAMP:' + formatICSDate(new Date()),
+        'DTSTART:20270315T070000Z',
+        'DTEND:20270315T080000Z',
+        'SUMMARY:Campus Ready Foundation Applications Open Today!',
+        'DESCRIPTION:Applications for Campus Ready Foundation grants open today. Apply at https://campusready.org/apply/\\n\\nThis is your reminder to submit your application for move-in essentials\\, travel support\\, and early-arrival meals.',
+        'LOCATION:https://campusready.org/apply/',
+        'STATUS:CONFIRMED',
+        'SEQUENCE:0',
+        'BEGIN:VALARM',
+        'TRIGGER:-P1D',
+        'DESCRIPTION:Campus Ready applications open tomorrow',
+        'ACTION:DISPLAY',
+        'END:VALARM',
+        'BEGIN:VALARM',
+        'TRIGGER:-PT1H',
+        'DESCRIPTION:Campus Ready applications open in 1 hour',
+        'ACTION:DISPLAY',
+        'END:VALARM',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ].join('\r\n');
+
+      var blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Campus_Ready_Application_Reminder.ics';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+    }
+
+    function formatICSDate(date) {
+      return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    }
+
+    function showEmailSignup() {
+      var form = document.getElementById('emailSignupForm');
+      if (form.style.display === 'none') {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function submitEmailSignup(e) {
+      e.preventDefault();
+      var form = e.target;
+      var submitBtn = form.querySelector('button[type="submit"]');
+      var originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Signing you up...';
+      submitBtn.disabled = true;
+      var formData = new FormData(form);
+      var scriptURL = 'https://script.google.com/macros/s/AKfycbxCm2IPRmJ7wr4m6WBQgX6hdFtXUMSwWm9MSp8LfJre0jKmxY_wGkef9bqPZB7EE8Vm/exec';
+      fetch(scriptURL, { method: 'POST', body: formData })
+        .then(function(response) { return response.json(); })
+        .then(function() {
+          form.style.display = 'none';
+          document.getElementById('emailSignupSuccess').style.display = 'block';
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+          alert('There was an error signing you up. Please try again or contact apply@campusready.foundation');
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApplicationGate);
+    } else {
+      initApplicationGate();
+    }
+  </script>
 
 </body>
 </html>
