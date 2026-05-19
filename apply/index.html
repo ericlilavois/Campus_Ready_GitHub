@@ -4,6 +4,18 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1, user-scalable=no" name="viewport"/>
+<script>
+  // Redirect to /apply/start/ when outside the application window.
+  // The Vercel proxy enforces the same window server-side at submit time.
+  (function() {
+    var open = new Date('2027-03-15T00:00:00-07:00');
+    var close = new Date('2027-05-16T00:00:00-07:00');
+    var now = new Date();
+    if (now < open || now >= close) {
+      window.location.replace('/apply/start/');
+    }
+  })();
+</script>
    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-C6B2GRMESL"></script>
 <script>
