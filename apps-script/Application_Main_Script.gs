@@ -19,7 +19,13 @@ const CONFIG = {
   PDF_FOLDER_ID: '1H7EQRF29pNp5r8NKJqDoz1HK92FyE1xW',
   MASTER_SHEET_NAME: 'Master',
   PENDING_DATA_SHEET_NAME: 'PendingData',
-  GOOGLE_MAPS_API_KEY: 'AIzaSyCYL-tBCsyCGplPy2Dmrk27Ro-RiXR1r3Y',
+  // Maps API key lives in Script Properties — never inline it in source.
+  // Set via the Apps Script editor: Project Settings → Script Properties →
+  // GOOGLE_MAPS_API_KEY. The previous inline key was caught by GitHub secret
+  // scanning and rotated in May 2026. calculateDistance() throws a clear
+  // error if this returns null so a missing config can never silently call
+  // Google with an undefined key.
+  GOOGLE_MAPS_API_KEY: PropertiesService.getScriptProperties().getProperty('GOOGLE_MAPS_API_KEY'),
   // v3.0 additions:
   ALERT_EMAIL: 'eric@campusready.org',
   BATCH_SIZE: 15,                         // Max rows processed per background run
@@ -797,6 +803,13 @@ function parseFormData(e) {
 // mountain and water routing while still catching the 10-17x errors seen
 // in the 2026 cohort.
 function calculateDistance(data) {
+  // Fail loudly if the Maps API key is missing — throwing causes the row to
+  // be marked Failed and Eric to be alerted via the existing error pipeline,
+  // rather than silently calling Google with an undefined key.
+  if (!CONFIG.GOOGLE_MAPS_API_KEY) {
+    throw new Error('GOOGLE_MAPS_API_KEY not set. Add it via Apps Script editor → Project Settings → Script Properties.');
+  }
+
   const homeZip    = _normalizeZip(data.student_zip);
   const collegeZip = _normalizeZip(data.college_zip);
 
