@@ -1,0 +1,16 @@
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
+# Local working copy of the Program Overview generator.
+# Contains a Google service account credential and generated output documents —
+# must never be committed. The canonical copy lives in the Foundation's
+# Google Drive at:
+# Shared drives/Campus Ready Foundation/-.Operations/Student Applications/2026_Overview
+2026_Overview/
+
+# Raw IPEDS inputs for the school-master build. These are large (~10 MB),
+# downloadable from nces.ed.gov, and not source files. The download steps
+# are documented at the top of tools/build_schools/build.py.
+tools/build_schools/raw/
+tools/build_schools/dict/
