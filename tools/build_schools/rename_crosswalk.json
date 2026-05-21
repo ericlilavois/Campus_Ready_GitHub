@@ -1,0 +1,92 @@
+[
+  {
+    "dormshopper_name": "Manhattan University",
+    "unitid": 192703,
+    "ipeds_name": "Manhattan College",
+    "reason": "Renamed 2024 — IPEDS 2023 still carries the prior name"
+  },
+  {
+    "dormshopper_name": "Marist University",
+    "unitid": 192819,
+    "ipeds_name": "Marist College",
+    "reason": "Renamed 2025 — IPEDS 2023 still carries the prior name"
+  },
+  {
+    "dormshopper_name": "Manhattanville University",
+    "unitid": 192749,
+    "ipeds_name": "Manhattanville College",
+    "reason": "Renamed — IPEDS 2023 still carries the prior name"
+  },
+  {
+    "dormshopper_name": "East Texas A&M University",
+    "unitid": 224554,
+    "ipeds_name": "Texas A & M University-Commerce",
+    "reason": "Renamed 2024 — IPEDS 2023 carries former name 'Texas A&M University-Commerce'"
+  },
+  {
+    "dormshopper_name": "Indiana University-Purdue University-Indianapolis",
+    "unitid": 151111,
+    "ipeds_name": "Indiana University-Indianapolis",
+    "reason": "IUPUI split in 2024 into Indiana University Indianapolis and Purdue University Indianapolis; mapped to the IU successor as the larger institution"
+  },
+  {
+    "dormshopper_name": "Bloomfield College of Montclair State University",
+    "unitid": 183822,
+    "ipeds_name": "Bloomfield College",
+    "reason": "Merged into Montclair State 2023; IPEDS 2023 still uses the pre-merger name"
+  },
+  {
+    "dormshopper_name": "Union Commonwealth University",
+    "unitid": 157863,
+    "ipeds_name": "Union College",
+    "reason": "Renamed 2024 — IPEDS 2023 carries the former name (Union College, KY)"
+  },
+  {
+    "dormshopper_name": "University of North Carolina at Asheville",
+    "unitid": 199111,
+    "ipeds_name": "University of North Carolina Asheville",
+    "reason": "IPEDS name omits the word 'at' present in common usage"
+  },
+  {
+    "dormshopper_name": "State University of New York at Plattsburgh",
+    "unitid": 196246,
+    "ipeds_name": "SUNY College at Plattsburgh",
+    "reason": "IPEDS uses the SUNY abbreviation rather than the full state-name form"
+  },
+  {
+    "dormshopper_name": "Fort Hays State University-Northwest Kansas Technical College",
+    "unitid": 155618,
+    "ipeds_name": "Northwest Kansas Technical College",
+    "reason": "Recently affiliated with Fort Hays State — IPEDS 2023 still tracks it as a separate institution"
+  },
+  {
+    "dormshopper_name": "Fort Hays Tech North Central",
+    "unitid": 155593,
+    "ipeds_name": "North Central Kansas Technical College",
+    "reason": "Renamed/affiliated — IPEDS 2023 still carries the former name"
+  },
+  {
+    "dormshopper_name": "Nelson University",
+    "unitid": 228325,
+    "ipeds_name": "Southwestern Assemblies of God University",
+    "reason": "Renamed 2023 — IPEDS 2023 still carries the former name"
+  },
+  {
+    "dormshopper_name": "Rochester Christian University",
+    "unitid": 170967,
+    "ipeds_name": "Rochester University",
+    "reason": "Renamed — IPEDS uses 'Rochester University' (MI)"
+  },
+  {
+    "dormshopper_name": "Emmaus University",
+    "unitid": 153302,
+    "ipeds_name": "Emmaus Bible College",
+    "reason": "Renamed — IPEDS 2023 still carries the former name"
+  },
+  {
+    "dormshopper_name": "Urshan University",
+    "unitid": 494685,
+    "ipeds_name": "Urshan College",
+    "reason": "Renamed — IPEDS 2023 still carries the former name"
+  }
+]

@@ -1,0 +1,1618 @@
+# Aliases dropped because they would match two or more institutions.
+# Schools remain in the picker; only the conflicting alias is removed.
+# Two reasons are tracked:
+#   [alias-to-alias conflict]  token appears as an alias on 2+ schools
+#   [exact-name collision]     token exactly equals the official name
+#                              of a different school
+
+## Alias-to-alias conflicts (283 tokens)
+
+[alias-to-alias] acc
+    199786='ACC' (Alamance Community College)
+    222567='ACC' (Alvin Community College)
+
+[alias-to-alias] aggies
+    206914='Aggies' (Cameron University)
+    188030='Aggies' (New Mexico State University-Main Campus)
+    199102='Aggies' (North Carolina A & T State University)
+    228723='Aggies' (Texas A & M University-College Station)
+    110644='Aggies' (University of California-Davis)
+    230728='Aggies' (Utah State University)
+
+[alias-to-alias] aiam
+    441636='AIAM' (American Institute of Alternative Medicine)
+    487852='AIAM' (American Institute of Alternative Medicine)
+
+[alias-to-alias] aie
+    482185='AIE' (Academy of Interactive Entertainment)
+    487658='AIE' (Academy of Interactive Entertainment)
+
+[alias-to-alias] american institute
+    184092='American Institute' (American Institute-Clifton)
+    129482='American Institute' (American Institute-West Hartford)
+
+[alias-to-alias] arthur s beauty college
+    106494="Arthur's Beauty College" (Arthur's Beauty College)
+    445540="Arthur's Beauty College" (Arthur's Beauty College)
+    489830="Arthur's Beauty College" (Arthur's Beauty College)
+
+[alias-to-alias] au
+    131159='AU' (American University)
+    217633='AU' (Anderson University)
+    231420='AU' (Averett University)
+
+[alias-to-alias] bac
+    197984='BAC' (Belmont Abbey College)
+    143215='BAC' (Southwestern Illinois College)
+
+[alias-to-alias] badgers
+    230597='Badgers' (Snow College)
+    240444='Badgers' (University of Wisconsin-Madison)
+
+[alias-to-alias] baldwin beauty schools
+    414489='Baldwin Beauty Schools' (Baldwin Beauty School-North Austin)
+    223056='Baldwin Beauty Schools' (Baldwin Beauty School-South Austin)
+
+[alias-to-alias] bc
+    234669='BC' (Bellevue College)
+    164924='BC' (Boston College)
+    223506='BC' (Brazosport College)
+    231581='BC' (Bridgewater College)
+    132709='BC' (Broward College)
+
+[alias-to-alias] bcc
+    444194='BCC' (Bayamon Community College)
+    164775='BCC' (Berkshire Community College)
+    198011='BCC' (Bladen Community College)
+    190530='BCC' (CUNY Bronx Community College)
+
+[alias-to-alias] bearcats
+    196079='Bearcats' (Binghamton University)
+    218229='Bearcats' (Lander University)
+    178624='Bearcats' (Northwest Missouri State University)
+    201885='Bearcats' (University of Cincinnati-Main Campus)
+
+[alias-to-alias] bears
+    189097='Bears' (Barnard College)
+    223232='Bears' (Baylor University)
+    165024='Bears' (Bridgewater State University)
+    217156='Bears' (Brown University)
+    140447='Bears' (Mercer University)
+    179566='Bears' (Missouri State University-Springfield)
+    163453='Bears' (Morgan State University)
+    106704='Bears' (University of Central Arkansas)
+    127741='Bears' (University of Northern Colorado)
+    179867='Bears' (Washington University in St Louis)
+
+[alias-to-alias] beavers
+    164580='Beavers' (Babson College)
+    173124='Beavers' (Bemidji State University)
+    110404='Beavers' (California Institute of Technology)
+    209542='Beavers' (Oregon State University)
+
+[alias-to-alias] bellus academy
+    109934='Bellus Academy' (Bellus Academy-Chula Vista)
+    116563='Bellus Academy' (Bellus Academy-El Cajon)
+    377722='Bellus Academy' (Bellus Academy-Poway)
+
+[alias-to-alias] bengals
+    142276='Bengals' (Idaho State University)
+    196130='Bengals' (SUNY Buffalo State University)
+
+[alias-to-alias] berkeley college online
+    189228='Berkeley College Online' (Berkeley College-New York)
+    183789='Berkeley College Online' (Berkeley College-Woodland Park)
+
+[alias-to-alias] bethany
+    486284='Bethany' (Bethany Global University)
+    173142='bethany' (Bethany Lutheran College)
+
+[alias-to-alias] bgu
+    420705='BGU' (Bakke Graduate University)
+    486284='BGU' (Bethany Global University)
+
+[alias-to-alias] big red
+    190415='Big Red' (Cornell University)
+    202523='Big Red' (Denison University)
+
+[alias-to-alias] bison
+    211291='Bison' (Bucknell University)
+    131520='Bison' (Howard University)
+    200332='Bison' (North Dakota State University-Main Campus)
+
+[alias-to-alias] bisons
+    107044='Bisons' (Harding University)
+    219976='Bisons' (Lipscomb University)
+
+[alias-to-alias] blazers
+    175421='Blazers' (Belhaven University)
+    100663='Blazers' (University of Alabama at Birmingham)
+    141264='Blazers' (Valdosta State University)
+
+[alias-to-alias] blue devils
+    128771='Blue Devils' (Central Connecticut State University)
+    198419='Blue Devils' (Duke University)
+    196158='Blue Devils' (SUNY at Fredonia)
+    240417='Blue Devils' (University of Wisconsin-Stout)
+
+[alias-to-alias] bmcc
+    380359='BMCC' (Bay Mills Community College)
+    208275='BMCC' (Blue Mountain Community College)
+    190521='BMCC' (CUNY Borough of Manhattan Community College)
+
+[alias-to-alias] bobcats
+    160977='Bobcats' (Bates College)
+    162584='Bobcats' (Frostburg State University)
+    139861='Bobcats' (Georgia College & State University)
+    180461='Bobcats' (Montana State University)
+    204857='Bobcats' (Ohio University-Main Campus)
+    130226='Bobcats' (Quinnipiac University)
+    137476='Bobcats' (St. Thomas University)
+    228459='Bobcats' (Texas State University)
+    445188='Bobcats' (University of California-Merced)
+
+[alias-to-alias] braves
+    143358='Braves' (Bradley University)
+    199281='Braves' (University of North Carolina at Pembroke)
+
+[alias-to-alias] brcc
+    437103='BRCC' (Baton Rouge Community College)
+    231536='BRCC' (Blue Ridge Community College)
+
+[alias-to-alias] broncos
+    142115='Broncos' (Boise State University)
+    110529='Broncos' (California State Polytechnic University-Pomona)
+    198543='Broncos' (Fayetteville State University)
+    122931='Broncos' (Santa Clara University)
+    172699='Broncos' (Western Michigan University)
+
+[alias-to-alias] bruins
+    219709='Bruins' (Belmont University)
+    208822='Bruins' (George Fox University)
+    110662='Bruins' (University of California-Los Angeles)
+
+[alias-to-alias] bsc
+    100937='BSC' (Birmingham-Southern College)
+    200022='BSC' (Bismarck State College)
+
+[alias-to-alias] bsu
+    150136='BSU' (Ball State University)
+    142115='BSU' (Boise State University)
+    165024='BSU' (Bridgewater State University)
+
+[alias-to-alias] bu
+    154688='BU' (Baker University)
+    164988='BU' (Boston University)
+
+[alias-to-alias] buccaneers
+    132471='Buccaneers' (Barry University)
+    217688='Buccaneers' (Charleston Southern University)
+    220075='Buccaneers' (East Tennessee State University)
+
+[alias-to-alias] buffs
+    126614='Buffs' (University of Colorado Boulder)
+    229814='Buffs' (West Texas A & M University)
+
+[alias-to-alias] bulldogs
+    100654='Bulldogs' (Alabama A & M University)
+    162007='Bulldogs' (Bowie State University)
+    150163='Bulldogs' (Butler University)
+    110556='Bulldogs' (California State University-Fresno)
+    217864='Bulldogs' (Citadel Military College of South Carolina)
+    210739='Bulldogs' (DeSales University)
+    153269='Bulldogs' (Drake University)
+    169910='Bulldogs' (Ferris State University)
+    235316='Bulldogs' (Gonzaga University)
+    159647='Bulldogs' (Louisiana Tech University)
+    176080='Bulldogs' (Mississippi State University)
+    102049='Bulldogs' (Samford University)
+    207865='Bulldogs' (Southwestern Oklahoma State University)
+    178615='Bulldogs' (Truman State University)
+    139959='Bulldogs' (University of Georgia)
+    174233='Bulldogs' (University of Minnesota-Duluth)
+    121691='Bulldogs' (University of Redlands)
+
+[alias-to-alias] bulls
+    196088='Bulls' (University at Buffalo)
+    137351='Bulls' (University of South Florida)
+
+[alias-to-alias] cardinals
+    168740='Cardinals' (Andrews University)
+    150136='Cardinals' (Ball State University)
+    226091='Cardinals' (Lamar University)
+    147660='Cardinals' (North Central College)
+    172051='Cardinals' (Saginaw Valley State University)
+    174817='Cardinals' (Saint Mary's University of Minnesota)
+    196246='Cardinals' (SUNY College at Plattsburgh)
+    157289='Cardinals' (University of Louisville)
+    225627='Cardinals' (University of the Incarnate Word)
+    130697='Cardinals' (Wesleyan University)
+
+[alias-to-alias] catamounts
+    231174='Catamounts' (University of Vermont)
+    200004='Catamounts' (Western Carolina University)
+
+[alias-to-alias] cbc
+    106713='CBC' (Central Baptist College)
+    223320='CBC' (Coastal Bend College)
+    234979='CBC' (Columbia Basin College)
+
+[alias-to-alias] cbu
+    110361='CBU' (California Baptist University)
+    219833='CBU' (Christian Brothers University)
+
+[alias-to-alias] ccbc
+    434672='CCBC' (Community College of Baltimore County)
+    211079='CCBC' (Community College of Beaver County)
+
+[alias-to-alias] ccc
+    492069='CCC' (Champion Christian College)
+    144281='CCC' (Columbia College Chicago)
+    446163='CCC' (Community Christian College)
+    112826='CCC' (Contra Costa College)
+
+[alias-to-alias] cdu
+    475398='CDU' (Catholic Distance University)
+    111966='CDU' (Charles R Drew University of Medicine and Science)
+
+[alias-to-alias] central
+    240514='Central' (Central Wyoming College)
+    176965='Central' (University of Central Missouri)
+    206941='Central' (University of Central Oklahoma)
+
+[alias-to-alias] central florida
+    132851='Central Florida' (College of Central Florida)
+    132903='Central Florida' (University of Central Florida)
+
+[alias-to-alias] chargers
+    100706='Chargers' (University of Alabama in Huntsville)
+    129941='Chargers' (University of New Haven)
+
+[alias-to-alias] cheeks international
+    240709='Cheeks International' (Cheeks Beauty Academy)
+    381699='Cheeks International' (Cheeks Beauty Academy)
+
+[alias-to-alias] christine valmy international school
+    189990='Christine Valmy International School' (Christine Valmy International School for Esthetics, Skin Care & Makeup)
+    475468='Christine Valmy International School' (Christine Valmy International School of Esthetics & Cosmetology)
+
+[alias-to-alias] cia
+    202046='CIA' (Cleveland Institute of Art)
+    190503='CIA' (Culinary Institute of America)
+
+[alias-to-alias] city college
+    244233='City College' (City College-Hollywood)
+    190567='City College' (CUNY City College)
+
+[alias-to-alias] cjc
+    133021='CJC' (Chipola College)
+    207661='CJC' (Rogers State University)
+
+[alias-to-alias] cmc
+    112260='CMC' (Claremont McKenna College)
+    395362='CMC' (Copper Mountain Community College)
+
+[alias-to-alias] cmu
+    211440='CMU' (Carnegie Mellon University)
+    169248='CMU' (Central Michigan University)
+
+[alias-to-alias] collectiv academy
+    230144='Collectiv Academy' (Collectiv Academy)
+    499079='COLLECTIV Academy' (Collectiv Hair Dressing Academy-Collectiv Academy-Dallas)
+
+[alias-to-alias] colonels
+    156408='Colonels' (Centre College)
+    156620='Colonels' (Eastern Kentucky University)
+    159966='Colonels' (Nicholls State University)
+    215655='Colonels' (Robert Morris University)
+    216931='Colonels' (Wilkes University)
+
+[alias-to-alias] columbus state
+    202222='Columbus State' (Columbus State Community College)
+    139366='Columbus State' (Columbus State University)
+
+[alias-to-alias] comets
+    201548='Comets' (Capital University)
+    228787='Comets' (The University of Texas at Dallas)
+
+[alias-to-alias] connecticut
+    130590='Connecticut' (Trinity College)
+    129020='Connecticut' (University of Connecticut)
+
+[alias-to-alias] cougars
+    109785='Cougars' (Azusa Pacific University)
+    230038='Cougars' (Brigham Young University)
+    366711='Cougars' (California State University-San Marcos)
+    217819='Cougars' (College of Charleston)
+    139366='Cougars' (Columbus State University)
+    144351='Cougars' (Concordia University-Chicago)
+    185262='Cougars' (Kean University)
+    148627='Cougars' (Saint Xavier University)
+    149231='Cougars' (Southern Illinois University-Edwardsville)
+    225511='Cougars' (University of Houston)
+    236939='Cougars' (Washington State University)
+
+[alias-to-alias] cowboys
+    159717='Cowboys' (McNeese State University)
+    207388='Cowboys' (Oklahoma State University-Main Campus)
+    240727='Cowboys' (University of Wyoming)
+
+[alias-to-alias] coyotes
+    110510='Coyotes' (California State University-San Bernardino)
+    219471='Coyotes' (University of South Dakota)
+
+[alias-to-alias] crusaders
+    226471='Crusaders' (University of Mary Hardin-Baylor)
+    176479='Crusaders' (William Carey University)
+
+[alias-to-alias] csm
+    122791='CSM' (College of San Mateo)
+    162122='CSM' (College of Southern Maryland)
+
+[alias-to-alias] csu
+    217688='CSU' (Charleston Southern University)
+    144005='CSU' (Chicago State University)
+    126818='CSU' (Colorado State University-Fort Collins)
+    139366='CSU' (Columbus State University)
+
+[alias-to-alias] ctc
+    132976='CTC' (Charlotte Technical College)
+    201928='CTC' (Cincinnati State Technical and Community College)
+
+[alias-to-alias] cu
+    219949='CU' (Cumberland University)
+    190372='CU' (The Cooper Union for the Advancement of Science and Art)
+    126614='CU' (University of Colorado Boulder)
+
+[alias-to-alias] cv beauty college
+    449393='CV Beauty College' (Coachella Valley Beauty College)
+    485412='CV Beauty College' (Coachella Valley Beauty College-Hemet)
+
+[alias-to-alias] cvcc
+    198233='CVCC' (Catawba Valley Community College)
+    101028='CVCC' (Chattahoochee Valley Community College)
+    204981='CVCC' (Cuyahoga Valley Career Center)
+
+[alias-to-alias] dit
+    443410='DIT' (DigiPen Institute of Technology)
+    235088='DIT' (Divers Institute of Technology)
+
+[alias-to-alias] dolphins
+    222567='Dolphins' (Alvin Community College)
+    441937='Dolphins' (California State University-Channel Islands)
+    134945='Dolphins' (Jacksonville University)
+    243443='Dolphins' (Universidad del Sagrado Corazon)
+
+[alias-to-alias] dragons
+    212054='Dragons' (Drexel University)
+    174358='Dragons' (Minnesota State University Moorhead)
+    206048='Dragons' (Tiffin University)
+
+[alias-to-alias] dsc
+    139463='DSC' (Dalton State College)
+    133386='DSC' (Daytona State College)
+
+[alias-to-alias] dsu
+    130934='DSU' (Delaware State University)
+    200059='DSU' (Dickinson State University)
+
+[alias-to-alias] du
+    202523='DU' (Denison University)
+    127060='DU' (University of Denver)
+
+[alias-to-alias] ducks
+    186867='Ducks' (Stevens Institute of Technology)
+    209551='Ducks' (University of Oregon)
+
+[alias-to-alias] dukes
+    212106='Dukes' (Duquesne University)
+    232423='Dukes' (James Madison University)
+
+[alias-to-alias] eagles
+    131159='Eagles' (American University)
+    201104='Eagles' (Ashland University)
+    145619='Eagles' (Benedictine University)
+    110097='Eagles' (Biola University)
+    164924='Eagles' (Boston College)
+    169798='Eagles' (Eastern Michigan University)
+    212133='Eagles' (Eastern University)
+    235097='Eagles' (Eastern Washington University)
+    133553='Eagles' (Embry-Riddle Aeronautical University-Daytona Beach)
+    139658='Eagles' (Emory University)
+    433660='Eagles' (Florida Gulf Coast University)
+    139931='Eagles' (Georgia Southern University)
+    157386='Eagles' (Morehead State University)
+    199157='Eagles' (North Carolina Central University)
+    232681='Eagles' (University of Mary Washington)
+    240329='Eagles' (University of Wisconsin-La Crosse)
+    218964='Eagles' (Winthrop University)
+
+[alias-to-alias] eastern
+    129215='Eastern' (Eastern Connecticut State University)
+    207050='Eastern' (Eastern Oklahoma State College)
+
+[alias-to-alias] ec
+    190983='EC' (Elmira College)
+    144971='EC' (Eureka College)
+
+[alias-to-alias] ecc
+    113980='ECC' (El Camino Community College District)
+    144944='ECC' (Elgin Community College)
+
+[alias-to-alias] ecsu
+    129215='ECSU' (Eastern Connecticut State University)
+    198507='ECSU' (Elizabeth City State University)
+
+[alias-to-alias] ecu
+    198464='ECU' (East Carolina University)
+    207041='ECU' (East Central University)
+
+[alias-to-alias] engineers
+    166683='Engineers' (Massachusetts Institute of Technology)
+    194824='Engineers' (Rensselaer Polytechnic Institute)
+
+[alias-to-alias] falcons
+    164739='Falcons' (Bentley University)
+    201441='Falcons' (Bowling Green State University-Main Campus)
+    238616='Falcons' (Concordia University-Wisconsin)
+    237367='Falcons' (Fairmont State University)
+    165820='Falcons' (Fitchburg State University)
+    213376='Falcons' (Lackawanna College)
+    229018='Falcons' (The University of Texas Permian Basin)
+    128328='Falcons' (United States Air Force Academy)
+    240471='Falcons' (University of Wisconsin-River Falls)
+
+[alias-to-alias] fdu
+    184694='FDU' (Fairleigh Dickinson University-Florham Campus)
+    184603='FDU' (Fairleigh Dickinson University-Metropolitan Campus)
+
+[alias-to-alias] fit
+    191126='FIT' (Fashion Institute of Technology)
+    431141='FIT' (Institute of Technology)
+
+[alias-to-alias] flames
+    220613='Flames' (Lee University)
+    145600='Flames' (University of Illinois Chicago)
+
+[alias-to-alias] flc
+    444219='FLC' (Folsom Lake College)
+    127185='FLC' (Fort Lewis College)
+
+[alias-to-alias] flyers
+    146612='Flyers' (Lewis University)
+    202480='Flyers' (University of Dayton)
+
+[alias-to-alias] galen college of nursing
+    497116='Galen College of Nursing' (Galen Health Institutes-Austin Campus)
+    497125='Galen College of NUrsing' (Galen Health Institutes-Nashville Campus)
+
+[alias-to-alias] gamecocks
+    101480='Gamecocks' (Jacksonville State University)
+    218663='Gamecocks' (University of South Carolina-Columbia)
+
+[alias-to-alias] gators
+    122597='Gators' (San Francisco State University)
+    134130='Gators' (University of Florida)
+
+[alias-to-alias] gcc
+    475565='GCC' (CUNY Stella and Charles Guttman Community College)
+    162609='GCC' (Garrett College)
+    191339='GCC' (Genesee Community College)
+    115001='GCC' (Glendale Community College)
+    240745='GCC' (Guam Community College)
+
+[alias-to-alias] ghc
+    139700='GHC' (Georgia Highlands College)
+    235334='GHC' (Grays Harbor College)
+
+[alias-to-alias] golden bears
+    173328='Golden Bears' (Concordia University-Saint Paul)
+    110635='Golden Bears' (University of California-Berkeley)
+
+[alias-to-alias] golden eagles
+    110592='Golden Eagles' (California State University-Los Angeles)
+    112075='Golden Eagles' (Concordia University-Irvine)
+    240620='Golden Eagles' (Laramie County Community College)
+    239105='Golden Eagles' (Marquette University)
+    196121='Golden Eagles' (SUNY Brockport)
+    221847='Golden Eagles' (Tennessee Technological University)
+    176372='Golden Eagles' (University of Southern Mississippi)
+
+[alias-to-alias] golden knights
+    190044='Golden Knights' (Clarkson University)
+    212601='Golden Knights' (Gannon University)
+    195234='Golden Knights' (The College of Saint Rose)
+
+[alias-to-alias] golden rams
+    138716='Golden Rams' (Albany State University)
+    216764='Golden Rams' (West Chester University of Pennsylvania)
+
+[alias-to-alias] greyhounds
+    163046='Greyhounds' (Loyola University Maryland)
+    151263='Greyhounds' (University of Indianapolis)
+
+[alias-to-alias] griffins
+    209922='Griffins' (Reed College)
+    230807='Griffins' (Westminster University)
+
+[alias-to-alias] gsu
+    139940='GSU' (Georgia State University)
+    145336='GSU' (Governors State University)
+    159009='GSU' (Grambling State University)
+
+[alias-to-alias] gwinnett college
+    140003='Gwinnett College' (Gwinnett College-Lilburn)
+    444714='Gwinnett College' (Gwinnett College-Marietta Campus)
+
+[alias-to-alias] gwu
+    198561='GWU' (Gardner-Webb University)
+    131469='GWU' (George Washington University)
+
+[alias-to-alias] hartford
+    130590='Hartford' (Trinity College)
+    129525='Hartford' (University of Hartford)
+
+[alias-to-alias] hawks
+    185572='Hawks' (Monmouth University)
+    179043='Hawks' (Rockhurst University)
+    217518='Hawks' (Roger Williams University)
+    215770='Hawks' (Saint Joseph's University)
+    196176='Hawks' (State University of New York at New Paltz)
+    129525='Hawks' (University of Hartford)
+
+[alias-to-alias] hcc
+    162690='HCC' (Hagerstown Community College)
+    134495='HCC' (Hillsborough Community College)
+    225423='HCC' (Houston Community College)
+    162779='HCC' (Howard Community College)
+
+[alias-to-alias] hccc
+    162779='HCCC' (Howard Community College)
+    184995='HCCC' (Hudson County Community College)
+
+[alias-to-alias] highlanders
+    185828='Highlanders' (New Jersey Institute of Technology)
+    233277='Highlanders' (Radford University)
+    110671='Highlanders' (University of California-Riverside)
+
+[alias-to-alias] hornets
+    100724='Hornets' (Alabama State University)
+    110617='Hornets' (California State University-Sacramento)
+    130934='Hornets' (Delaware State University)
+    155025='Hornets' (Emporia State University)
+    233541='Hornets' (Shenandoah University)
+
+[alias-to-alias] hpu
+    141644='HPU' (Hawaii Pacific University)
+    198695='HPU' (High Point University)
+
+[alias-to-alias] huskies
+    225399='Huskies' (Houston Christian University)
+    171128='Huskies' (Michigan Technological University)
+    167358='Huskies' (Northeastern University)
+    147703='Huskies' (Northern Illinois University)
+    174783='Huskies' (Saint Cloud State University)
+    129020='Huskies' (University of Connecticut)
+    161554='Huskies' (University of Southern Maine)
+    236948='Huskies' (University of Washington-Seattle Campus)
+
+[alias-to-alias] icc
+    145682='ICC' (Illinois Central College)
+    175829='ICC' (Itawamba Community College)
+
+[alias-to-alias] ihcc
+    153472='IHCC' (Indian Hills Community College)
+    173799='IHCC' (Inver Hills Community College)
+
+[alias-to-alias] iit
+    145725='IIT' (Illinois Institute of Technology)
+    151290='IIT' (Indiana Institute of Technology)
+
+[alias-to-alias] inc
+    461111='Inc.' (Allstate Hairstyling & Barber College)
+    447847='Inc.' (Aviator College of Aeronautical Science and Technology)
+    364760='Inc.' (Bell Mar Beauty College)
+    457697='Inc' (City Vision University)
+    193991='Inc.' (Empire Beauty School-Peekskill)
+    494597='Inc.' (Faith Theological Seminary and Christian College)
+    455479='Inc.' (Fortis Institute-Pensacola)
+    414540='Inc' (Jean Madeline Aveda Institute)
+    172033='Inc.' (Sacred Heart Major Seminary)
+    484394='Inc.' (Taylor Andrews Academy of Hair Design-Provo)
+    461494='Inc.' (Taylor Andrews Academy of Hair Design-West Jordan)
+    369455='Inc.' (Worsham College of Mortuary Science)
+
+[alias-to-alias] iowa valley community college district
+    153296='Iowa Valley Community College District' (Ellsworth Community College)
+    153922='Iowa Valley Community College District' (Marshalltown Community College)
+
+[alias-to-alias] isb
+    153597='ISB' (Iowa School of Beauty-Des Moines)
+    154457='ISB' (Iowa School of Beauty-Sioux City)
+
+[alias-to-alias] isu
+    142276='ISU' (Idaho State University)
+    145813='ISU' (Illinois State University)
+    153603='ISU' (Iowa State University)
+
+[alias-to-alias] iwu
+    145646='IWU' (Illinois Wesleyan University)
+    151801='IWU' (Indiana Wesleyan University-Marion)
+    488679='IWU' (Indiana Wesleyan University-National & Global)
+
+[alias-to-alias] jaguars
+    482149='Jaguars' (Augusta University)
+    151111='Jaguars' (Indiana University-Indianapolis)
+    160621='Jaguars' (Southern University and A & M College)
+    102094='Jaguars' (University of South Alabama)
+
+[alias-to-alias] jscc
+    220400='JSCC' (Jackson State Community College)
+    198729='JSCC' (James Sprunt Community College)
+    101505='JSCC' (Jefferson State Community College)
+
+[alias-to-alias] k state
+    155399='K-State' (Kansas State University)
+    157058='K-State' (Kentucky State University)
+
+[alias-to-alias] knights
+    173258='Knights' (Carleton College)
+    184603='Knights' (Fairleigh Dickinson University-Metropolitan Campus)
+    482158='Knights' (Middle Georgia State University)
+    196167='Knights' (SUNY College at Geneseo)
+    132903='Knights' (University of Central Florida)
+
+[alias-to-alias] ksu
+    155399='KSU' (Kansas State University)
+    486840='KSU' (Kennesaw State University)
+
+[alias-to-alias] lakers
+    139311='Lakers' (Clayton  State University)
+    170082='Lakers' (Grand Valley State University)
+    148487='Lakers' (Roosevelt University)
+    196194='Lakers' (State University of New York at Oswego)
+
+[alias-to-alias] lancers
+    110361='Lancers' (California Baptist University)
+    232566='Lancers' (Longwood University)
+    168430='Lancers' (Worcester State University)
+
+[alias-to-alias] lcc
+    203599='LCC' (Lakeland Community College)
+    127389='LCC' (Lamar Community College)
+    170657='LCC' (Lansing Community College)
+    235750='LCC' (Lower Columbia College)
+
+[alias-to-alias] lccc
+    240620='LCCC' (Laramie County Community College)
+    213525='LCCC' (Lehigh Carbon Community College)
+    203748='LCCC' (Lorain County Community College)
+
+[alias-to-alias] leopards
+    213385='Leopards' (Lafayette College)
+    117140='Leopards' (University of La Verne)
+
+[alias-to-alias] lions
+    190150='Lions' (Columbia University in the City of New York)
+    165662='Lions' (Emerson College)
+    177968='Lions' (Lindenwood University)
+    117946='Lions' (Loyola Marymount University)
+    178341='Lions' (Missouri Southern State University)
+    214713='Lions' (Pennsylvania State University-Penn State Harrisburg)
+    160612='Lions' (Southeastern Louisiana University)
+    224554='Lions' (Texas A & M University-Commerce)
+    187134='Lions' (The College of New Jersey)
+    108092='Lions' (University of Arkansas-Fort Smith)
+    101879='Lions' (University of North Alabama)
+
+[alias-to-alias] llbb
+    475574='LLBB' (Lil Lou's Beauty and Barber College)
+    494029='LLBB' (Lil Lou's Beauty and Barber College-Hammond)
+
+[alias-to-alias] lmc
+    170620='LMC' (Lake Michigan College)
+    117894='LMC' (Los Medanos College)
+
+[alias-to-alias] lmu
+    220631='LMU' (Lincoln Memorial University)
+    117946='LMU' (Loyola Marymount University)
+
+[alias-to-alias] lumberjacks
+    115755='Lumberjacks' (California State Polytechnic University-Humboldt)
+    105330='Lumberjacks' (Northern Arizona University)
+    228431='Lumberjacks' (Stephen F Austin State University)
+
+[alias-to-alias] lynx
+    166452='Lynx' (Lesley University)
+    221351='Lynx' (Rhodes College)
+    126562='Lynx' (University of Colorado Denver/Anschutz Medical Campus)
+
+[alias-to-alias] mac
+    173902='Mac' (Macalester College)
+    178217='MAC' (Mineral Area College)
+
+[alias-to-alias] marian
+    151786='Marian' (Marian University)
+    497833='Marian' (Marian University-Ancilla)
+
+[alias-to-alias] matc
+    155487='MATC' (Manhattan Area Technical College)
+    239248='MATC' (Milwaukee Area Technical College)
+
+[alias-to-alias] mavericks
+    127556='Mavericks' (Colorado Mesa University)
+    193016='Mavericks' (Mercy University)
+    173920='Mavericks' (Minnesota State University-Mankato)
+    207281='Mavericks' (Northern Oklahoma College)
+    228769='Mavericks' (The University of Texas at Arlington)
+    181394='Mavericks' (University of Nebraska at Omaha)
+
+[alias-to-alias] mbc
+    178208='MBC' (Midwestern Baptist Theological Seminary)
+    209287='MBC' (Multnomah University)
+
+[alias-to-alias] mbu
+    239071='MBU' (Maranatha Baptist University)
+    232672='MBU' (Mary Baldwin University)
+    178244='MBU' (Missouri Baptist University)
+
+[alias-to-alias] mcc
+    155496='MCC' (Manhattan Christian College)
+    147004='MCC' (McHenry County College)
+    226578='MCC' (McLennan Community College)
+    175935='MCC' (Meridian Community College)
+
+[alias-to-alias] mountaineers
+    197869='Mountaineers' (Appalachian State University)
+    238032='Mountaineers' (West Virginia University)
+    128391='Mountaineers' (Western Colorado University)
+
+[alias-to-alias] msu
+    171100='MSU' (Michigan State University)
+    200253='MSU' (Minot State University)
+    176080='MSU' (Mississippi State University)
+    179566='MSU' (Missouri State University-Springfield)
+    180461='MSU' (Montana State University)
+
+[alias-to-alias] mtc
+    419226='MTC' (Marion Technical College)
+    218353='MTC' (Midlands Technical College)
+
+[alias-to-alias] mtti
+    414124='MTTI' (Motoring Technical Training Institute)
+    479062='MTTI' (MotoRing Technical Training Institute)
+
+[alias-to-alias] mules
+    161086='Mules' (Colby College)
+    176965='Mules' (University of Central Missouri)
+
+[alias-to-alias] mustangs
+    110422='Mustangs' (California Polytechnic State University-San Luis Obispo)
+    228246='Mustangs' (Southern Methodist University)
+    175078='Mustangs' (Southwest Minnesota State University)
+    164173='Mustangs' (Stevenson University)
+
+[alias-to-alias] mycomputercareer
+    451477='MyComputerCareer' (MyComputerCareer at Columbus)
+    451228='MyComputerCareer' (MyComputerCareer at Indianapolis)
+    480037='MyComputerCareer' (MyComputerCareer at Raleigh)
+
+[alias-to-alias] n a
+    444468='N/A' (Lawrenceburg Technical College)
+    494995='n/a' (Meryma'at Barber College)
+    458061='n/a' (Texas Beauty College)
+
+[alias-to-alias] ncc
+    183141='NCC' (Nashua Community College)
+    147660='NCC' (North Central College)
+
+[alias-to-alias] ncmc
+    171395='NCMC' (North Central Michigan College)
+    179715='NCMC' (North Central Missouri College)
+
+[alias-to-alias] nettts
+    468963='NETTTS' (New England Tractor Trailer Training School of Massachusetts)
+    217323='NETTTS' (New England Tractor Trailer Training School of Rhode Island)
+
+[alias-to-alias] nicc
+    181419='NICC' (Nebraska Indian Community College)
+    154110='NICC' (Northeast Iowa Community College)
+
+[alias-to-alias] nighthawks
+    142461='Nighthawks' (Northwest Nazarene University)
+    482680='Nighthawks' (University of North Georgia)
+
+[alias-to-alias] nima institute
+    476993='NIMA Institute' (Medspa Academies)
+    497310='NIMA Institute' (Medspa Academies-National Institute of Modern Aesthetics)
+
+[alias-to-alias] northeast
+    101897='Northeast' (Northeast Alabama Community College)
+    181491='Northeast' (Northeast Community College)
+    127732='Northeast' (Northeastern Junior College)
+
+[alias-to-alias] northeastern
+    127732='Northeastern' (Northeastern Junior College)
+    167358='Northeastern' (Northeastern University)
+
+[alias-to-alias] northwest college school of beauty
+    209083='Northwest College - School of Beauty' (Northwest College-Beaverton)
+    209205='Northwest College - School of Beauty' (Northwest College-Clackamas)
+    468246='Northwest College - School of Beauty' (Northwest College-Eugene)
+    441168='Northwest College - School of Beauty' (Northwest College-Hillsboro)
+    484950='Northwest College - School of Beauty' (Northwest College-Medford)
+    468255='Northwest College - School of Beauty' (Northwest College-Tualatin)
+
+[alias-to-alias] northwestern
+    160038='Northwestern' (Northwestern State University of Louisiana)
+    147767='Northwestern' (Northwestern University)
+    174491='Northwestern' (University of Northwestern-St Paul)
+
+[alias-to-alias] nsu
+    232937='NSU' (Norfolk State University)
+    207263='NSU' (Northeastern State University)
+    219259='NSU' (Northern State University)
+    160038='NSU' (Northwestern State University of Louisiana)
+    136215='NSU' (Nova Southeastern University)
+
+[alias-to-alias] nu
+    147767='NU' (Northwestern University)
+    171492='NU' (Northwood University)
+
+[alias-to-alias] occ
+    185873='OCC' (Ocean County College)
+    207324='OCC' (Oklahoma Christian University)
+    194222='OCC' (Onondaga Community College)
+
+[alias-to-alias] odu
+    204617='ODU' (Ohio Dominican University)
+    232982='ODU' (Old Dominion University)
+
+[alias-to-alias] ogle school
+    227313='Ogle School' (Ogle School Hair Skin Nails-Arlington)
+    381404='Ogle School' (Ogle School Hair Skin Nails-Dallas)
+    478591='Ogle School' (Ogle School Hair Skin Nails-Denton)
+    227322='Ogle School' (Ogle School Hair Skin Nails-Ft Worth)
+    248703='Ogle School' (Ogle School Hair Skin Nails-Hurst)
+    460978='Ogle School' (Ogle School Hair Skin Nails-North Dallas)
+    480125='Ogle School' (Ogle School Hair Skin Nails-San Antonio)
+    484604='Ogle School' (Ogle School Hair Skin Nails-Stafford)
+    497073='Ogle School' (Ogle School Hair Skin Nails-Willowbrook)
+
+[alias-to-alias] ospreys
+    186876='Ospreys' (Stockton University)
+    136172='Ospreys' (University of North Florida)
+
+[alias-to-alias] osu
+    204796='OSU' (Ohio State University-Main Campus)
+    207388='OSU' (Oklahoma State University-Main Campus)
+    209542='OSU' (Oregon State University)
+
+[alias-to-alias] ou
+    171571='OU' (Oakland University)
+    101912='OU' (Oakwood University)
+    204857='OU' (Ohio University-Main Campus)
+    207500='OU' (University of Oklahoma-Norman Campus)
+
+[alias-to-alias] owls
+    211273='Owls' (Bryn Mawr College)
+    133669='Owls' (Florida Atlantic University)
+    486840='Owls' (Kennesaw State University)
+    203535='Owls' (Kenyon College)
+    209506='Owls' (Oregon Institute of Technology)
+    227757='Owls' (Rice University)
+    130493='Owls' (Southern Connecticut State University)
+    216339='Owls' (Temple University)
+    168263='Owls' (Westfield State University)
+
+[alias-to-alias] pacific
+    209612='Pacific' (Pacific University)
+    120883='Pacific' (University of the Pacific)
+
+[alias-to-alias] panthers
+    188429='Panthers' (Adelphi University)
+    111948='Panthers' (Chapman University)
+    138947='Panthers' (Clark Atlanta University)
+    169479='Panthers' (Davenport University)
+    144892='Panthers' (Eastern Illinois University)
+    133881='Panthers' (Florida Institute of Technology)
+    139940='Panthers' (Georgia State University)
+    198695='Panthers' (High Point University)
+    230959='Panthers' (Middlebury College)
+    183080='Panthers' (Plymouth State University)
+    227526='Panthers' (Prairie View A & M University)
+    196237='Panthers' (SUNY Old Westbury)
+    154095='Panthers' (University of Northern Iowa)
+    215293='Panthers' (University of Pittsburgh-Pittsburgh Campus)
+    240453='Panthers' (University of Wisconsin-Milwaukee)
+
+[alias-to-alias] patriots
+    224226='Patriots' (Dallas Baptist University)
+    218061='Patriots' (Francis Marion University)
+    232186='Patriots' (George Mason University)
+    228802='Patriots' (The University of Texas at Tyler)
+
+[alias-to-alias] paul mitchell the school
+    172680='Paul Mitchell The School' (Paul Mitchell the School-Grand Rapids)
+    143376='Paul Mitchell the school' (Paul Mitchell the School-Tinley Park)
+
+[alias-to-alias] pc
+    218539='PC' (Presbyterian College)
+    105589='PC' (Prescott College)
+    217402='PC' (Providence College)
+
+[alias-to-alias] pcc
+    243647='PCC' (Palau Community College)
+    199263='PCC' (Pamlico Community College)
+
+[alias-to-alias] pgcc
+    163657='PGCC' (Prince George's Community College)
+    437750='PGCC' (Professional Golfers Career College)
+
+[alias-to-alias] phoenix
+    198516='Phoenix' (Elon University)
+    441982='Phoenix' (Franklin W Olin College of Engineering)
+    240277='Phoenix' (University of Wisconsin-Green Bay)
+
+[alias-to-alias] pierce college
+    117706='Pierce College' (Los Angeles Pierce College)
+    235237='Pierce College' (Pierce College District)
+
+[alias-to-alias] pilots
+    159416='Pilots' (Louisiana State University-Shreveport)
+    209825='Pilots' (University of Portland)
+
+[alias-to-alias] pioneers
+    110574='Pioneers' (California State University-East Bay)
+    153384='Pioneers' (Grinnell College)
+    215442='Pioneers' (Point Park University)
+    130253='Pioneers' (Sacred Heart University)
+    167835='Pioneers' (Smith College)
+    229179='Pioneers' (Texas Woman's University)
+    127060='Pioneers' (University of Denver)
+    240462='Pioneers' (University of Wisconsin-Platteville)
+    197045='Pioneers' (Utica University)
+    229780='Pioneers' (Wayland Baptist University)
+    187444='Pioneers' (William Paterson University of New Jersey)
+
+[alias-to-alias] pirates
+    198464='Pirates' (East Carolina University)
+    232265='Pirates' (Hampton University)
+    186584='Pirates' (Seton Hall University)
+
+[alias-to-alias] pride
+    191649='Pride' (Hofstra University)
+    490805='Pride' (Purdue University Northwest)
+    167598='Pride' (Regis College)
+    216852='Pride' (Widener University)
+
+[alias-to-alias] psu
+    214777='PSU' (Pennsylvania State University-Main Campus)
+    107600='PSU' (Philander Smith University)
+    183080='PSU' (Plymouth State University)
+    209807='PSU' (Portland State University)
+
+[alias-to-alias] pti
+    236212='PTI' (Perry Technical Institute)
+    409193='PTI' (Professional Technical Institution)
+
+[alias-to-alias] pu
+    209612='PU' (Pacific University)
+    243780='PU' (Purdue University-Main Campus)
+
+[alias-to-alias] queens
+    190664='Queens' (CUNY Queens College)
+    199412='Queens' (Queens University of Charlotte)
+
+[alias-to-alias] raiders
+    190099='Raiders' (Colgate University)
+    216010='Raiders' (Shippensburg University of Pennsylvania)
+    206604='Raiders' (Wright State University-Main Campus)
+
+[alias-to-alias] rams
+    222831='Rams' (Angelo State University)
+    126818='Rams' (Colorado State University-Fort Collins)
+    191241='Rams' (Fordham University)
+    165866='Rams' (Framingham State University)
+    237792='Rams' (Shepherd University)
+    168005='Rams' (Suffolk University)
+    234030='Rams' (Virginia Commonwealth University)
+    199999='Rams' (Winston-Salem State University)
+
+[alias-to-alias] rangers
+    226019='Rangers' (Kilgore College)
+    127918='Rangers' (Regis University)
+    240374='Rangers' (University of Wisconsin-Parkside)
+
+[alias-to-alias] rcc
+    233310='RCC' (Rappahannock Community College)
+    199485='RCC' (Rockingham Community College)
+
+[alias-to-alias] red dragons
+    196149='Red Dragons' (State University of New York at Cortland)
+    196185='Red Dragons' (SUNY Oneonta)
+
+[alias-to-alias] redhawks
+    204024='RedHawks' (Miami University-Oxford)
+    236595='Redhawks' (Seattle University)
+    179557='Redhawks' (Southeast Missouri State University)
+
+[alias-to-alias] roadrunners
+    186201='Roadrunners' (Ramapo College of New Jersey)
+    229027='Roadrunners' (The University of Texas at San Antonio)
+
+[alias-to-alias] rpi
+    194824='RPI' (Rensselaer Polytechnic Institute)
+    152318='RPI' (Rose-Hulman Institute of Technology)
+
+[alias-to-alias] rtc
+    486406='RTC' (Randolph Technical Center)
+    137713='RTC' (Riveroak Technical College)
+
+[alias-to-alias] rutgers
+    186371='Rutgers' (Rutgers University-Camden)
+    186380='Rutgers' (Rutgers University-New Brunswick)
+    186399='Rutgers' (Rutgers University-Newark)
+
+[alias-to-alias] sac
+    121619='SAC' (Santa Ana College)
+    172334='SAC' (Spring Arbor University)
+
+[alias-to-alias] sagehens
+    121257='Sagehens' (Pitzer College)
+    121345='Sagehens' (Pomona College)
+
+[alias-to-alias] saints
+    232706='Saints' (Marymount University)
+    174899='Saints' (The College of Saint Scholastica)
+
+[alias-to-alias] san francisco
+    110699='San Francisco' (University of California-San Francisco)
+    122612='San Francisco' (University of San Francisco)
+
+[alias-to-alias] sau
+    107983='SAU' (Southern Arkansas University Main Campus)
+    172334='SAU' (Spring Arbor University)
+    199698='SAU' (St. Andrews University)
+
+[alias-to-alias] sc
+    155900='SC' (Southwestern College)
+    155937='SC' (Sterling College)
+    123961='SC' (University of Southern California)
+
+[alias-to-alias] scc
+    122180='SCC' (Sacramento City College)
+    186469='SCC' (Salem Community College)
+    199634='SCC' (Sandhills Community College)
+    399212='SCC' (Santiago Canyon College)
+    236513='SCC' (Seattle Central College)
+    262031='SCC' (St Charles Community College)
+    462053='SCC' (State Career College)
+    366340='SCC' (Stone Child College)
+
+[alias-to-alias] sccc
+    417646='SCCC' (Saline County Career Center)
+    236513='SCCC' (Seattle Central College)
+    155858='SCCC' (Seward County Community College)
+    417637='SCCC' (Southern Missouri Technical Institute)
+
+[alias-to-alias] scctc
+    407577='SCCTC' (Scioto County Career Technical Center)
+    441672='SCCTC' (Susquehanna County Career and Technology Center)
+
+[alias-to-alias] scsu
+    174783='SCSU' (Saint Cloud State University)
+    130493='SCSU' (Southern Connecticut State University)
+
+[alias-to-alias] scu
+    122931='SCU' (Santa Clara University)
+    207856='SCU' (Southwestern Christian University)
+
+[alias-to-alias] sdsu
+    122409='SDSU' (San Diego State University)
+    219356='SDSU' (South Dakota State University)
+
+[alias-to-alias] seawolves
+    123572='Seawolves' (Sonoma State University)
+    196097='Seawolves' (Stony Brook University)
+
+[alias-to-alias] seu
+    186618='SEU' (Saint Elizabeth University)
+    137564='SEU' (Southeastern University)
+
+[alias-to-alias] sharks
+    110583='Sharks' (California State University-Long Beach)
+    243638='Sharks' (College of Micronesia-FSM)
+    141644='Sharks' (Hawaii Pacific University)
+    192448='Sharks' (Long Island University)
+    136215='Sharks' (Nova Southeastern University)
+    167783='Sharks' (Simmons University)
+
+[alias-to-alias] sjc
+    188100='SJC' (San Juan College)
+    163976='SJC' (St. John's College)
+
+[alias-to-alias] slchc
+    442426='SLCHC' (St Louis College of Health Careers-Fenton)
+    179511='SLCHC' (St Louis College of Health Careers-St Louis)
+
+[alias-to-alias] slu
+    179159='SLU' (Saint Louis University)
+    160612='SLU' (Southeastern Louisiana University)
+
+[alias-to-alias] smc
+    122977='SMC' (Santa Monica College)
+    172307='SMC' (Southwestern Michigan College)
+    218821='SMC' (Spartanburg Methodist College)
+
+[alias-to-alias] south texas vo tech
+    460172='South Texas Vo-Tech' (Miller-Motte College-STVT-San Antonio)
+    456922='South Texas Vo-Tech' (South Texas Vocational Technical Institute-Brownsville)
+
+[alias-to-alias] southwest
+    221485='Southwest' (Southwest Tennessee Community College)
+    233648='Southwest' (Southwest Virginia Community College)
+
+[alias-to-alias] southwest tech
+    449816='Southwest Tech' (Southwest Technical College)
+    239910='Southwest Tech' (Southwest Wisconsin Technical College)
+
+[alias-to-alias] spartans
+    143118='Spartans' (Aurora University)
+    201645='Spartans' (Case Western Reserve University)
+    171100='Spartans' (Michigan State University)
+    178244='Spartans' (Missouri Baptist University)
+    232937='Spartans' (Norfolk State University)
+    122755='Spartans' (San Jose State University)
+    137847='Spartans' (The University of Tampa)
+    199148='Spartans' (University of North Carolina at Greensboro)
+    218742='Spartans' (University of South Carolina-Upstate)
+    217059='Spartans' (York College of Pennsylvania)
+
+[alias-to-alias] spu
+    186432='SPU' (Saint Peter's University)
+    236577='SPU' (Seattle Pacific University)
+
+[alias-to-alias] stags
+    112260='Stags' (Claremont McKenna College)
+    129242='Stags' (Fairfield University)
+    115409='Stags' (Harvey Mudd College)
+
+[alias-to-alias] su
+    163851='SU' (Salisbury University)
+    233541='SU' (Shenandoah University)
+    216010='SU' (Shippensburg University of Pennsylvania)
+    160621='SU' (Southern University and A & M College)
+    228343='SU' (Southwestern University)
+
+[alias-to-alias] swcc
+    233648='SWCC' (Southwest Virginia Community College)
+    154396='SWCC' (Southwestern Community College)
+
+[alias-to-alias] tc
+    155973='TC' (Tabor College)
+    228884='TC' (Texas College)
+    196653='TC' (Trocaire College)
+
+[alias-to-alias] tech
+    106467='Tech' (Arkansas Tech University)
+    159647='Tech' (Louisiana Tech University)
+    221847='Tech' (Tennessee Technological University)
+
+[alias-to-alias] the academy
+    491996='The Academy' (The Salon Professional Academy-Georgetown)
+    102395='The Academy' (United States Sports Academy)
+
+[alias-to-alias] the beauty institute
+    210711='The Beauty Institute' (The  Beauty Institute)
+    216223='The Beauty Institute' (The Beauty Institute)
+    210784='The Beauty Institute' (The Beauty Institute-Ambler)
+
+[alias-to-alias] the mount
+    204200='The Mount' (Mount St. Joseph University)
+    163462='The Mount' (Mount St. Mary's University)
+    166957='The Mount' (Mount Wachusett Community College)
+
+[alias-to-alias] the salon professional academy
+    451307='The Salon Professional Academy' (The Salon Professional Academy-Battle Creek)
+    480976='The Salon Professional Academy' (The Salon Professional Academy-Huntsville)
+    247047='The Salon Professional Academy' (The Salon Professional Academy-Nampa)
+
+[alias-to-alias] the state university of new jersey rutgers
+    186371='The State University of New Jersey; Rutgers' (Rutgers University-Camden)
+    186380='The State University of New Jersey; Rutgers' (Rutgers University-New Brunswick)
+    186399='The State University of New Jersey; Rutgers' (Rutgers University-Newark)
+
+[alias-to-alias] the u
+    135726='The U' (University of Miami)
+    230764='The U' (University of Utah)
+
+[alias-to-alias] tigers
+    100858='Tigers' (Auburn University)
+    156365='Tigers' (Campbellsville University)
+    217882='Tigers' (Clemson University)
+    126678='Tigers' (Colorado College)
+    150400='Tigers' (DePauw University)
+    207041='Tigers' (East Central University)
+    159009='Tigers' (Grambling State University)
+    242653='Tigers' (Inter American University of Puerto Rico-Metro)
+    175856='Tigers' (Jackson State University)
+    159391='Tigers' (Louisiana State University and Agricultural & Mechanical College)
+    120254='Tigers' (Occidental College)
+    147828='Tigers' (Olivet Nazarene University)
+    186131='Tigers' (Princeton University)
+    195003='Tigers' (Rochester Institute of Technology)
+    221838='Tigers' (Tennessee State University)
+    229063='Tigers' (Texas Southern University)
+    164076='Tigers' (Towson University)
+    220862='Tigers' (University of Memphis)
+    178396='Tigers' (University of Missouri-Columbia)
+    120883='Tigers' (University of the Pacific)
+
+[alias-to-alias] titans
+    110565='Titans' (California State University-Fullerton)
+    169716='Titans' (University of Detroit Mercy)
+    240365='Titans' (University of Wisconsin-Oshkosh)
+
+[alias-to-alias] trailblazers
+    230171='Trailblazers' (Utah Tech University)
+    152637='Trailblazers' (Vincennes University)
+
+[alias-to-alias] trinity college
+    130590='Trinity College' (Trinity College)
+    146755='Trinity College' (Trinity College of Nursing & Health Sciences)
+    131876='Trinity College' (Trinity Washington University)
+
+[alias-to-alias] tritons
+    110680='Tritons' (University of California-San Diego)
+    178420='Tritons' (University of Missouri-St Louis)
+
+[alias-to-alias] trojans
+    219082='Trojans' (Dakota State University)
+    221892='Trojans' (Trevecca Nazarene University)
+    102368='Trojans' (Troy University)
+    106245='Trojans' (University of Arkansas at Little Rock)
+    123961='Trojans' (University of Southern California)
+
+[alias-to-alias] tsu
+    228529='TSU' (Tarleton State University)
+    221838='TSU' (Tennessee State University)
+    229063='TSU' (Texas Southern University)
+
+[alias-to-alias] ttu
+    221847='TTU' (Tennessee Technological University)
+    229115='TTU' (Texas Tech University)
+
+[alias-to-alias] tu
+    216339='TU' (Temple University)
+    141167='TU' (Thomas University)
+
+[alias-to-alias] tws
+    442329='TWS' (Tulsa Welding School-Jacksonville)
+    207962='TWS' (Tulsa Welding School-Tulsa)
+
+[alias-to-alias] u of a
+    104179='U of A' (University of Arizona)
+    106397='U of A' (University of Arkansas)
+
+[alias-to-alias] u of i
+    145637='U of I' (University of Illinois Urbana-Champaign)
+    153658='U of I' (University of Iowa)
+
+[alias-to-alias] u of m
+    170976='U of M' (University of Michigan-Ann Arbor)
+    174066='U of M' (University of Minnesota-Twin Cities)
+    178396='U of M' (University of Missouri-Columbia)
+
+[alias-to-alias] ua
+    100751='UA' (The University of Alabama)
+    104179='UA' (University of Arizona)
+
+[alias-to-alias] ucb
+    241225='UCB' (Universidad Central de Bayamon)
+    110635='UCB' (University of California-Berkeley)
+    126614='UCB' (University of Colorado Boulder)
+
+[alias-to-alias] ucm
+    445188='UCM' (University of California-Merced)
+    176965='UCM' (University of Central Missouri)
+
+[alias-to-alias] ud
+    202480='UD' (University of Dayton)
+    130943='UD' (University of Delaware)
+
+[alias-to-alias] umd
+    163286='UMD' (University of Maryland-College Park)
+    174233='UMD' (University of Minnesota-Duluth)
+
+[alias-to-alias] unc
+    199120='UNC' (University of North Carolina at Chapel Hill)
+    127741='UNC' (University of Northern Colorado)
+
+[alias-to-alias] unh
+    183044='UNH' (University of New Hampshire-Main Campus)
+    129941='UNH' (University of New Haven)
+
+[alias-to-alias] uno
+    181394='UNO' (University of Nebraska at Omaha)
+    159939='UNO' (University of New Orleans)
+
+[alias-to-alias] urbana
+    144573='Urbana' (Tricoci University of Beauty Culture)
+    145637='Urbana' (University of Illinois Urbana-Champaign)
+
+[alias-to-alias] usc
+    218663='USC' (University of South Carolina-Columbia)
+    123961='USC' (University of Southern California)
+
+[alias-to-alias] usd
+    122436='USD' (University of San Diego)
+    219471='USD' (University of South Dakota)
+
+[alias-to-alias] usf
+    122612='USF' (University of San Francisco)
+    137351='USF' (University of South Florida)
+
+[alias-to-alias] usm
+    161554='USM' (University of Southern Maine)
+    176372='USM' (University of Southern Mississippi)
+
+[alias-to-alias] usu
+    447050='USU' (United States University)
+    230728='USU' (Utah State University)
+
+[alias-to-alias] ut
+    137847='UT' (The University of Tampa)
+    221759='UT' (The University of Tennessee-Knoxville)
+    230171='UT' (Utah Tech University)
+
+[alias-to-alias] utc
+    221740='UTC' (The University of Tennessee-Chattanooga)
+    419031='UTC' (United Technical Center)
+    241614='UTC' (Universidad Teologica del Caribe)
+
+[alias-to-alias] uw
+    236948='UW' (University of Washington-Seattle Campus)
+    240444='UW' (University of Wisconsin-Madison)
+    240727='UW' (University of Wyoming)
+
+[alias-to-alias] vikings
+    239017='Vikings' (Lawrence University)
+    209807='Vikings' (Portland State University)
+    167729='Vikings' (Salem State University)
+    237011='Vikings' (Western Washington University)
+
+[alias-to-alias] vsu
+    141264='VSU' (Valdosta State University)
+    234155='VSU' (Virginia State University)
+
+[alias-to-alias] vu
+    152600='VU' (Valparaiso University)
+    218919='VU' (Voorhees University)
+
+[alias-to-alias] warhawks
+    100830='Warhawks' (Auburn University at Montgomery)
+    159993='Warhawks' (University of Louisiana at Monroe)
+    240189='Warhawks' (University of Wisconsin-Whitewater)
+
+[alias-to-alias] warriors
+    212115='Warriors' (East Stroudsburg University of Pennsylvania)
+    129215='Warriors' (Eastern Connecticut State University)
+    142328='Warriors' (Lewis-Clark State College)
+    166850='Warriors' (Merrimack College)
+    141574='Warriors' (University of Hawaii at Manoa)
+    172644='Warriors' (Wayne State University)
+    175272='Warriors' (Winona State University)
+
+[alias-to-alias] washington
+    131876='Washington' (Trinity Washington University)
+    236948='Washington' (University of Washington-Seattle Campus)
+
+[alias-to-alias] wcc
+    199953='WCC' (Wilson Community College)
+    234377='WCC' (Wytheville Community College)
+
+[alias-to-alias] wcu
+    216764='WCU' (West Chester University of Pennsylvania)
+    200004='WCU' (Western Carolina University)
+
+[alias-to-alias] wesleyan
+    145646='Wesleyan' (Illinois Wesleyan University)
+    157076='Wesleyan' (Kentucky Wesleyan College)
+    234173='Wesleyan' (Virginia Wesleyan University)
+    130697='Wesleyan' (Wesleyan University)
+
+[alias-to-alias] western
+    178387='Western' (Missouri Western State University)
+    200004='Western' (Western Carolina University)
+    128391='Western' (Western Colorado University)
+    130776='Western' (Western Connecticut State University)
+    208035='Western' (Western Oklahoma State College)
+    240693='Western' (Western Wyoming Community College)
+
+[alias-to-alias] wildcats
+    222178='Wildcats' (Abilene Christian University)
+    110538='Wildcats' (California State University-Chico)
+    234827='Wildcats' (Central Washington University)
+    198385='Wildcats' (Davidson College)
+    217235='Wildcats' (Johnson & Wales University-Providence)
+    155399='Wildcats' (Kansas State University)
+    209065='Wildcats' (Linfield University)
+    171456='Wildcats' (Northern Michigan University)
+    147767='Wildcats' (Northwestern University)
+    366252='Wildcats' (Pennsylvania College of Technology)
+    175005='Wildcats' (St Catherine University)
+    104179='Wildcats' (University of Arizona)
+    157085='Wildcats' (University of Kentucky)
+    183044='Wildcats' (University of New Hampshire-Main Campus)
+    216597='Wildcats' (Villanova University)
+    181783='Wildcats' (Wayne State College)
+
+[alias-to-alias] wolf pack
+    159656='Wolf Pack' (Loyola University New Orleans)
+    182290='Wolf Pack' (University of Nevada-Reno)
+
+[alias-to-alias] wolves
+    219259='Wolves' (Northern State University)
+    141334='Wolves' (University of West Georgia)
+    130776='Wolves' (Western Connecticut State University)
+    210429='Wolves' (Western Oregon University)
+
+[alias-to-alias] wsc
+    181783='WSC' (Wayne State College)
+    200341='WSC' (Williston State College)
+
+[alias-to-alias] wscc
+    222062='WSCC' (Walters State Community College)
+    206446='WSCC' (Washington State Community College)
+
+[alias-to-alias] wsu
+    236939='WSU' (Washington State University)
+    172644='WSU' (Wayne State University)
+    230782='WSU' (Weber State University)
+    156125='WSU' (Wichita State University)
+
+[alias-to-alias] wtc
+    218955='WTC' (Williamsburg Technical College)
+    138497='WTC' (Withlacoochee Technical College)
+
+[alias-to-alias] yellow jackets
+    219046='Yellow Jackets' (Black Hills State University)
+    201654='Yellow Jackets' (Cedarville University)
+    139755='Yellow Jackets' (Georgia Institute of Technology-Main Campus)
+    237899='Yellow Jackets' (West Virginia State University)
+
+[alias-to-alias] yellowjackets
+    180179='Yellowjackets' (Montana State University Billings)
+    195030='Yellowjackets' (University of Rochester)
+
+[alias-to-alias] york
+    190691='York' (CUNY York College)
+    217059='York' (York College of Pennsylvania)
+
+## Exact-name collisions (23 tokens)
+
+[exact-name collision] arthur s beauty college
+    is the official name of: 489830 (Arthur's Beauty College)
+    claimed as an alias by:
+        106494="Arthur's Beauty College" (Arthur's Beauty College)
+        445540="Arthur's Beauty College" (Arthur's Beauty College)
+
+[exact-name collision] ata college
+    is the official name of: 449728 (ATA College)
+    claimed as an alias by:
+        444361='ATA College' (ATA College)
+
+[exact-name collision] bellus academy
+    is the official name of: 478953 (Bellus Academy)
+    claimed as an alias by:
+        109934='Bellus Academy' (Bellus Academy-Chula Vista)
+        116563='Bellus Academy' (Bellus Academy-El Cajon)
+        377722='Bellus Academy' (Bellus Academy-Poway)
+
+[exact-name collision] bethany college
+    is the official name of: 237181 (Bethany College)
+    claimed as an alias by:
+        173142='bethany college' (Bethany Lutheran College)
+
+[exact-name collision] collectiv academy
+    is the official name of: 230144 (Collectiv Academy)
+    claimed as an alias by:
+        499079='COLLECTIV Academy' (Collectiv Hair Dressing Academy-Collectiv Academy-Dallas)
+
+[exact-name collision] delta college
+    is the official name of: 169521 (Delta College)
+    claimed as an alias by:
+        122658='Delta College' (San Joaquin Delta College)
+
+[exact-name collision] formations institute
+    is the official name of: 207087 (Formations Institute)
+    claimed as an alias by:
+        208044='Formations Institute' (Formations Institute of Cosmetology & Barbering)
+
+[exact-name collision] gwinnett college
+    is the official name of: 436632 (Gwinnett College)
+    claimed as an alias by:
+        140003='Gwinnett College' (Gwinnett College-Lilburn)
+        444714='Gwinnett College' (Gwinnett College-Marietta Campus)
+
+[exact-name collision] hays academy of hair design
+    is the official name of: 478917 (Hays Academy of Hair Design)
+    claimed as an alias by:
+        155159='Hays Academy of Hair Design' (Hays Academy of Hair Design)
+
+[exact-name collision] howard college
+    is the official name of: 225520 (Howard College)
+    claimed as an alias by:
+        162779='Howard College' (Howard Community College)
+
+[exact-name collision] institute of technology
+    is the official name of: 441663 (Institute of Technology)
+    claimed as an alias by:
+        431141='Institute of Technology' (Institute of Technology)
+
+[exact-name collision] mount saint mary s university
+    is the official name of: 119173 (Mount Saint Mary's University)
+    claimed as an alias by:
+        163462="Mount Saint Mary's University" (Mount St. Mary's University)
+
+[exact-name collision] north central university
+    is the official name of: 174437 (North Central University)
+    claimed as an alias by:
+        147660='North Central University' (North Central College)
+
+[exact-name collision] pacific college of health and science
+    is the official name of: 442842 (Pacific College of Health and Science)
+    claimed as an alias by:
+        414595='Pacific College of Health and Science' (Pacific College of Health and Science)
+
+[exact-name collision] pacific university
+    is the official name of: 209612 (Pacific University)
+    claimed as an alias by:
+        120883='Pacific University' (University of the Pacific)
+
+[exact-name collision] salem college
+    is the official name of: 199607 (Salem College)
+    claimed as an alias by:
+        186469='Salem College' (Salem Community College)
+
+[exact-name collision] southwestern college
+    is the official name of: 188207 (Southwestern College)
+    claimed as an alias by:
+        260992='Southwestern College' (Northwestern College)
+
+[exact-name collision] stellar career college
+    is the official name of: 498553 (Stellar Career College)
+    claimed as an alias by:
+        444529='Stellar Career College' (Stellar Career College)
+
+[exact-name collision] summit salon academy
+    is the official name of: 459550 (Summit Salon Academy)
+    claimed as an alias by:
+        462017='Summit Salon Academy' (Summit Salon Academy-Kokomo)
+
+[exact-name collision] the beauty institute
+    is the official name of: 444404 (The Beauty Institute)
+    claimed as an alias by:
+        210711='The Beauty Institute' (The  Beauty Institute)
+        210784='The Beauty Institute' (The Beauty Institute-Ambler)
+        216223='The Beauty Institute' (The Beauty Institute)
+
+[exact-name collision] the hair academy
+    is the official name of: 452009 (The Hair Academy)
+    claimed as an alias by:
+        220163='The Hair Academy' (The Hair Academy LLC)
+
+[exact-name collision] the salon professional academy
+    is the official name of: 498359 (The Salon Professional Academy)
+    claimed as an alias by:
+        247047='The Salon Professional Academy' (The Salon Professional Academy-Nampa)
+        451307='The Salon Professional Academy' (The Salon Professional Academy-Battle Creek)
+        480976='The Salon Professional Academy' (The Salon Professional Academy-Huntsville)
+
+[exact-name collision] trinity college
+    is the official name of: 130590 (Trinity College)
+    claimed as an alias by:
+        131876='Trinity College' (Trinity Washington University)
+        146755='Trinity College' (Trinity College of Nursing & Health Sciences)
+

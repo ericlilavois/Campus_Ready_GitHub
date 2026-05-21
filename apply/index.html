@@ -530,7 +530,159 @@
   .field-error { display: none; color: var(--danger); font-size: 0.85rem; margin-top: 6px; font-weight: 500; }
   .field-error.show { display: block; }
 
+  /* === College picker (IPEDS-backed school search, Phase 2) === */
+  .college-picker { position: relative; }
 
+  .college-picker #college_search {
+    width: 100%;
+    height: 40px;
+    border: 1.5px solid #469E92;
+    border-radius: 6px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: inherit;
+    background: #fff;
+    box-sizing: border-box;
+    outline: none;
+  }
+  .college-picker #college_search:focus {
+    border-color: #3d8a7f;
+    box-shadow: 0 0 0 3px rgba(70, 158, 146, 0.15);
+  }
+  .college-picker #college_search.has-error {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+  }
+
+  #college_dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    z-index: 999;
+    overflow-y: auto;
+    max-height: 320px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .college-drop-row {
+    padding: 9px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .college-drop-row:last-child { border-bottom: none; }
+  /* Single source of truth: the .highlighted class is set on the first row
+     when the dropdown opens, moves with arrow keys, and follows the mouse via
+     a mouseover handler. Avoiding :hover prevents the "two teals at once"
+     visual when mouse and keyboard disagree. */
+  .college-drop-row.highlighted { background: #e6f5f3; }
+
+  .college-drop-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  .college-drop-row.highlighted .college-drop-name { color: #2a6b63; }
+
+  .college-drop-loc {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  #college_confirmed {
+    display: none;
+    margin-top: 4px;
+    height: 40px;
+    border: 1.5px solid #469E92;
+    border-radius: 6px;
+    background: #e6f5f3;
+    padding: 0 12px;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2a6b63;
+    box-sizing: border-box;
+  }
+  #college_confirmed.show { display: flex; }
+
+  .college-check {
+    font-size: 18px;
+    color: #469E92;
+    flex-shrink: 0;
+    margin-left: auto; /* pushes self + the Change link to the right edge */
+  }
+
+  #college_change_link {
+    font-size: 0.8rem;
+    color: #469E92;
+    margin-left: 8px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  #college_change_link:hover { text-decoration: underline; }
+
+  #college_ineligible {
+    display: none;
+    margin-top: 6px;
+    border: 1px solid #f59e0b;
+    border-radius: 6px;
+    background: #fef3c7;
+    padding: 12px 14px;
+  }
+  #college_ineligible.show { display: block; }
+
+  .college-ineligible-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 5px;
+  }
+  #college_ineligible_note {
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.5;
+  }
+  #college_ineligible_back {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #2a6b63;
+    text-decoration: none;
+  }
+  #college_ineligible_back:hover { text-decoration: underline; }
+
+  #college_guard_msg {
+    display: none;
+    color: #dc2626;
+    font-size: 0.85rem;
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  #college_guard_msg.show { display: block; }
+
+  .college-picker-help {
+    margin-top: 7px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  .college-picker-help a {
+    color: #469E92;
+    text-decoration: none;
+  }
+  .college-picker-help a:hover { text-decoration: underline; }
+
+  /* When a school is confirmed, hide the search input and dropdown. */
+  .college-picker.is-confirmed #college_search,
+  .college-picker.is-confirmed #college_dropdown {
+    display: none !important;
+  }
 
 </style>
 <style>
@@ -1464,25 +1616,39 @@ section#section5 .opt:hover {
    <div class="hint" style="margin-top: 6px;">Enter only your personal income from jobs, wages, or tips. Do not include parents' income, allowances, or gifts.</div></div></div>
 <div>
 </div><div class="row-college-start"><div>
-<label class="req" for="college">College You Will Attend</label>
-<input id="college" name="college" oninput="autoSave()" required="" type="text"/>
+<label class="req" for="college_search">College You Will Attend</label>
+<div class="college-picker" id="college-picker-group">
+  <input id="college_search" type="text" autocomplete="off" placeholder="Start typing your college name…"/>
+  <div id="college_dropdown" role="listbox" aria-label="College search results"></div>
+  <div id="college_confirmed">
+    <span id="college_confirmed_name"></span>
+    <span class="college-check" aria-hidden="true">✓</span>
+    <a href="#" id="college_change_link">Change</a>
+  </div>
+  <div id="college_ineligible">
+    <div class="college-ineligible-title">Housing not available</div>
+    <div id="college_ineligible_note"></div>
+    <a href="#" id="college_ineligible_back">← Search for a different school</a>
+  </div>
+  <div id="college_guard_msg">Please select your college before continuing.</div>
+  <p class="hint college-picker-help">
+    Can't find your school?
+    <a href="#" onclick="showCollegeHelp(); return false;">We can help. Email apply@campusready.org</a>
+  </p>
+</div>
+<!-- Hidden fields — populated by the picker, submitted with the form. Field
+     names match the existing Apps Script column mapping (R, T, U, V). The
+     college_id (IPEDS UNITID) is new and flows through the payload only;
+     a sheet column for it will be added in a follow-up commit. -->
+<input type="hidden" id="college"           name="college"           required/>
+<input type="hidden" id="college_city_name" name="college_city_name" required/>
+<input type="hidden" id="college_state"     name="college_state"     required/>
+<input type="hidden" id="college_zip"       name="college_zip"       required/>
+<input type="hidden" id="college_id"        name="college_id"/>
 </div><div>
 <label class="req" for="start_date">Expected Start Date</label>
 <input id="start_date" name="start_date" oninput="autoSave()" required="" type="date"/>
 </div></div>
-<div>
-</div>
-<div style="grid-column: 1">
-<label class="req" for="college_address">College Address</label>
-<input id="college_address" name="college_address" oninput="autoSave()" required="" type="text"/>
-</div>
-<div>
-<input aria-hidden="true" id="college_city" name="college_city" oninput="autoSave()" placeholder="Boston, MA 02115" required="" style="display:none" type="text"/>
-<div class="addr-row"><div class="field city"><label for="college_city_name">College City</label>
-<input autocomplete="address-level2" id="college_city_name" name="college_city_name" oninput="autoSave()" required="" type="text"/></div><div class="field state"><label for="college_state">State</label>
-<select autocomplete="address-level1" id="college_state" name="college_state" onchange="autoSave()" required=""><option disabled="" selected="" value="">Select state</option><option value="AL">AL</option><option value="AK">AK</option><option value="AZ">AZ</option><option value="AR">AR</option><option value="CA">CA</option><option value="CO">CO</option><option value="CT">CT</option><option value="DE">DE</option><option value="DC">DC</option><option value="FL">FL</option><option value="GA">GA</option><option value="HI">HI</option><option value="ID">ID</option><option value="IL">IL</option><option value="IN">IN</option><option value="IA">IA</option><option value="KS">KS</option><option value="KY">KY</option><option value="LA">LA</option><option value="ME">ME</option><option value="MD">MD</option><option value="MA">MA</option><option value="MI">MI</option><option value="MN">MN</option><option value="MS">MS</option><option value="MO">MO</option><option value="MT">MT</option><option value="NE">NE</option><option value="NV">NV</option><option value="NH">NH</option><option value="NJ">NJ</option><option value="NM">NM</option><option value="NY">NY</option><option value="NC">NC</option><option value="ND">ND</option><option value="OH">OH</option><option value="OK">OK</option><option value="OR">OR</option><option value="PA">PA</option><option value="RI">RI</option><option value="SC">SC</option><option value="SD">SD</option><option value="TN">TN</option><option value="TX">TX</option><option value="UT">UT</option><option value="VT">VT</option><option value="VA">VA</option><option value="WA">WA</option><option value="WV">WV</option><option value="WI">WI</option><option value="WY">WY</option><option value="AS">AS</option><option value="GU">GU</option><option value="MP">MP</option><option value="PR">PR</option><option value="VI">VI</option><option value="AA">AA</option><option value="AE">AE</option><option value="AP">AP</option></select></div><div class="field zip"><label for="college_zip">ZIP Code</label>
-<input autocomplete="postal-code" id="college_zip" inputmode="numeric" name="college_zip" oninput="autoSave()" placeholder="12345 or 12345-6789" required="" type="text"/></div></div>
-</div>
 </div>
 <div class="section-actions">
 <button class="btn" onclick="goToSection(0)" type="button">Back</button>
@@ -1877,6 +2043,16 @@ function startApplication() {
       if (currentSection === 0 && !isEligible()){
         showToast('All eligibility answers must be "Yes" to continue.');
         return;
+      }
+      // Section 1 contains the IPEDS-backed college picker. It manages its
+      // own focus and inline guard messaging, so run its check before the
+      // generic required-field walker (which would otherwise try to focus a
+      // hidden input).
+      if (currentSection === 1 && typeof window.validateCollegeSelection === 'function') {
+        if (!window.validateCollegeSelection()) {
+          showToast('Please select your college before continuing.');
+          return;
+        }
       }
       var res = validateSection(currentSection);
       if (!res || !res.valid){
@@ -3138,7 +3314,7 @@ window.addEventListener('resize', () => {
 
   var groups = [];
   if (document.getElementById('student_city')) groups.push({inst: attachGroup('student','student_city')});
-  if (document.getElementById('college_city')) groups.push({inst: attachGroup('college','college_city')});
+  // college_city helper removed in Phase 2 — the IPEDS-backed picker now provides clean ZIP data.
   if (document.getElementById('pg_city')) groups.push({inst: attachGroup('pg','pg_city')});
 
   // Submit guard wrapper
@@ -3358,7 +3534,382 @@ function validateSignatureName(type) {
     }
   }
 })();
-</script> 
-   
+</script>
+
+<!-- ============================================================
+     College picker help modal (Phase 2)
+     Reuses the existing .modal-overlay / .modal pattern.
+     ============================================================ -->
+<div class="modal-overlay" id="collegeHelpModal" role="dialog" aria-modal="true" aria-labelledby="collegeHelpTitle">
+  <div class="modal">
+    <h3 id="collegeHelpTitle">Can't find your school?</h3>
+    <p style="text-align:left; margin-bottom:8px;">Here are three things that usually help:</p>
+    <ol style="text-align:left; color: var(--muted); line-height: 1.7; padding-left: 24px; margin: 0 0 12px;">
+      <li><strong style="color: var(--ink);">Check your spelling.</strong></li>
+      <li><strong style="color: var(--ink);">Try the full official name</strong> — for example, &ldquo;University of California, Berkeley&rdquo; instead of &ldquo;Cal.&rdquo;</li>
+      <li><strong style="color: var(--ink);">If you still can't find your school,</strong> email <a href="mailto:apply@campusready.org" style="color: var(--accent);">apply@campusready.org</a> and we'll help you complete your application.</li>
+    </ol>
+    <div class="modal-actions">
+      <button class="btn primary" type="button" onclick="closeCollegeHelp()">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     College picker (Phase 2 — IPEDS-backed school search)
+     Loads /apply/data/crf_schools.json on page load. Implements
+     a typeahead search per CRF_College_Search_Technical_Brief.md
+     with an added housing_eligible gate driven by the data file.
+     ============================================================ -->
+<script>
+(function() {
+  var DATA_URL = '/apply/data/crf_schools.json';
+  var MIN_CHARS = 2;
+  var MAX_RESULTS = 8;
+
+  var _schools = [];
+  var _loaded = false;
+  var _currentResults = [];
+  var _highlightedIdx = -1;
+
+  var $search, $dropdown, $confirmed, $confirmedName, $ineligible, $ineligibleNote, $guardMsg, $pickerGroup, $helpModal;
+
+  function normalize(s) {
+    if (!s) return '';
+    return String(s)
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '') // strip diacritics
+      .replace(/[^a-z0-9 ]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function loadSchools() {
+    return fetch(DATA_URL, { cache: 'force-cache' })
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        _schools = Array.isArray(data) ? data : [];
+        _loaded = true;
+        console.log('College picker: loaded ' + _schools.length + ' schools.');
+        // After data is in hand, attempt to restore any persisted selection
+        restoreSavedSelection();
+      })
+      .catch(function(err) {
+        console.warn('College picker: failed to load school data:', err);
+        _schools = [];
+        _loaded = true;
+      });
+  }
+
+  function searchSchools(term) {
+    if (!term || term.length < MIN_CHARS) return [];
+    var q = normalize(term);
+    var matches = [];
+    for (var i = 0; i < _schools.length; i++) {
+      var s = _schools[i];
+      var name = normalize(s.name);
+      var city = normalize(s.city);
+      var state = normalize(s.state);
+      var aliases = (s.aliases || []).map(normalize);
+      if (
+        name.indexOf(q) !== -1 ||
+        city.indexOf(q) !== -1 ||
+        state.indexOf(q) !== -1 ||
+        aliases.indexOf(q) !== -1 ||
+        aliases.some(function(a) { return a.indexOf(q) !== -1; })
+      ) {
+        matches.push({
+          school: s,
+          aExact: aliases.indexOf(q) !== -1,
+          aStarts: name.indexOf(q) === 0,
+          nameNorm: name
+        });
+      }
+    }
+    matches.sort(function(a, b) {
+      if (a.aExact !== b.aExact) return b.aExact - a.aExact;
+      if (a.aStarts !== b.aStarts) return b.aStarts - a.aStarts;
+      return a.nameNorm.localeCompare(b.nameNorm);
+    });
+    return matches.slice(0, MAX_RESULTS).map(function(m) { return m.school; });
+  }
+
+  function renderDropdown(results) {
+    _currentResults = results;
+    if (!results || results.length === 0) {
+      $dropdown.style.display = 'none';
+      $dropdown.innerHTML = '';
+      _highlightedIdx = -1;
+      return;
+    }
+    // First row auto-highlighted so the user always sees the top match in
+    // teal and can press Enter to take it. Mouse and keyboard then both
+    // update _highlightedIdx via shared handlers.
+    var html = '';
+    for (var i = 0; i < results.length; i++) {
+      var s = results[i];
+      var cls = 'college-drop-row' + (i === 0 ? ' highlighted' : '');
+      html += '<div class="' + cls + '" role="option" data-idx="' + i + '">' +
+                '<div class="college-drop-name">' + escapeHtml(s.name) + '</div>' +
+                '<div class="college-drop-loc">' + escapeHtml(s.city) + ', ' + escapeHtml(s.state) + '</div>' +
+              '</div>';
+    }
+    $dropdown.innerHTML = html;
+    $dropdown.style.display = 'block';
+    _highlightedIdx = 0;
+  }
+
+  function setHiddenFields(school) {
+    document.getElementById('college').value           = school.name || '';
+    document.getElementById('college_city_name').value = school.city || '';
+    document.getElementById('college_state').value     = school.state || '';
+    document.getElementById('college_zip').value       = school.zip || '';
+    document.getElementById('college_id').value        = (school.unitid != null) ? String(school.unitid) : '';
+  }
+
+  function clearHiddenFields() {
+    ['college','college_city_name','college_state','college_zip','college_id'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+  }
+
+  function selectSchool(school) {
+    $dropdown.style.display = 'none';
+    if (school.housing_eligible) {
+      setHiddenFields(school);
+      $confirmedName.textContent = school.name;
+      $confirmed.classList.add('show');
+      $ineligible.classList.remove('show');
+      $guardMsg.classList.remove('show');
+      $search.classList.remove('has-error');
+      $pickerGroup.classList.add('is-confirmed');
+    } else {
+      // Ineligible — clear hidden fields, show housing_note from the data.
+      clearHiddenFields();
+      $confirmed.classList.remove('show');
+      $pickerGroup.classList.remove('is-confirmed');
+      $ineligibleNote.textContent = school.housing_note ||
+        'This school does not meet the grant\'s on-campus housing requirement.';
+      $ineligible.classList.add('show');
+      $search.classList.add('has-error');
+      $search.value = school.name;
+      $guardMsg.classList.remove('show');
+    }
+    if (typeof autoSave === 'function') autoSave();
+  }
+
+  function resetPicker() {
+    clearHiddenFields();
+    $confirmed.classList.remove('show');
+    $ineligible.classList.remove('show');
+    $search.classList.remove('has-error');
+    $search.value = '';
+    $pickerGroup.classList.remove('is-confirmed');
+    $dropdown.style.display = 'none';
+    $dropdown.innerHTML = '';
+    _currentResults = [];
+    _highlightedIdx = -1;
+    setTimeout(function() { $search.focus(); }, 0);
+    if (typeof autoSave === 'function') autoSave();
+  }
+
+  function restoreSavedSelection() {
+    // If the form has restored hidden values from localStorage, re-display the
+    // confirmed state in the picker UI.
+    var unitid = document.getElementById('college_id').value;
+    var name   = document.getElementById('college').value;
+    if (!name || !unitid || !_loaded) return;
+    var match = null;
+    for (var i = 0; i < _schools.length; i++) {
+      if (String(_schools[i].unitid) === String(unitid)) { match = _schools[i]; break; }
+    }
+    if (!match) return; // unknown unitid (data refresh dropped it) — leave as typed-only
+    if (match.housing_eligible) {
+      $confirmedName.textContent = match.name;
+      $confirmed.classList.add('show');
+      $pickerGroup.classList.add('is-confirmed');
+    }
+  }
+
+  function onInput() {
+    var term = $search.value.trim();
+    if (term.length < MIN_CHARS) {
+      $dropdown.style.display = 'none';
+      $dropdown.innerHTML = '';
+      _currentResults = [];
+      return;
+    }
+    renderDropdown(searchSchools(term));
+  }
+
+  function updateHighlight() {
+    var rows = $dropdown.querySelectorAll('.college-drop-row');
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].classList.toggle('highlighted', i === _highlightedIdx);
+    }
+    if (_highlightedIdx >= 0 && rows[_highlightedIdx]) {
+      rows[_highlightedIdx].scrollIntoView({ block: 'nearest' });
+    }
+  }
+
+  function onKeyDown(e) {
+    if (e.key === 'ArrowDown') {
+      if (!_currentResults.length) return;
+      e.preventDefault();
+      _highlightedIdx = Math.min(_highlightedIdx + 1, _currentResults.length - 1);
+      updateHighlight();
+    } else if (e.key === 'ArrowUp') {
+      if (!_currentResults.length) return;
+      e.preventDefault();
+      _highlightedIdx = Math.max(_highlightedIdx - 1, 0);
+      updateHighlight();
+    } else if (e.key === 'Enter') {
+      if (_highlightedIdx >= 0 && _currentResults[_highlightedIdx]) {
+        e.preventDefault();
+        selectSchool(_currentResults[_highlightedIdx]);
+      }
+    } else if (e.key === 'Escape') {
+      $dropdown.style.display = 'none';
+    }
+  }
+
+  function onDropdownClick(e) {
+    var row = e.target.closest && e.target.closest('.college-drop-row');
+    if (!row) return;
+    var idx = parseInt(row.getAttribute('data-idx'), 10);
+    if (!isNaN(idx) && _currentResults[idx]) selectSchool(_currentResults[idx]);
+  }
+
+  function onDropdownMouseover(e) {
+    var row = e.target.closest && e.target.closest('.college-drop-row');
+    if (!row) return;
+    var idx = parseInt(row.getAttribute('data-idx'), 10);
+    if (!isNaN(idx) && idx !== _highlightedIdx) {
+      _highlightedIdx = idx;
+      updateHighlight();
+    }
+  }
+
+  function onDocumentClick(e) {
+    if (!$pickerGroup.contains(e.target)) {
+      $dropdown.style.display = 'none';
+    }
+  }
+
+  // Exposed for goNextValidated() integration.
+  window.validateCollegeSelection = function() {
+    var zip = (document.getElementById('college_zip') || {}).value || '';
+    if (zip.trim()) {
+      $guardMsg.classList.remove('show');
+      $search.classList.remove('has-error');
+      return true;
+    }
+    if ($ineligible.classList.contains('show')) {
+      // Ineligible notice already explains why this school doesn't qualify.
+      // Don't pull focus away from the notice — the back link is the path forward.
+      $search.classList.add('has-error');
+      return false;
+    }
+    $guardMsg.classList.add('show');
+    $search.classList.add('has-error');
+    if ($search.offsetParent !== null) {
+      setTimeout(function() { $search.focus(); }, 0);
+    }
+    return false;
+  };
+
+  window.showCollegeHelp = function() {
+    if ($helpModal) $helpModal.classList.add('show');
+  };
+  window.closeCollegeHelp = function() {
+    if ($helpModal) $helpModal.classList.remove('show');
+  };
+
+  function init() {
+    $search          = document.getElementById('college_search');
+    $dropdown        = document.getElementById('college_dropdown');
+    $confirmed       = document.getElementById('college_confirmed');
+    $confirmedName   = document.getElementById('college_confirmed_name');
+    $ineligible      = document.getElementById('college_ineligible');
+    $ineligibleNote  = document.getElementById('college_ineligible_note');
+    $guardMsg        = document.getElementById('college_guard_msg');
+    $pickerGroup     = document.getElementById('college-picker-group');
+    $helpModal       = document.getElementById('collegeHelpModal');
+    if (!$search || !$dropdown || !$pickerGroup) return;
+
+    loadSchools();
+
+    $search.addEventListener('input', onInput);
+    $search.addEventListener('keydown', onKeyDown);
+    $dropdown.addEventListener('click', onDropdownClick);
+    $dropdown.addEventListener('mouseover', onDropdownMouseover);
+    document.addEventListener('click', onDocumentClick);
+
+    var backLink = document.getElementById('college_ineligible_back');
+    if (backLink) {
+      backLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        resetPicker();
+      });
+    }
+
+    // "Change" link inside the confirmed pill — clear the selection but
+    // pre-fill the search input with the previous name so the student can
+    // refine rather than start over.
+    var changeLink = document.getElementById('college_change_link');
+    if (changeLink) {
+      changeLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        var priorName = $confirmedName.textContent || '';
+        clearHiddenFields();
+        $confirmed.classList.remove('show');
+        $ineligible.classList.remove('show');
+        $guardMsg.classList.remove('show');
+        $search.classList.remove('has-error');
+        $pickerGroup.classList.remove('is-confirmed');
+        $search.value = priorName;
+        if (typeof autoSave === 'function') autoSave();
+        // Show the dropdown immediately so the student sees their options
+        setTimeout(function() {
+          $search.focus();
+          // Place cursor at the end of the pre-filled text
+          var len = $search.value.length;
+          try { $search.setSelectionRange(len, len); } catch (e) {}
+          renderDropdown(searchSchools(priorName));
+        }, 0);
+      });
+    }
+
+    // Close help modal on overlay click.
+    if ($helpModal) {
+      $helpModal.addEventListener('click', function(e) {
+        if (e.target === $helpModal) window.closeCollegeHelp();
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
