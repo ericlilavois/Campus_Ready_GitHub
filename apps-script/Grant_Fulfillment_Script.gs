@@ -48,7 +48,9 @@ function checkStudentStatus(email) {
         email: data[i][2],                            // Column C
         cohortYear: data[i][3],                       // Column D
         housingStatus: data[i][5] || 'Pending',       // Column F
-        acceptanceStatus: data[i][7] || 'Pending'     // Column H
+        acceptanceStatus: data[i][7] || 'Pending',    // Column H
+        collegeName: data[i][19] || '',               // Column T
+        collegeUnitId: data[i][20] ? data[i][20].toString() : ''  // Column U (as text)
       };
     }
   }
@@ -585,7 +587,13 @@ function doPost(e) {
         'Bedding Color',
         'Pillow Firmness',
         'Towel Color',
-        'Slides Size'
+        'Slides Size',
+        'data_type',
+        'cohort_year',
+        'Comforter Cover Color',
+        'Slides Color',
+        'College Name',
+        'College Unit ID'
       ];
 
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
@@ -655,9 +663,15 @@ function doPost(e) {
       Logger.log('Warning: Grant_Recipients sheet not found. Using default year.');
     }
 
-    // Append tagging columns: data_type = "Live", cohort_year from Grant_Recipients
-    rowData.push("Live"); // data_type
-    rowData.push(cohortYear); // cohort_year from Grant_Recipients
+    // Append tagging and new kit form columns
+    rowData.push("Live");                           // data_type
+    rowData.push(cohortYear);                       // cohort_year
+    // === BEGIN MOD v2.3 - New kit form fields May 2026 ===
+    rowData.push(data.comforter_cover_color || ''); // Comforter Cover Color
+    rowData.push(data.slides_color || '');          // Slides Color
+    rowData.push(data.college_name || '');          // College Name
+    rowData.push(data.college_unit_id || '');       // College Unit ID
+    // === END MOD v2.3 ===
     // === END MOD v2.2 ===
 
     // Append the data to the sheet
@@ -782,6 +796,12 @@ function processLatestSubmission(ss) {
     Zip: latestRowData[headerMap['Zip Code']] || '',
     DataType: latestRowData[headerMap['data_type']] || 'Live',
     CohortYear: latestRowData[headerMap['cohort_year']] || new Date().getFullYear(),
+    // === BEGIN MOD v2.3 ===
+    ComforterCoverColor: latestRowData[headerMap['Comforter Cover Color']] || '',
+    SlidesColor: latestRowData[headerMap['Slides Color']] || '',
+    CollegeName: latestRowData[headerMap['College Name']] || '',
+    CollegeUnitId: latestRowData[headerMap['College Unit ID']] || '',
+    // === END MOD v2.3 ===
   };
 
   Logger.log(`Processing submission for: ${studentChoices.StudentName}`);
@@ -1046,8 +1066,10 @@ Utilities.formatDate(new Date(String(studentChoices.Timestamp)), Session.getScri
 function getChoiceValueForProduct(productType, studentChoices) {
   switch (productType) {
     case 'Sheet Set':
-    case 'Duvet Cover':
       return studentChoices.BeddingColor;
+    case 'Duvet Cover':
+      // Falls back to BeddingColor for submissions made before the comforter cover color field existed
+      return studentChoices.ComforterCoverColor || studentChoices.BeddingColor;
     case 'Pillow':
       return studentChoices.PillowFirmness;
     case 'Shampoo':
@@ -1847,7 +1869,13 @@ function buildStudentMap(data) {
         Color: row[headerMap['Bedding Color']],
         Firmness: row[headerMap['Pillow Firmness']],
         TowelColor: row[headerMap['Towel Color']],
-        SlidesSize: row[headerMap['Slides Size']]
+        SlidesSize: row[headerMap['Slides Size']],
+        // === BEGIN MOD v2.3 ===
+        ComforterCoverColor: row[headerMap['Comforter Cover Color']] || '',
+        SlidesColor: row[headerMap['Slides Color']] || '',
+        CollegeName: row[headerMap['College Name']] || '',
+        CollegeUnitId: row[headerMap['College Unit ID']] || ''
+        // === END MOD v2.3 ===
       };
     }
   });
