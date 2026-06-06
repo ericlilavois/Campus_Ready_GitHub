@@ -857,11 +857,12 @@ function rebuildProductLogic() {
   const ui  = SpreadsheetApp.getUi();
 
   const SOURCE_TABS = [
-    'PL_Bedding',
-    'PL_Pillows',
-    'PL_Towels',
-    'PL_Personal_Care',
-    'PL_Accessories'
+    'Bedding',
+    'Pillows',
+    'Towels',
+    'Accessories',
+    'Universal Products',
+    'Personal_Care'
   ];
 
   // ── Get Product_Logic and its header row ──────────────────
