@@ -885,11 +885,20 @@ function rebuildProductLogic() {
     const src = ss.getSheetByName(tabName);
     if (!src) { skipped.push(tabName); continue; }
 
-    const lastRow = src.getLastRow();
-    const lastCol = src.getLastColumn();
-    if (lastRow < 2 || lastCol < 1) continue;
+    // Use getDataRange() which respects actual data bounds and ignores
+    // formula-inflated empty rows that would cause a Service error.
+    let dataRange;
+    try {
+      dataRange = src.getDataRange();
+    } catch(e) {
+      Logger.log(`Could not read ${tabName}: ${e.message}`);
+      skipped.push(tabName + ' (read error)');
+      continue;
+    }
 
-    const data       = src.getRange(1, 1, lastRow, lastCol).getValues();
+    if (dataRange.getNumRows() < 2 || dataRange.getNumColumns() < 1) continue;
+
+    const data       = dataRange.getValues();
     const srcHeaders = data[0].map(h => h.toString().trim());
 
     // Map: header name → column index in this source tab
