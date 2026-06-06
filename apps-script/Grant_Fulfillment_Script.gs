@@ -829,6 +829,8 @@ function processLatestSubmission(ss) {
 function onOpen() {
   SpreadsheetApp.getUi()
   .createMenu('Fulfillment Tools')
+  .addItem('Rebuild Product Logic', 'rebuildProductLogic')
+  .addSeparator()
   .addItem('Generate Shopping List', 'generateShoppingList')
   .addItem('Send Rejection Emails', 'sendRejectionEmails')
   .addItem('Send Testimonial Invites', 'sendTestimonialInvites')
@@ -836,6 +838,120 @@ function onOpen() {
   .addItem('Preview Archive Cohort', 'previewArchiveCohort')
   .addItem('Archive Cohort', 'archiveCohort')
   .addToUi();
+}
+
+// ============================================================
+// REBUILD PRODUCT LOGIC
+// Reads each PL_* source tab by header name and writes to
+// Product_Logic by header name. Column order in source tabs
+// doesn't matter — IMAGE URL and any other extra columns are
+// simply ignored if they have no matching header in Product_Logic.
+//
+// Run from: Fulfillment Tools → Rebuild Product Logic
+// Run whenever you add or change products in any PL_* tab.
+// This replaces the SORT/QUERY formula that was previously
+// in Product_Logic cell A2.
+// ============================================================
+function rebuildProductLogic() {
+  const ss  = SpreadsheetApp.getActiveSpreadsheet();
+  const ui  = SpreadsheetApp.getUi();
+
+  const SOURCE_TABS = [
+    'PL_Bedding',
+    'PL_Pillows',
+    'PL_Towels',
+    'PL_Personal_Care',
+    'PL_Accessories'
+  ];
+
+  // ── Get Product_Logic and its header row ──────────────────
+  const plSheet = ss.getSheetByName('Product_Logic');
+  if (!plSheet) {
+    ui.alert('Error', 'Product_Logic tab not found.', ui.ButtonSet.OK);
+    return;
+  }
+
+  const plLastCol  = plSheet.getLastColumn();
+  const plHeaders  = plSheet.getRange(1, 1, 1, plLastCol).getValues()[0]
+                      .map(h => h.toString().trim());
+  const numPlCols  = plHeaders.length;
+
+  // ── Collect rows from all source tabs ────────────────────
+  const allRows    = [];
+  const skipped    = [];
+
+  for (const tabName of SOURCE_TABS) {
+    const src = ss.getSheetByName(tabName);
+    if (!src) { skipped.push(tabName); continue; }
+
+    const lastRow = src.getLastRow();
+    const lastCol = src.getLastColumn();
+    if (lastRow < 2 || lastCol < 1) continue;
+
+    const data       = src.getRange(1, 1, lastRow, lastCol).getValues();
+    const srcHeaders = data[0].map(h => h.toString().trim());
+
+    // Map: header name → column index in this source tab
+    const srcIdx = {};
+    srcHeaders.forEach((h, i) => { if (h) srcIdx[h] = i; });
+
+    for (let r = 1; r < data.length; r++) {
+      const row = data[r];
+
+      // Skip blank rows (PRODUCT TYPE empty)
+      const productType = (srcIdx['PRODUCT TYPE'] !== undefined)
+        ? row[srcIdx['PRODUCT TYPE']] : '';
+      if (!productType || productType.toString().trim() === '') continue;
+
+      // Skip rows with no Product ID (incomplete entries)
+      const productId = (srcIdx['Product ID'] !== undefined)
+        ? row[srcIdx['Product ID']] : '';
+      if (!productId || productId.toString().trim() === '') continue;
+
+      // Build a row aligned to Product_Logic's column structure
+      const newRow = plHeaders.map(header => {
+        if (!header) return '';
+        const i = srcIdx[header];
+        return (i !== undefined && row[i] !== undefined) ? row[i] : '';
+      });
+
+      allRows.push(newRow);
+    }
+  }
+
+  if (allRows.length === 0) {
+    ui.alert(
+      'Nothing to write',
+      'No valid product rows found in source tabs. Product_Logic was not changed.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  // ── Sort by PRODUCT TYPE ascending ───────────────────────
+  const sortCol = plHeaders.indexOf('PRODUCT TYPE');
+  allRows.sort((a, b) => {
+    const ta = (a[sortCol] || '').toString().toLowerCase();
+    const tb = (b[sortCol] || '').toString().toLowerCase();
+    return ta.localeCompare(tb);
+  });
+
+  // ── Clear existing data in Product_Logic (keep row 1) ────
+  const existingRows = plSheet.getLastRow();
+  if (existingRows > 1) {
+    plSheet.getRange(2, 1, existingRows - 1, numPlCols).clearContent();
+  }
+
+  // ── Write to Product_Logic ────────────────────────────────
+  plSheet.getRange(2, 1, allRows.length, numPlCols).setValues(allRows);
+
+  // ── Report ────────────────────────────────────────────────
+  let msg = `Product_Logic rebuilt with ${allRows.length} product rows from ${SOURCE_TABS.length - skipped.length} tab(s).`;
+  if (skipped.length > 0) {
+    msg += `\n\nTab(s) not found and skipped:\n• ${skipped.join('\n• ')}`;
+  }
+  ui.alert('Done', msg, ui.ButtonSet.OK);
+  Logger.log(msg);
 }
 
 // ============================================
