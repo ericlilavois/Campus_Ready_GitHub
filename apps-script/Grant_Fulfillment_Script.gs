@@ -2837,3 +2837,9 @@ function testKitFormEmail() {
   sendKitFormEmail('Eric', 'elilavois@gmail.com', testLink);
   Logger.log('Test kit form email sent to elilavois@gmail.com');
 }
+
+function testKitFormEmailKaren() {
+  const testLink = KIT_FORM_BASE_URL + '?id=CR_TEST_PREVIEW';
+  sendKitFormEmail('Karen', 'kdantzler@gmail.com', testLink);
+  Logger.log('Test kit form email sent to kdantzler@gmail.com');
+}
