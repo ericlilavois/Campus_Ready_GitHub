@@ -2833,13 +2833,31 @@ personalizedLink + '\n\n' +
 
 /** Test — sends only to yourself with a sample personalized link. */
 function testKitFormEmail() {
-  const testLink = KIT_FORM_BASE_URL + '?id=CR_TEST_PREVIEW';
-  sendKitFormEmail('Eric', 'elilavois@gmail.com', testLink);
-  Logger.log('Test kit form email sent to elilavois@gmail.com');
+  _sendTestKitEmail('elilavois@gmail.com');
 }
 
 function testKitFormEmailKaren() {
-  const testLink = KIT_FORM_BASE_URL + '?id=CR_TEST_PREVIEW';
-  sendKitFormEmail('Karen', 'kdantzler@gmail.com', testLink);
-  Logger.log('Test kit form email sent to kdantzler@gmail.com');
+  _sendTestKitEmail('kdantzler@gmail.com');
+}
+
+/** Shared helper — looks up real application ID so the personalized link works end-to-end. */
+function _sendTestKitEmail(emailAddress) {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Grant_Recipients');
+  const data  = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][2] && data[i][2].toString().toLowerCase() === emailAddress.toLowerCase()) {
+      const applicationId = data[i][0].toString();
+      const firstName     = data[i][1].toString().split(' ')[0];
+      const personalizedLink = KIT_FORM_BASE_URL + '?id=' + encodeURIComponent(applicationId);
+      sendKitFormEmail(firstName, emailAddress, personalizedLink);
+      Logger.log('Test kit form email sent to ' + emailAddress + ' with link: ' + personalizedLink);
+      return;
+    }
+  }
+
+  // Fallback if email not found in sheet
+  Logger.log('⚠️ ' + emailAddress + ' not found in Grant_Recipients — sending with preview link');
+  sendKitFormEmail('there', emailAddress, KIT_FORM_BASE_URL + '?id=CR_TEST_PREVIEW');
 }
