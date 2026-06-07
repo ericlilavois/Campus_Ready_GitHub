@@ -560,8 +560,9 @@ The Campus Ready Team`;
     subject,
     emailBody,
     {
-      name: 'Campus Ready Foundation',
-      replyTo: 'hello@campusready.com'
+      name:    'Campus Ready Foundation',
+      from:    'hello@campusready.org',
+      replyTo: 'hello@campusready.org'
     }
   );
 
@@ -1119,12 +1120,6 @@ requiredHeaders.forEach(h => {
  * @param {Object} e - The form submission event
  * @returns {Object} Standardized student choices object
  */
-function extractFormData(e) {
-  // This function is deprecated - use processLatestSubmission instead
-  Logger.log('⚠️ extractFormData is deprecated');
-  return null;
-}
-
 // ============================================
 // RESOLVER LOGIC
 // ============================================
@@ -2083,10 +2078,6 @@ function getHeaderMap(sheet) {
 // TEST FUNCTIONS (Keep for debugging)
 // ============================================
 
-function debugProductLogicForGurn() {
-  // Your existing debug function - unchanged
-  Logger.log('Debug function preserved');
-}
 // ============================================
 // TEST: Email Validation - Added Nov 15, 2025
 // ============================================
@@ -2639,7 +2630,8 @@ By replying with your photo or video, you grant Campus Ready Foundation permissi
     textBody,
     {
       htmlBody: htmlBody,
-      name: 'Campus Ready Foundation',
+      name:    'Campus Ready Foundation',
+      from:    'hello@campusready.org',
       replyTo: 'hello@campusready.org'
     }
   );
