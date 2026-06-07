@@ -9,9 +9,11 @@ function authorizeDrive() {
     return error.toString();
   }
 }
-// === Campus Ready Fulfillment Script v2.1 ===
-// Last updated: Nov 3, 2025
-// Enhancements: Auto-tagging, Resolver inheritance, Filtered Shopping List, Archive Cohort
+// === Campus Ready Fulfillment Script v2.4 ===
+// Last updated: Jun 7, 2026
+// Enhancements: Auto-tagging, Resolver inheritance, Filtered Shopping List, Archive Cohort,
+//   Personalized kit form email with ?id= links, rebuildProductLogic(),
+//   checkStudentStatusById(), COLOR_CRIT for slide matching, from: alias fix
 // ============================================
 // WEB FORM SUBMISSION HANDLER (for HTML Form)
 // ============================================
