@@ -1005,6 +1005,7 @@ const LOGIC_HEADERS = {
   // Criteria columns
   'GENDER_CRIT': 'GENDER',
   'SCENT_CRIT': 'SCENT',
+  'COLOR_CRIT': 'COLOR',
   'CHOICE_FIELD': 'CHOICE FIELD',
   // Output columns
   'PRODUCT_TYPE': 'PRODUCT TYPE',
