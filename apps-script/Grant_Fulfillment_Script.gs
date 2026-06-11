@@ -9,9 +9,11 @@ function authorizeDrive() {
     return error.toString();
   }
 }
-// === Campus Ready Fulfillment Script v2.1 ===
-// Last updated: Nov 3, 2025
-// Enhancements: Auto-tagging, Resolver inheritance, Filtered Shopping List, Archive Cohort
+// === Campus Ready Fulfillment Script v2.4 ===
+// Last updated: Jun 7, 2026
+// Enhancements: Auto-tagging, Resolver inheritance, Filtered Shopping List, Archive Cohort,
+//   Personalized kit form email with ?id= links, rebuildProductLogic(),
+//   checkStudentStatusById(), COLOR_CRIT for slide matching, from: alias fix
 // ============================================
 // WEB FORM SUBMISSION HANDLER (for HTML Form)
 // ============================================
@@ -25,6 +27,34 @@ function authorizeDrive() {
  * @param {string} email - Student's email address
  * @returns {Object} Student status and information
  */
+/**
+ * Look up a student by Application ID — used by personalized link (?id=CR_XXXX).
+ * Returns the same shape as checkStudentStatus() so handleStudentStatus() works unchanged.
+ */
+function checkStudentStatusById(applicationId) {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Grant_Recipients');
+  if (!sheet) return { status: 'error', message: 'Grant_Recipients sheet not found' };
+
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] && data[i][0].toString().trim() === applicationId.toString().trim()) {
+      return {
+        status:           'found',
+        applicationId:    data[i][0],
+        studentName:      data[i][1],
+        email:            data[i][2],
+        cohortYear:       data[i][3],
+        housingStatus:    data[i][5]  || 'Pending',
+        acceptanceStatus: data[i][7]  || 'Pending',
+        collegeName:      data[i][19] || '',
+        collegeUnitId:    data[i][20] ? data[i][20].toString() : ''
+      };
+    }
+  }
+  return { status: 'not_found' };
+}
+
 function checkStudentStatus(email) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName('Grant_Recipients');
@@ -48,7 +78,9 @@ function checkStudentStatus(email) {
         email: data[i][2],                            // Column C
         cohortYear: data[i][3],                       // Column D
         housingStatus: data[i][5] || 'Pending',       // Column F
-        acceptanceStatus: data[i][7] || 'Pending'     // Column H
+        acceptanceStatus: data[i][7] || 'Pending',    // Column H
+        collegeName: data[i][19] || '',               // Column T
+        collegeUnitId: data[i][20] ? data[i][20].toString() : ''  // Column U (as text)
       };
     }
   }
@@ -280,18 +312,25 @@ function getMimeType(filename) {
  * Called from onOpen()
  */
 function installTriggers() {
-  // Remove existing triggers to avoid duplicates
-  const triggers = ScriptApp.getProjectTriggers();
-  triggers.forEach(trigger => {
-    if (trigger.getHandlerFunction() === 'onGrantRecipientsEdit') {
+  const managed = ['onGrantRecipientsEdit', 'sendKitFormDailyDigest'];
+  ScriptApp.getProjectTriggers().forEach(function(trigger) {
+    if (managed.indexOf(trigger.getHandlerFunction()) !== -1) {
       ScriptApp.deleteTrigger(trigger);
     }
   });
 
-  // Install edit trigger for Grant_Recipients sheet
+  // Edit trigger for Grant_Recipients sheet
   ScriptApp.newTrigger('onGrantRecipientsEdit')
     .forSpreadsheet(SpreadsheetApp.getActiveSpreadsheet())
     .onEdit()
+    .create();
+
+  // Daily kit form digest at 7am America/Los_Angeles
+  ScriptApp.newTrigger('sendKitFormDailyDigest')
+    .timeBased()
+    .everyDays(1)
+    .atHour(7)
+    .inTimezone('America/Los_Angeles')
     .create();
 }
 /**
@@ -530,8 +569,9 @@ The Campus Ready Team`;
     subject,
     emailBody,
     {
-      name: 'Campus Ready Foundation',
-      replyTo: 'hello@campusready.com'
+      name:    'Campus Ready Foundation',
+      from:    'hello@campusready.org',
+      replyTo: 'hello@campusready.org'
     }
   );
 
@@ -546,6 +586,12 @@ function doPost(e) {
     // Route based on action type
     if (data.action === 'checkStudentStatus') {
       const result = checkStudentStatus(data.email);
+      return ContentService.createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    // Personalized link lookup — by Application ID instead of email
+    if (data.action === 'checkStudentStatusById') {
+      const result = checkStudentStatusById(data.applicationId);
       return ContentService.createTextOutput(JSON.stringify(result))
         .setMimeType(ContentService.MimeType.JSON);
     }
@@ -583,9 +629,15 @@ function doPost(e) {
         'Deodorant Type',
         'Style Preference',
         'Bedding Color',
+        'Comforter Cover Color',
         'Pillow Firmness',
         'Towel Color',
-        'Slides Size'
+        'Slides Size',
+        'Slides Color',
+        'data_type',
+        'cohort_year',
+        'College Name',
+        'College Unit ID'
       ];
 
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
@@ -623,9 +675,11 @@ function doPost(e) {
       data.deodorant_type || '',
       data.style_preference || '',
       data.bedding_color || '',
+      data.comforter_cover_color || '',
       data.pillow_firmness || '',
       data.towel_color || '',
-      data.slides_size || ''
+      data.slides_size || '',
+      data.slides_color || ''
     ];
 // === BEGIN MOD v2.2 - Pull cohort_year from Grant_Recipients Nov 17, 2025 ===
     // Look up student's cohort year from Grant_Recipients (not from timestamp)
@@ -655,13 +709,33 @@ function doPost(e) {
       Logger.log('Warning: Grant_Recipients sheet not found. Using default year.');
     }
 
-    // Append tagging columns: data_type = "Live", cohort_year from Grant_Recipients
-    rowData.push("Live"); // data_type
-    rowData.push(cohortYear); // cohort_year from Grant_Recipients
+    // Append tagging and new kit form columns
+    rowData.push("Live");                           // data_type
+    rowData.push(cohortYear);                       // cohort_year
+    // === BEGIN MOD v2.3 - New kit form fields May 2026 ===
+    rowData.push(data.college_name || '');          // College Name
+    rowData.push(data.college_unit_id || '');       // College Unit ID
+    // === END MOD v2.3 ===
     // === END MOD v2.2 ===
 
-    // Append the data to the sheet
-    sheet.appendRow(rowData);
+    // Upsert: update existing row if student already submitted, otherwise append
+    let existingRowIndex = -1;
+    if (sheet.getLastRow() > 1) {
+      const existingData = sheet.getRange(2, 1, sheet.getLastRow() - 1, sheet.getLastColumn()).getValues();
+      for (let i = 0; i < existingData.length; i++) {
+        if (existingData[i][2] && existingData[i][2].toString().toLowerCase() === studentEmail.toLowerCase()) {
+          existingRowIndex = i + 2;
+          break;
+        }
+      }
+    }
+    if (existingRowIndex > 0) {
+      sheet.getRange(existingRowIndex, 1, 1, rowData.length).setValues([rowData]);
+      Logger.log(`Updated existing submission for ${studentEmail} at row ${existingRowIndex}`);
+      deleteStudentFromResolver(ss, studentEmail);
+    } else {
+      sheet.appendRow(rowData);
+    }
 
     // ============================================
     // NEW: Automatically process this submission
@@ -782,6 +856,12 @@ function processLatestSubmission(ss) {
     Zip: latestRowData[headerMap['Zip Code']] || '',
     DataType: latestRowData[headerMap['data_type']] || 'Live',
     CohortYear: latestRowData[headerMap['cohort_year']] || new Date().getFullYear(),
+    // === BEGIN MOD v2.3 ===
+    ComforterCoverColor: latestRowData[headerMap['Comforter Cover Color']] || '',
+    SlidesColor: latestRowData[headerMap['Slides Color']] || '',
+    CollegeName: latestRowData[headerMap['College Name']] || '',
+    CollegeUnitId: latestRowData[headerMap['College Unit ID']] || '',
+    // === END MOD v2.3 ===
   };
 
   Logger.log(`Processing submission for: ${studentChoices.StudentName}`);
@@ -809,13 +889,156 @@ function processLatestSubmission(ss) {
 function onOpen() {
   SpreadsheetApp.getUi()
   .createMenu('Fulfillment Tools')
-  .addItem('Generate Shopping List', 'generateShoppingList')
-  .addItem('Send Rejection Emails', 'sendRejectionEmails')
-  .addItem('Send Testimonial Invites', 'sendTestimonialInvites')
+  .addItem('📧 1 — Send Kit Form Emails',    'sendKitFormEmails')
   .addSeparator()
-  .addItem('Preview Archive Cohort', 'previewArchiveCohort')
-  .addItem('Archive Cohort', 'archiveCohort')
+  .addItem('📋 2 — Send Rejection Emails',   'sendRejectionEmails')
+  .addSeparator()
+  .addItem('🛒 3 — Generate Shopping List',  'generateShoppingList')
+  .addSeparator()
+  .addItem('🎓 4 — Send Testimonial Invites','sendTestimonialInvites')
+  .addSeparator()
+  .addItem('🗂 5 — Preview Archive Cohort',  'previewArchiveCohort')
+  .addItem('🗂 5 — Archive Cohort',          'archiveCohort')
+  .addSeparator()
+  .addItem('⚙️ Admin — Rebuild Product Logic','rebuildProductLogic')
+  .addItem('⚙️ Admin — Install Triggers',    'installTriggers')
   .addToUi();
+}
+
+// ============================================================
+// REBUILD PRODUCT LOGIC
+// Reads each PL_* source tab by header name and writes to
+// Product_Logic by header name. Column order in source tabs
+// doesn't matter — IMAGE URL and any other extra columns are
+// simply ignored if they have no matching header in Product_Logic.
+//
+// Run from: Fulfillment Tools → Rebuild Product Logic
+// Run whenever you add or change products in any PL_* tab.
+// This replaces the SORT/QUERY formula that was previously
+// in Product_Logic cell A2.
+// ============================================================
+function rebuildProductLogic() {
+  const ss  = SpreadsheetApp.getActiveSpreadsheet();
+  const ui  = SpreadsheetApp.getUi();
+
+  const SOURCE_TABS = [
+    'Bedding',
+    'Pillows',
+    'Towels',
+    'Accessories',
+    'Universal Products',
+    'Personal_Care'
+  ];
+
+  // ── Get Product_Logic and its header row ──────────────────
+  const plSheet = ss.getSheetByName('Product_Logic');
+  if (!plSheet) {
+    ui.alert('Error', 'Product_Logic tab not found.', ui.ButtonSet.OK);
+    return;
+  }
+
+  const plLastCol  = plSheet.getLastColumn();
+  const plHeaders  = plSheet.getRange(1, 1, 1, plLastCol).getValues()[0]
+                      .map(h => h.toString().trim());
+  const numPlCols  = plHeaders.length;
+
+  // ── Collect rows from all source tabs ────────────────────
+  const allRows    = [];
+  const skipped    = [];
+  let   productIdCounter = 1; // Auto-generated sequential Product ID
+
+  for (const tabName of SOURCE_TABS) {
+    const src = ss.getSheetByName(tabName);
+    if (!src) { skipped.push(tabName); continue; }
+
+    // Use getDataRange() which respects actual data bounds and ignores
+    // formula-inflated empty rows that would cause a Service error.
+    let dataRange;
+    try {
+      dataRange = src.getDataRange();
+    } catch(e) {
+      Logger.log(`Could not read ${tabName}: ${e.message}`);
+      skipped.push(tabName + ' (read error)');
+      continue;
+    }
+
+    if (dataRange.getNumRows() < 2 || dataRange.getNumColumns() < 1) continue;
+
+    const data       = dataRange.getValues();
+    const srcHeaders = data[0].map(h => h.toString().trim());
+
+    // Map: header name → column index in this source tab
+    const srcIdx = {};
+    srcHeaders.forEach((h, i) => { if (h) srcIdx[h] = i; });
+
+    for (let r = 1; r < data.length; r++) {
+      const row = data[r];
+
+      // Skip blank rows (PRODUCT TYPE empty)
+      const productType = (srcIdx['PRODUCT TYPE'] !== undefined)
+        ? row[srcIdx['PRODUCT TYPE']] : '';
+      if (!productType || productType.toString().trim() === '') continue;
+
+      // Build a row aligned to Product_Logic's column structure.
+      // Product ID is not in the raw source tabs — it was auto-generated by
+      // the old PL_* ARRAYFORMULA. We derive a stable ID from the
+      // Unique Lookup Key (e.g. "Sheet Set|White", "Pillow|Soft") so that
+      // rebuilding Product_Logic never invalidates existing Resolver rows.
+      // Falls back to a sequential number only if the lookup key is absent.
+      const ulkIdx   = srcIdx['Unique Lookup Key'];
+      const ulkValue = (ulkIdx !== undefined && row[ulkIdx] !== undefined)
+                       ? row[ulkIdx].toString().trim().replace(/\|+$/, '') : '';
+      const productNameVal = (srcIdx['PRODUCT'] !== undefined && row[srcIdx['PRODUCT']] !== undefined)
+                       ? row[srcIdx['PRODUCT']].toString().trim() : '';
+      const derivedId = ulkValue || (productType && productNameVal
+                       ? productType.toString().trim() + '|' + productNameVal
+                       : String(productIdCounter));
+
+      const newRow = plHeaders.map(header => {
+        if (!header) return '';
+        if (header === 'Product ID') return derivedId;
+        const i = srcIdx[header];
+        return (i !== undefined && row[i] !== undefined) ? row[i] : '';
+      });
+
+      allRows.push(newRow);
+      productIdCounter++;
+    }
+  }
+
+  if (allRows.length === 0) {
+    ui.alert(
+      'Nothing to write',
+      'No valid product rows found in source tabs. Product_Logic was not changed.',
+      ui.ButtonSet.OK
+    );
+    return;
+  }
+
+  // ── Sort by PRODUCT TYPE ascending ───────────────────────
+  const sortCol = plHeaders.indexOf('PRODUCT TYPE');
+  allRows.sort((a, b) => {
+    const ta = (a[sortCol] || '').toString().toLowerCase();
+    const tb = (b[sortCol] || '').toString().toLowerCase();
+    return ta.localeCompare(tb);
+  });
+
+  // ── Clear existing data in Product_Logic (keep row 1) ────
+  const existingRows = plSheet.getLastRow();
+  if (existingRows > 1) {
+    plSheet.getRange(2, 1, existingRows - 1, numPlCols).clearContent();
+  }
+
+  // ── Write to Product_Logic ────────────────────────────────
+  plSheet.getRange(2, 1, allRows.length, numPlCols).setValues(allRows);
+
+  // ── Report ────────────────────────────────────────────────
+  let msg = `Product_Logic rebuilt with ${allRows.length} product rows from ${SOURCE_TABS.length - skipped.length} tab(s).`;
+  if (skipped.length > 0) {
+    msg += `\n\nTab(s) not found and skipped:\n• ${skipped.join('\n• ')}`;
+  }
+  ui.alert('Done', msg, ui.ButtonSet.OK);
+  Logger.log(msg);
 }
 
 // ============================================
@@ -851,6 +1074,7 @@ const LOGIC_HEADERS = {
   // Criteria columns
   'GENDER_CRIT': 'GENDER',
   'SCENT_CRIT': 'SCENT',
+  'COLOR_CRIT': 'COLOR',
   'CHOICE_FIELD': 'CHOICE FIELD',
   // Output columns
   'PRODUCT_TYPE': 'PRODUCT TYPE',
@@ -929,12 +1153,6 @@ requiredHeaders.forEach(h => {
  * @param {Object} e - The form submission event
  * @returns {Object} Standardized student choices object
  */
-function extractFormData(e) {
-  // This function is deprecated - use processLatestSubmission instead
-  Logger.log('⚠️ extractFormData is deprecated');
-  return null;
-}
-
 // ============================================
 // RESOLVER LOGIC
 // ============================================
@@ -1004,6 +1222,20 @@ if (isMatch && trimmedChoiceField && trimmedChoiceField.toLowerCase() !== 'all')
   }
 }
 
+    // COLOR MATCHING (for products with color variants not covered by CHOICE_FIELD)
+    const trimmedColorCrit = (product.COLOR_CRIT || '').toString().trim();
+    if (isMatch && trimmedColorCrit && trimmedColorCrit.toLowerCase() !== 'all') {
+      const colorValue = getColorValueForProduct(product.PRODUCT_TYPE, studentChoices);
+      if (colorValue === '') {
+        Logger.log(`No student color field for ${product.PRODUCT_TYPE}, skipping color check`);
+      } else {
+        Logger.log(`COLOR_CRIT: '${trimmedColorCrit}' vs Student Color: '${colorValue}'`);
+        if (trimmedColorCrit.toLowerCase() !== colorValue.toString().trim().toLowerCase()) {
+          isMatch = false;
+        }
+      }
+    }
+
     // If all criteria match, add to output
     if (isMatch) {
       // === BEGIN MOD v2.1 - Resolver tag inheritance added Nov 3, 2025 ===
@@ -1046,8 +1278,10 @@ Utilities.formatDate(new Date(String(studentChoices.Timestamp)), Session.getScri
 function getChoiceValueForProduct(productType, studentChoices) {
   switch (productType) {
     case 'Sheet Set':
-    case 'Duvet Cover':
       return studentChoices.BeddingColor;
+    case 'Duvet Cover':
+      // Falls back to BeddingColor for submissions made before the comforter cover color field existed
+      return studentChoices.ComforterCoverColor || studentChoices.BeddingColor;
     case 'Pillow':
       return studentChoices.PillowFirmness;
     case 'Shampoo':
@@ -1070,6 +1304,21 @@ function getChoiceValueForProduct(productType, studentChoices) {
     case 'Desk Organizer':
     case 'Toiletry Bag':
       return studentChoices.Style;
+    default:
+      return '';
+  }
+}
+
+/**
+ * Returns the student's color preference for products matched via COLOR_CRIT
+ * @param {string} productType
+ * @param {Object} studentChoices
+ * @returns {string}
+ */
+function getColorValueForProduct(productType, studentChoices) {
+  switch (productType) {
+    case 'Slides':
+      return studentChoices.SlidesColor || '';
     default:
       return '';
   }
@@ -1194,12 +1443,15 @@ function generateShoppingList() {
   // === END PHASE 5 ===
 
 // === BEGIN MOD v2.1 - Filter Resolver rows Nov 3, 2025 ===
-const currentYear = Math.max(...studentData.map(row => {
-  const year = parseInt(row[getHeaderMap(ss.getSheetByName('Student_Selections'))['cohort_year']]);
+// Derive current year from the Resolver itself so this works even when
+// Student_Selections has been cleared between runs.
+const resolverHeaderMap = getHeaderMap(ss.getSheetByName('Resolver'));
+
+const currentYear = Math.max(...resolverData.map(row => {
+  const year = parseInt(row[resolverHeaderMap['cohort_year']]);
   return isNaN(year) ? 0 : year;
 }));
 
-const resolverHeaderMap = getHeaderMap(ss.getSheetByName('Resolver'));
 const filteredResolverData = [];
 const resolverRowNumbers = []; // Track actual sheet row numbers
 
@@ -1218,6 +1470,17 @@ resolverData.forEach((row, i) => {
 
   if (resolverData.length === 0) {
     SpreadsheetApp.getUi().alert('No data found in Resolver tab. Please run the resolver first.');
+    return;
+  }
+
+  if (filteredResolverData.length === 0) {
+    SpreadsheetApp.getUi().alert(
+      'Nothing to Process',
+      'No unprocessed Resolver rows found for cohort year ' + currentYear + '.\n\n' +
+      'This usually means all rows have already been included in a previous shopping list.\n\n' +
+      'To re-run: clear the "shopping_list_generated" column in the Resolver tab, then try again.',
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
     return;
   }
 
@@ -1351,6 +1614,7 @@ resolverData.forEach((row, i) => {
       prefs.pillowFirmness,
       prefs.towelColor,
       prefs.slidesSize,
+      prefs.slidesColor,
       row[resolverHeaderMap['data_type']],
       row[resolverHeaderMap['cohort_year']]
     ]);
@@ -1359,46 +1623,64 @@ resolverData.forEach((row, i) => {
   }
 
   // === BEGIN PHASE 5 - Report Filtering Results Nov 17, 2025 ===
-  const totalProcessed = filteredResolverData.length;
-  const totalIncluded = outputRows.length;
-  const totalSkipped = totalProcessed - totalIncluded;
+  const includedStudents = new Set(outputRows.map(r => r[1]));   // r[1] = Student Email
+  const skippedEmailSets = new Set([
+    ...skippedStudents.notFound,
+    ...skippedStudents.housingNotApproved,
+    ...skippedStudents.acceptanceNotApproved,
+    ...skippedStudents.bothNotApproved
+  ]);
+  const uniqueIncluded = includedStudents.size;
+  const uniqueSkipped  = skippedEmailSets.size;
+  const totalRows      = outputRows.length;
 
   Logger.log('=== APPROVAL FILTER RESULTS ===');
-  Logger.log(`Total students processed: ${totalProcessed}`);
-  Logger.log(`Students included (approved): ${totalIncluded}`);
-  Logger.log(`Students skipped (not approved): ${totalSkipped}`);
+  Logger.log(`Students included (approved): ${uniqueIncluded} (${totalRows} product rows)`);
+  Logger.log(`Students skipped (not approved): ${uniqueSkipped}`);
 
-  // Build summary alert message
-  if (totalSkipped > 0) {
-    let alertMessage = `Shopping List Generated\n\n`;
-    alertMessage += `✓ ${totalIncluded} students included (documents approved)\n`;
-    alertMessage += `⚠️ ${totalSkipped} students skipped:\n\n`;
-
-    if (skippedStudents.notFound.length > 0) {
-      alertMessage += `• Not found in Grant_Recipients: ${skippedStudents.notFound.length}\n`;
-      alertMessage += `  ${skippedStudents.notFound.join(', ')}\n\n`;
-    }
-
-    if (skippedStudents.bothNotApproved.length > 0) {
-      alertMessage += `• Both documents not approved: ${skippedStudents.bothNotApproved.length}\n`;
-      alertMessage += `  ${skippedStudents.bothNotApproved.join(', ')}\n\n`;
-    }
-
-    if (skippedStudents.housingNotApproved.length > 0) {
-      alertMessage += `• Housing not approved: ${skippedStudents.housingNotApproved.length}\n`;
-      alertMessage += `  ${skippedStudents.housingNotApproved.join(', ')}\n\n`;
-    }
-
-    if (skippedStudents.acceptanceNotApproved.length > 0) {
-      alertMessage += `• Acceptance not approved: ${skippedStudents.acceptanceNotApproved.length}\n`;
-      alertMessage += `  ${skippedStudents.acceptanceNotApproved.join(', ')}\n\n`;
-    }
-
-    SpreadsheetApp.getUi().alert('Shopping List - Approval Filter Applied', alertMessage, SpreadsheetApp.getUi().ButtonSet.OK);
-  } else {
-    SpreadsheetApp.getUi().alert('Shopping List Generated', `All ${totalIncluded} students have approved documents and were included in the shopping list.`, SpreadsheetApp.getUi().ButtonSet.OK);
+  // === CONFIRMATION GATEWAY ===
+  // Show stats and ask OK/Cancel before writing anything
+  if (uniqueIncluded === 0) {
+    SpreadsheetApp.getUi().alert(
+      'Nothing to Write',
+      'No students with fully approved documents were found in the filtered Resolver data.\n\n' +
+      (uniqueSkipped > 0 ? `${uniqueSkipped} student${uniqueSkipped === 1 ? '' : 's'} skipped (documents not approved):\n` +
+        (skippedStudents.notFound.length > 0      ? `• Not found in Grant_Recipients: ${skippedStudents.notFound.join(', ')}\n` : '') +
+        (skippedStudents.bothNotApproved.length > 0    ? `• Both docs not approved: ${skippedStudents.bothNotApproved.join(', ')}\n` : '') +
+        (skippedStudents.housingNotApproved.length > 0 ? `• Housing not approved: ${skippedStudents.housingNotApproved.join(', ')}\n` : '') +
+        (skippedStudents.acceptanceNotApproved.length > 0 ? `• Acceptance not approved: ${skippedStudents.acceptanceNotApproved.join(', ')}\n` : '')
+      : 'No students were skipped — verify that documents are marked Approved in Grant_Recipients.'),
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
+    return;
   }
-  // === END PHASE 5 ===
+
+  let gatewayMessage = `Ready to write shopping list:\n\n`;
+  gatewayMessage += `✓  ${uniqueIncluded} student${uniqueIncluded === 1 ? '' : 's'} included — ${totalRows} product rows\n`;
+  if (uniqueSkipped > 0) {
+    gatewayMessage += `⚠️  ${uniqueSkipped} student${uniqueSkipped === 1 ? '' : 's'} skipped (documents not approved):\n`;
+    if (skippedStudents.notFound.length > 0)
+      gatewayMessage += `     • Not found in Grant_Recipients: ${skippedStudents.notFound.join(', ')}\n`;
+    if (skippedStudents.bothNotApproved.length > 0)
+      gatewayMessage += `     • Both docs not approved: ${skippedStudents.bothNotApproved.join(', ')}\n`;
+    if (skippedStudents.housingNotApproved.length > 0)
+      gatewayMessage += `     • Housing not approved: ${skippedStudents.housingNotApproved.join(', ')}\n`;
+    if (skippedStudents.acceptanceNotApproved.length > 0)
+      gatewayMessage += `     • Acceptance not approved: ${skippedStudents.acceptanceNotApproved.join(', ')}\n`;
+  }
+  gatewayMessage += '\nClick OK to write to Shopping_List, or Cancel to stop.';
+
+  const gatewayResponse = SpreadsheetApp.getUi().alert(
+    'Generate Shopping List',
+    gatewayMessage,
+    SpreadsheetApp.getUi().ButtonSet.OK_CANCEL
+  );
+
+  if (gatewayResponse !== SpreadsheetApp.getUi().Button.OK) {
+    SpreadsheetApp.getUi().alert('Cancelled', 'Shopping list was not written.', SpreadsheetApp.getUi().ButtonSet.OK);
+    return;
+  }
+  // === END CONFIRMATION GATEWAY ===
 
   // Write to output sheet
   const outputSheet = ss.getSheetByName(OUTPUT_TAB_NAME) || ss.insertSheet(OUTPUT_TAB_NAME);
@@ -1440,7 +1722,8 @@ resolverData.forEach((row, i) => {
       'Bedding Color',
       'Pillow Firmness',
       'Towel Color',
-      'Slides Size'
+      'Slides Size',
+      'Slides Color'
     ];
 
     outputSheet.getRange(1, 1, 1, headers.length).setValues([headers]);
@@ -1482,14 +1765,13 @@ resolverData.forEach((row, i) => {
 
   Logger.log('=== SHOPPING LIST GENERATION COMPLETE ===');
 
-  // Show completion message
-  SpreadsheetApp.getUi().alert(
-    'Shopping List Generated',
-    `Successfully generated ${outputRows.length} line items.\n\n` +
-    `Errors: ${errors.length}\n\n` +
-    (errors.length > 0 ? `Check the '${LOG_TAB_NAME}' tab for error details.` : 'No errors found!'),
-    SpreadsheetApp.getUi().ButtonSet.OK
-  );
+  if (errors.length > 0) {
+    SpreadsheetApp.getUi().alert(
+      'Shopping List Written — with Errors',
+      `${outputRows.length} rows written.\n\n${errors.length} row${errors.length === 1 ? '' : 's'} could not be matched — see the '${LOG_TAB_NAME}' tab for details.`,
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
+  }
 }
 
 // === BEGIN MOD v2.1 - Preview Archive Cohort added Nov 3, 2025 ===
@@ -1731,18 +2013,24 @@ function buildProductLookupKey(productType, student, product) {
     }
   }
 
-  if (productType === 'Sheet Set' || productType === 'Duvet Cover') {
+  if (productType === 'Sheet Set') {
     if (student.Color) parts.push(student.Color);
+  } else if (productType === 'Duvet Cover') {
+    const duvetColor = student.ComforterCoverColor || student.Color;
+    if (duvetColor) parts.push(duvetColor);
   } else if (productType === 'Pillow') {
     if (student.Firmness) parts.push(student.Firmness);
   } else if (productType === 'Towel Set') {
     if (student.TowelColor) parts.push(student.TowelColor);
   } else if (productType === 'Slides') {
     if (student.SlidesSize) parts.push(student.SlidesSize);
+    if (student.SlidesColor) parts.push(student.SlidesColor);
   } else if (['Deodorant', 'Antiperspirant'].includes(productType)) {
     if (student.Scent) parts.push(student.Scent);
-  } else if (['Laundry Basket', 'Shower Caddy', 'Storage Bins', 'Hangers', 'Desk Organizer', 'Toiletry Bag'].includes(productType)) {
+  } else if (['Laundry Basket', 'Shower Caddy', 'Storage Bins', 'Hangers', 'Desk Organizer'].includes(productType)) {
     if (student.Style) parts.push(student.Style);
+  } else if (productType === 'Toiletry Bag') {
+    if (product && product.Color) parts.push(product.Color);
   }
 
   parts.push(productType);
@@ -1759,14 +2047,15 @@ function buildConditionalPreferences(productType, student) {
     beddingColor: '',
     pillowFirmness: '',
     towelColor: '',
-    slidesSize: ''
+    slidesSize: '',
+    slidesColor: ''
   };
 
   if (['Razor Handle', 'Razor Refills', 'Slides', 'Deodorant', 'Antiperspirant'].includes(productType)) {
     prefs.gender = student.Gender || '';
   }
 
-  if (['Deodorant', 'Antiperspirant', 'Body Wash', 'Shampoo & Conditioner Set', 'Lotion'].includes(productType)) {
+  if (['Deodorant', 'Antiperspirant', 'Body Wash', 'Shampoo', 'Conditioner', 'Shampoo & Conditioner Set', 'Lotion'].includes(productType)) {
     prefs.scent = student.Scent || '';
   }
 
@@ -1778,8 +2067,12 @@ function buildConditionalPreferences(productType, student) {
     prefs.style = student.Style || '';
   }
 
-  if (['Sheet Set', 'Duvet Cover'].includes(productType)) {
+  if (productType === 'Sheet Set') {
     prefs.beddingColor = student.Color || '';
+  }
+
+  if (productType === 'Duvet Cover') {
+    prefs.beddingColor = student.ComforterCoverColor || student.Color || '';
   }
 
   if (productType === 'Pillow') {
@@ -1792,6 +2085,7 @@ function buildConditionalPreferences(productType, student) {
 
   if (productType === 'Slides') {
     prefs.slidesSize = student.SlidesSize || '';
+    prefs.slidesColor = student.SlidesColor || '';
   }
 
   return prefs;
@@ -1816,7 +2110,8 @@ function buildProductMap(data) {
         URL: row[headerMap['PRIMARY URL']],
         Gender: row[headerMap['GENDER']],
         Scent: row[headerMap['SCENT']],
-        ChoiceField: row[headerMap['CHOICE FIELD']]
+        ChoiceField: row[headerMap['CHOICE FIELD']],
+        Color: row[headerMap['COLOR']]
       };
     }
   });
@@ -1847,7 +2142,13 @@ function buildStudentMap(data) {
         Color: row[headerMap['Bedding Color']],
         Firmness: row[headerMap['Pillow Firmness']],
         TowelColor: row[headerMap['Towel Color']],
-        SlidesSize: row[headerMap['Slides Size']]
+        SlidesSize: row[headerMap['Slides Size']],
+        // === BEGIN MOD v2.3 ===
+        ComforterCoverColor: row[headerMap['Comforter Cover Color']] || '',
+        SlidesColor: row[headerMap['Slides Color']] || '',
+        CollegeName: row[headerMap['College Name']] || '',
+        CollegeUnitId: row[headerMap['College Unit ID']] || ''
+        // === END MOD v2.3 ===
       };
     }
   });
@@ -1885,10 +2186,6 @@ function getHeaderMap(sheet) {
 // TEST FUNCTIONS (Keep for debugging)
 // ============================================
 
-function debugProductLogicForGurn() {
-  // Your existing debug function - unchanged
-  Logger.log('Debug function preserved');
-}
 // ============================================
 // TEST: Email Validation - Added Nov 15, 2025
 // ============================================
@@ -2441,7 +2738,8 @@ By replying with your photo or video, you grant Campus Ready Foundation permissi
     textBody,
     {
       htmlBody: htmlBody,
-      name: 'Campus Ready Foundation',
+      name:    'Campus Ready Foundation',
+      from:    'hello@campusready.org',
       replyTo: 'hello@campusready.org'
     }
   );
@@ -2460,4 +2758,382 @@ function testTestimonialEmail() {
 
   sendTestimonialEmailToStudent(testStudent);
   Logger.log('Test email sent to ' + testStudent.email);
+}
+
+// ============================================
+// KIT FORM EMAIL — Invite recipients to customize their kit.
+// Each student receives a personalized link (?id=applicationId)
+// that skips email verification and routes them directly.
+// Update copy annually before sending.
+// Menu: Fulfillment Tools → Send Kit Form Emails
+// ============================================
+
+const KIT_FORM_BASE_URL = 'https://award.campusready.org/Customize_Your_Kit.html';
+
+function sendKitFormEmails() {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Grant_Recipients');
+  const ui    = SpreadsheetApp.getUi();
+
+  if (!sheet) {
+    ui.alert('Error', 'Grant_Recipients sheet not found.', ui.ButtonSet.OK);
+    return;
+  }
+
+  const data   = sheet.getDataRange().getValues();
+  const toSend = [];
+
+  for (let i = 1; i < data.length; i++) {
+    const applicationId = data[i][0] ? data[i][0].toString().trim() : '';
+    const name          = data[i][1] ? data[i][1].toString().trim() : '';
+    const email         = data[i][2] ? data[i][2].toString().trim() : '';
+    if (!applicationId || !name || !email) continue;
+    toSend.push({
+      applicationId: applicationId,
+      firstName:     name.split(' ')[0],
+      email:         email
+    });
+  }
+
+  if (toSend.length === 0) {
+    ui.alert('Nothing to Send', 'No recipients found in Grant_Recipients.', ui.ButtonSet.OK);
+    return;
+  }
+
+  const confirm = ui.alert(
+    'Send Kit Form Emails?',
+    'Ready to send personalized links to ' + toSend.length + ' recipient(s).\n\n' +
+    'Each student will receive a unique link that takes them directly into the form.\n\n' +
+    'This cannot be undone. Continue?',
+    ui.ButtonSet.YES_NO
+  );
+  if (confirm !== ui.Button.YES) return;
+
+  let successCount = 0;
+  let failCount    = 0;
+
+  toSend.forEach(student => {
+    try {
+      const personalizedLink = KIT_FORM_BASE_URL + '?id=' + encodeURIComponent(student.applicationId);
+      sendKitFormEmail(student.firstName, student.email, personalizedLink);
+      successCount++;
+      Logger.log('Kit form email sent: ' + student.email + ' → ' + personalizedLink);
+    } catch (error) {
+      failCount++;
+      Logger.log('Failed: ' + student.email + ' — ' + error.message);
+    }
+  });
+
+  let summary = successCount + ' email(s) sent with personalized links.';
+  if (failCount > 0) summary += '\n' + failCount + ' failed — check Logs for details.';
+  ui.alert('Done', summary, ui.ButtonSet.OK);
+}
+
+/**
+ * Sends the kit form invitation email to one recipient.
+ * @param {string} firstName
+ * @param {string} email
+ * @param {string} personalizedLink  — unique URL with ?id= parameter
+ */
+function sendKitFormEmail(firstName, email, personalizedLink) {
+  const subject = 'Your Campus Ready kit is ready to customize';
+
+  const htmlBody =
+'<!DOCTYPE html>\n' +
+'<html lang="en">\n' +
+'<head>\n' +
+'  <meta charset="UTF-8">\n' +
+'  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+'  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">\n' +
+'</head>\n' +
+'<body style="margin:0;padding:0;background:#f9fafb;font-family:\'Inter\',-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;">\n' +
+'  <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;">\n' +
+'    <div style="background:#469E92;padding:40px 32px;text-align:center;">\n' +
+'      <p style="font-family:\'Playfair Display\',Georgia,serif;font-size:36px;font-weight:700;color:#ffffff;margin:0 0 8px;letter-spacing:-0.5px;">' + firstName + '!</p>\n' +
+'      <p style="font-size:16px;color:rgba(255,255,255,0.88);margin:0;font-weight:400;">It\'s time to customize your kit.</p>\n' +
+'    </div>\n' +
+'    <div style="padding:32px;font-size:15px;line-height:1.7;color:#231F20;">\n' +
+'      <p style="margin:0 0 20px;">Hi ' + firstName + ',</p>\n' +
+'      <p style="margin:0 0 20px;">We promised we\'d be back in touch, and here we are. Your Campus Ready Move-In Essentials are ready for you to personalize — colors, sizes, scents, and where you\'d like everything shipped.</p>\n' +
+'      <p style="margin:0 0 28px;">Get your <strong>housing confirmation</strong> and <strong>college acceptance letter</strong> handy. You\'ll need to upload them as part of the process.</p>\n' +
+'      <div style="background:#f9fafb;border-radius:12px;padding:24px;margin:0 0 28px;">\n' +
+'        <p style="font-size:13px;color:#6b7280;margin:0 0 4px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Your 2026 Campus Ready Grant</p>\n' +
+'        <p style="font-family:\'Playfair Display\',Georgia,serif;font-size:22px;font-weight:700;color:#231F20;margin:0 0 20px;letter-spacing:-0.3px;">Here\'s everything you\'re getting.</p>\n' +
+'        <table style="width:100%;border-collapse:collapse;margin:0 0 12px;">\n' +
+'          <tr>\n' +
+'            <td style="width:50%;padding-right:6px;vertical-align:top;">\n' +
+'              <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;">\n' +
+'                <span style="font-size:22px;display:block;margin-bottom:8px;">&#x1F6CF;</span>\n' +
+'                <p style="font-weight:600;font-size:14px;color:#231F20;margin:0 0 4px;">Move-In Essentials</p>\n' +
+'                <p style="font-size:13px;color:#6b7280;line-height:1.5;margin:0;">Personalized bedding, towels, toiletries, and more.</p>\n' +
+'              </div>\n' +
+'            </td>\n' +
+'            <td style="width:50%;padding-left:6px;vertical-align:top;">\n' +
+'              <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;">\n' +
+'                <span style="font-size:22px;display:block;margin-bottom:8px;">&#x1F697;</span>\n' +
+'                <p style="font-weight:600;font-size:14px;color:#231F20;margin:0 0 4px;">Lyft Credits</p>\n' +
+'                <p style="font-size:13px;color:#6b7280;line-height:1.5;margin:0;">Rides to the airport or directly to campus.</p>\n' +
+'              </div>\n' +
+'            </td>\n' +
+'          </tr>\n' +
+'        </table>\n' +
+'        <table style="width:100%;border-collapse:collapse;">\n' +
+'          <tr>\n' +
+'            <td style="width:50%;padding-right:6px;vertical-align:top;">\n' +
+'              <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;">\n' +
+'                <span style="font-size:22px;display:block;margin-bottom:8px;">&#x1F957;</span>\n' +
+'                <p style="font-weight:600;font-size:14px;color:#231F20;margin:0 0 4px;">DoorDash Credits</p>\n' +
+'                <p style="font-size:13px;color:#6b7280;line-height:1.5;margin:0;">Meal or grocery delivery for your first days on campus.</p>\n' +
+'              </div>\n' +
+'            </td>\n' +
+'            <td style="width:50%;padding-left:6px;vertical-align:top;">\n' +
+'              <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:10px;padding:16px;">\n' +
+'                <span style="font-size:22px;display:block;margin-bottom:8px;">&#x1F4B3;</span>\n' +
+'                <p style="font-weight:600;font-size:14px;color:#231F20;margin:0 0 4px;">Incidentals Gift Card</p>\n' +
+'                <p style="font-size:13px;color:#6b7280;line-height:1.5;margin:0;">For anything that comes up in those first few days.</p>\n' +
+'              </div>\n' +
+'            </td>\n' +
+'          </tr>\n' +
+'        </table>\n' +
+'      </div>\n' +
+'      <div style="background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:20px 24px;margin:0 0 28px;">\n' +
+'        <p style="margin:0 0 6px;font-weight:600;color:#0f766e;font-size:15px;">&#x1F4C5; Save the date — July 15</p>\n' +
+'        <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;">On July 15 we\'re hosting a celebration for our grant award winners. We\'ll walk through everything you\'re getting, distribute credits and cards, and talk about your first days on campus. You can join us in person or on Zoom. Details coming soon.</p>\n' +
+'      </div>\n' +
+'      <div style="text-align:center;margin:0 0 28px;">\n' +
+'        <a href="' + personalizedLink + '" style="display:inline-block;background:#469E92;color:#ffffff;font-family:\'Inter\',-apple-system,sans-serif;font-size:16px;font-weight:600;text-decoration:none;padding:16px 40px;border-radius:8px;letter-spacing:0.01em;">Customize My Kit</a>\n' +
+'      </div>\n' +
+'      <div style="border-top:1px solid #e5e7eb;padding-top:24px;">\n' +
+'        <p style="margin:0 0 4px;color:#374151;font-size:15px;">Can\'t wait to see your kit take shape. See you on the 15th.</p>\n' +
+'        <p style="margin:0 0 4px;font-weight:600;">The Campus Ready Foundation Team</p>\n' +
+'        <a href="https://campusready.org" style="color:#469E92;text-decoration:none;font-size:14px;">campusready.org</a>\n' +
+'      </div>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</body>\n' +
+'</html>';
+
+  const textBody =
+'Hi ' + firstName + ',\n\n' +
+'We promised we\'d be back in touch, and here we are. Your Campus Ready Move-In Essentials are ready for you to personalize — colors, sizes, scents, and where you\'d like everything shipped.\n\n' +
+'Get your housing confirmation and college acceptance letter handy. You\'ll need to upload them as part of the process.\n\n' +
+'Your 2026 Campus Ready Grant includes:\n\n' +
+'• Move-In Essentials — Personalized bedding, towels, toiletries, and more.\n' +
+'• Lyft Credits — Rides to the airport or directly to campus.\n' +
+'• DoorDash Credits — Meal or grocery delivery for your first days on campus.\n' +
+'• Incidentals Gift Card — For anything that comes up in those first few days.\n\n' +
+'Save the date — July 15\n' +
+'On July 15 we\'re hosting a celebration for our grant award winners. We\'ll walk through everything you\'re getting, distribute credits and cards, and talk about your first days on campus. You can join us in person or on Zoom. Details coming soon.\n\n' +
+'Customize your kit here (this link is just for you):\n' +
+personalizedLink + '\n\n' +
+'Can\'t wait to see your kit take shape. See you on the 15th.\n\n' +
+'The Campus Ready Foundation Team\n' +
+'hello@campusready.org\n' +
+'campusready.org';
+
+  GmailApp.sendEmail(email, subject, textBody, {
+    htmlBody:  htmlBody,
+    name:      'Campus Ready Foundation',
+    from:      'hello@campusready.org',
+    replyTo:   'hello@campusready.org'
+  });
+}
+
+/** Test — sends only to yourself with a sample personalized link. */
+function testKitFormEmail() {
+  _sendTestKitEmail('elilavois@gmail.com');
+}
+
+function testKitFormEmailKaren() {
+  _sendTestKitEmail('kdantzler@gmail.com');
+}
+
+/** Shared helper — looks up real application ID so the personalized link works end-to-end. */
+function _sendTestKitEmail(emailAddress) {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Grant_Recipients');
+  const data  = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][2] && data[i][2].toString().toLowerCase() === emailAddress.toLowerCase()) {
+      const applicationId = data[i][0].toString();
+      const firstName     = data[i][1].toString().split(' ')[0];
+      const personalizedLink = KIT_FORM_BASE_URL + '?id=' + encodeURIComponent(applicationId);
+      sendKitFormEmail(firstName, emailAddress, personalizedLink);
+      Logger.log('Test kit form email sent to ' + emailAddress + ' with link: ' + personalizedLink);
+      return;
+    }
+  }
+
+  // Fallback if email not found in sheet
+  Logger.log('⚠️ ' + emailAddress + ' not found in Grant_Recipients — sending with preview link');
+  sendKitFormEmail('there', emailAddress, KIT_FORM_BASE_URL + '?id=CR_TEST_PREVIEW');
+}
+
+// === KIT FORM DAILY DIGEST ===
+// Runs daily at 7am America/Los_Angeles, July 1 – September 15.
+// Always sends — even on days with zero submissions.
+function sendKitFormDailyDigest() {
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const day   = now.getDate();
+  const inSeason = (month === 7) || (month === 8) || (month === 9 && day <= 15);
+  if (!inSeason) return;
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const tz = 'America/Los_Angeles';
+
+  // --- Cohort stats from Grant_Recipients ---
+  const recipientsSheet = ss.getSheetByName('Grant_Recipients');
+  if (!recipientsSheet) {
+    Logger.log('sendKitFormDailyDigest: Grant_Recipients sheet not found');
+    return;
+  }
+  const recipientsData = recipientsSheet.getDataRange().getValues();
+  const totalCohort = recipientsData.length - 1;
+
+  // Build email → college map; count outstanding (Items Selected col J != 'Yes')
+  const collegeMap = {};
+  let outstanding = 0;
+  for (let i = 1; i < recipientsData.length; i++) {
+    const row    = recipientsData[i];
+    const email  = row[2] ? row[2].toString().toLowerCase() : '';
+    const college = row[19] ? row[19].toString() : '';
+    if (email) collegeMap[email] = college;
+    if (row[9] !== 'Yes') outstanding++;
+  }
+
+  // --- Today's submissions from Student_Selections ---
+  const selectionsSheet = ss.getSheetByName('Student_Selections');
+  const cutoff = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const todaySubmissions = [];
+
+  if (selectionsSheet && selectionsSheet.getLastRow() > 1) {
+    const selData = selectionsSheet.getDataRange().getValues();
+    const headers = selData[0];
+    const colIdx  = {};
+    headers.forEach(function(h, i) { colIdx[h] = i; });
+
+    const tsCol   = colIdx['Timestamp'] !== undefined ? colIdx['Timestamp'] : colIdx['Date Submitted'];
+    const nameCol = colIdx['Student Name'];
+    const emailCol = colIdx['Email Address'];
+    const shipCol = colIdx['Shipping Preference'];
+
+    for (let i = 1; i < selData.length; i++) {
+      const row = selData[i];
+      const ts  = row[tsCol];
+      if (!(ts instanceof Date) || ts < cutoff) continue;
+      const emailKey = row[emailCol] ? row[emailCol].toString().toLowerCase() : '';
+      todaySubmissions.push({
+        name:     row[nameCol]  || '',
+        email:    row[emailCol] || '',
+        college:  collegeMap[emailKey] || '—',
+        shipping: row[shipCol]  || '—',
+        time:     Utilities.formatDate(ts, tz, 'h:mm a')
+      });
+    }
+    todaySubmissions.sort(function(a, b) { return a.name.localeCompare(b.name); });
+  }
+
+  // --- Build HTML ---
+  const count   = todaySubmissions.length;
+  const dateStr = Utilities.formatDate(now, tz, 'EEEE, MMMM d, yyyy');
+  const subject = 'Campus Ready — Daily Kit Form Digest (' + count + ' new)';
+
+  const statsHtml =
+    '<div style="display:flex;gap:12px;margin-bottom:24px;">' +
+      _digestStatCard('Total cohort',    totalCohort, '#374151') +
+      _digestStatCard('Submitted today', count,       '#469E92') +
+      _digestStatCard('Outstanding',     outstanding, '#e24b4a') +
+    '</div>';
+
+  let bodyHtml;
+  if (count === 0) {
+    bodyHtml =
+      '<p style="background:#f9fafb;border-radius:8px;padding:12px 16px;font-size:13px;color:#6b7280;margin:0;">' +
+      'No submissions today — ' + outstanding + ' student' + (outstanding === 1 ? '' : 's') + ' still outstanding.' +
+      '</p>';
+  } else {
+    let rows = '';
+    todaySubmissions.forEach(function(s) {
+      rows +=
+        '<tr>' +
+        '<td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#111827;">'  + s.name     + '</td>' +
+        '<td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#6b7280;">'  + s.email    + '</td>' +
+        '<td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#111827;">'  + s.college  + '</td>' +
+        '<td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#6b7280;">'  + s.shipping + '</td>' +
+        '<td style="padding:8px 10px;border-bottom:1px solid #e5e7eb;color:#6b7280;text-align:right;">' + s.time + '</td>' +
+        '</tr>';
+    });
+    bodyHtml =
+      '<p style="font-size:13px;color:#6b7280;margin:0 0 12px;">' + count +
+      ' student' + (count === 1 ? '' : 's') + ' submitted their kit form in the last 24 hours:</p>' +
+      '<table style="border-collapse:collapse;width:100%;font-size:13px;">' +
+      '<thead><tr style="background:#f9fafb;text-align:left;">' +
+      '<th style="padding:8px 10px;border-bottom:2px solid #e5e7eb;color:#6b7280;font-weight:500;">Student</th>' +
+      '<th style="padding:8px 10px;border-bottom:2px solid #e5e7eb;color:#6b7280;font-weight:500;">Email</th>' +
+      '<th style="padding:8px 10px;border-bottom:2px solid #e5e7eb;color:#6b7280;font-weight:500;">School</th>' +
+      '<th style="padding:8px 10px;border-bottom:2px solid #e5e7eb;color:#6b7280;font-weight:500;">Shipping</th>' +
+      '<th style="padding:8px 10px;border-bottom:2px solid #e5e7eb;color:#6b7280;font-weight:500;text-align:right;">Time</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  const sheetUrl = 'https://docs.google.com/spreadsheets/d/' + ss.getId();
+
+  const htmlBody =
+    '<div style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,sans-serif;max-width:860px;color:#374151;">' +
+    '<h2 style="color:#469E92;margin:0 0 4px;font-size:20px;font-weight:500;">Campus Ready — Daily Kit Form Digest</h2>' +
+    '<p style="color:#6b7280;margin:0 0 20px;font-size:14px;">' + dateStr + '</p>' +
+    statsHtml +
+    bodyHtml +
+    '<div style="margin-top:20px;">' +
+    '<a href="' + sheetUrl + '" style="color:#469E92;font-size:14px;text-decoration:none;">Open Student Selections sheet →</a>' +
+    '</div>' +
+    '<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0 12px;">' +
+    '<p style="color:#9ca3af;font-size:12px;margin:0;">Automated daily digest · Runs July 1 – September 15</p>' +
+    '</div>';
+
+  const textBody =
+    'Campus Ready — Daily Kit Form Digest\n' + dateStr + '\n\n' +
+    'Total cohort: ' + totalCohort + ' | Submitted today: ' + count + ' | Outstanding: ' + outstanding + '\n\n' +
+    (count === 0
+      ? 'No submissions today.'
+      : todaySubmissions.map(function(s) {
+          return s.name + ' (' + s.email + ') — ' + s.college + ' — ' + s.time;
+        }).join('\n'));
+
+  GmailApp.sendEmail('hello@campusready.org', subject, textBody, {
+    htmlBody: htmlBody,
+    name:     'Campus Ready Foundation',
+    from:     'hello@campusready.org'
+  });
+
+  Logger.log('Kit form digest sent: ' + count + ' submissions, ' + outstanding + ' outstanding of ' + totalCohort);
+}
+
+function _digestStatCard(label, value, color) {
+  return '<div style="flex:1;background:#f9fafb;border-radius:8px;padding:14px 16px;">' +
+    '<div style="font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">' + label + '</div>' +
+    '<div style="font-size:28px;font-weight:500;color:' + color + ';">' + value + '</div>' +
+    '</div>';
+}
+
+function testKitFormDailyDigest() {
+  sendKitFormDailyDigest();
+}
+
+function deleteStudentFromResolver(ss, email) {
+  const resolverSheet = ss.getSheetByName('Resolver');
+  if (!resolverSheet || resolverSheet.getLastRow() < 2) return;
+  const data = resolverSheet.getDataRange().getValues();
+  const rowsToDelete = [];
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][1] && data[i][1].toString().toLowerCase() === email.toLowerCase()) {
+      rowsToDelete.push(i + 1);
+    }
+  }
+  for (let i = rowsToDelete.length - 1; i >= 0; i--) {
+    resolverSheet.deleteRow(rowsToDelete[i]);
+  }
+  Logger.log(`Cleared ${rowsToDelete.length} Resolver rows for ${email}`);
 }
