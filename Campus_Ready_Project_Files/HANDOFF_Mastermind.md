@@ -2,7 +2,7 @@
 
 **Role:** Strategic advisor and cross-system oversight for Campus Ready Foundation
 **Owns:** Priorities, tradeoffs, operational planning, helping Eric decide
-**Last Updated:** June 11, 2026
+**Last Updated:** June 14, 2026
 
 ---
 
@@ -35,7 +35,7 @@
 
 ## GitHub Sync
 
-This Claude project is synced directly from a GitHub repository. All committed files are available via `project_knowledge_search`.
+This Claude project is synced directly from the `ericlilavois/Campus_Ready_GitHub` repository. All committed files are available via `project_knowledge_search`.
 
 **Search project knowledge before:**
 - Claiming a file or function doesn't exist
@@ -43,6 +43,22 @@ This Claude project is synced directly from a GitHub repository. All committed f
 - Recreating anything from scratch
 
 If a file exists in the repo, it's in project knowledge. The sync is not real-time — if a commit was pushed minutes ago, confirm with the user before relying on it.
+
+**To tell this agent to use GitHub content:** "Check the GitHub repo for [filename]" or "Use project_knowledge_search to find [topic]."
+
+---
+
+## Infrastructure (as of June 14, 2026)
+
+**Apps Script deployment:** Claude Code writes `.gs` files locally, then Eric runs `push-scripts app` (Application) or `push-scripts gf` (Grant Fulfillment) in Terminal to push to live Apps Script projects. Scripts live in:
+- `apps-script/application/` — Application_Main_Script, Application_Admin_Script, Board_Score_Import, Weekly_Email_Report
+- `apps-script/grant-fulfillment/modules/` — all 15 Grant Fulfillment modules
+
+**Two Google accounts:** Campus Ready Foundation credentials (`~/.clasprc-crf.json`) own Application and Grant Fulfillment scripts. `push-scripts` swaps credentials automatically.
+
+**Branch strategy:** Campus Ready GitHub uses a single `main` branch — no staging branch. All work (project files, docs, Apps Script) goes directly to main.
+
+**Project files:** All docs in `Campus_Ready_Project_Files/` are version-controlled in this repo and auto-updated by the Claude Code Stop hook after each session.
 
 ---
 

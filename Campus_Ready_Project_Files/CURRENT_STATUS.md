@@ -1,6 +1,6 @@
 # Current Status — Campus Ready Foundation
 
-**Last Updated:** June 11, 2026
+**Last Updated:** June 14, 2026
 
 ---
 
@@ -76,8 +76,9 @@
 
 ### Application System
 - Application form: Closed (window ended May 15)
-- Apps Script (doPost): Operational — now in version control (`apps-script/`)
+- Apps Script (doPost): Operational — in version control (`apps-script/application/`) with clasp deployment
 - Apps Script secrets: API key rotated and moved to Script Properties (May 21) — source code contains no credentials
+- Apps Script deploy: Run `push-scripts app` in Terminal — requires Campus Ready Foundation Google account (`~/.clasprc-crf.json`)
 - Master Sheet: 45 applications received — column AX added ("College UNITID")
 - PDF generation: Working — label updated from "Address" to "College Location"
 - Confirmation emails: Sent
@@ -98,7 +99,7 @@
 - Product_Logic: ✅ 174 products — zero duplicate IDs, zero URL errors, all resolver dimensions confirmed correct
 - Student_Selections headers: ✅ Fixed — all 23 column headers match doPost() write order
 - COLOR_CRIT: ✅ Deployed — slide color matching active in resolver
-- Apps Script: ✅ New version deployed — includes rebuildProductLogic(), COLOR_CRIT, personalized link auto-verify, Kit Form Email system, Kit Confirmation Email
+- Apps Script: ✅ New version deployed — includes rebuildProductLogic(), COLOR_CRIT, personalized link auto-verify, Kit Form Email system, Kit Confirmation Email. In version control at `apps-script/grant-fulfillment/` with clasp deployment via `push-scripts gf`.
 - Kit Confirmation Email: ✅ Confirmed working — fires automatically after submission, displays all 7 product categories in school colors, checkboxes for physical tracking as packages arrive. `testKitConfirmationEmail()` available in Fulfillment Tools menu.
 - Kit Form Email system: ✅ Built — sendKitFormEmails() ready for July 1 send
 - Personalized link auto-verify: ✅ Built — ?id=CR_XXXX auto-routes students on page load
@@ -175,8 +176,12 @@
 | Application | CLAUDE.md repo configuration file | Complete |
 | Application | IPEDS school database (`crf_schools_merged.json`) | Complete — 5,969 schools, aliases merged |
 | Application | College typeahead picker (form integration) | ✅ Complete — shipped May 21 |
-| Application | Apps Script in version control (`apps-script/`) | ✅ Complete |
+| Application | Apps Script in version control (`apps-script/application/`) | ✅ Complete |
 | Application | API key moved to Script Properties | ✅ Complete |
+| Application | Apps Script deploy via clasp (`push-scripts app`) | ✅ Complete — June 14 |
+| Infrastructure | Project files in GitHub repo (`Campus_Ready_Project_Files/`) | ✅ Complete — June 14 |
+| Infrastructure | claude.ai project synced from GitHub | ✅ Complete — June 14 |
+| Fulfillment | Apps Script deploy via clasp (`push-scripts gf`) | ✅ Complete — June 14 |
 | Fulfillment | Kit customization form — full rebuild | ✅ Complete — live at award.campusready.org |
 | Fulfillment | Product_Logic — rebuildProductLogic() | ✅ Complete — 174 products, clean |
 | Fulfillment | Student_Selections headers corrected | ✅ Complete |

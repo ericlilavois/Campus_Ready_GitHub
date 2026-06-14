@@ -371,3 +371,53 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 | DEC-007 to DEC-023 | Decisions made May–June 2026 |
 
 **Next available decision number: DEC-024**
+
+---
+
+## Infrastructure Decisions — June 14, 2026
+
+### DEC-024: Project Files Migrated to GitHub Repo (June 14, 2026)
+
+**Context:** Project files (handoffs, decision log, current status, reference docs) lived locally and in claude.ai project uploads — not version-controlled, prone to loss if local disk failed or project was reset.
+
+**Decision:** All `Campus_Ready_Project_Files/` now live in the `ericlilavois/Campus_Ready_GitHub` repo. Claude Code Stop hook (doc-router) auto-updates docs after each session. claude.ai project connected to GitHub so agents read files directly from the repo.
+
+**Rationale:** Version control protects against data loss. GitHub integration means agents always have current project context without manual uploads.
+
+**Status:** Implemented.
+
+---
+
+### DEC-025: Apps Script Deployment via clasp (June 14, 2026)
+
+**Context:** Changes to Application_Main_Script, Application_Admin_Script, Board_Score_Import, and Weekly_Email_Report required manual copy-paste into the Google Apps Script editor — slow and error-prone.
+
+**Decision:** Installed clasp (v3.3.0). Application and Grant Fulfillment scripts now live in `apps-script/application/` and `apps-script/grant-fulfillment/` in the `Campus_Ready_GitHub` repo. Deploy with `push-scripts app` or `push-scripts gf` from Terminal. Both require the Campus Ready Foundation Google account (`~/.clasprc-crf.json`).
+
+**Rationale:** Eliminates copy-paste deployment. Scripts are version-controlled. Any Claude Code session can push directly to live Apps Script projects.
+
+**Status:** Implemented.
+
+---
+
+### DEC-026: Branch Strategy Clarified (June 14, 2026)
+
+**Context:** Ambiguity about what work goes to staging vs main for the Campus Ready repo.
+
+**Decision:** The Campus Ready repo uses a single `main` branch for all work — project files, docs, Apps Script, and HTML. There is no staging branch. (Staging branches exist only in DormShopper and Grant Fulfillment repos, and only for their respective HTML form files.)
+
+**Rationale:** Campus Ready doesn't have a live consumer web app. The application form and grant fulfillment form are not served from this repo. All changes can go directly to main.
+
+**Status:** Active going forward.
+
+---
+
+## Decision Number Ranges
+
+| Range | Category |
+|-------|----------|
+| DEC-001 to DEC-006 | Pre-existing system decisions (documented retroactively) |
+| DEC-007 to DEC-023 | Decisions made May–June 2026 |
+| DEC-024 to DEC-026 | Infrastructure overhaul — June 14, 2026 |
+
+**Next available decision number: DEC-027**
