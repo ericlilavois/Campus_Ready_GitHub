@@ -860,7 +860,7 @@ function sendWinnerEmail(firstName, email) {
 '\n' +
 '      <table style="width:100%;margin:0 0 28px;border-collapse:collapse;">\n' +
 '        <tr><td style="padding:6px 0;vertical-align:top;width:12px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#469E92;margin-top:7px;"></span></td><td style="padding:6px 0 6px 10px;"><strong>Move-in essentials, personalized for you:</strong> bedding, towels, personal care items, and room basics, chosen around your style and preferences and delivered before move-in</td></tr>\n' +
-'        <tr><td style="padding:6px 0;vertical-align:top;width:12px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#469E92;margin-top:7px;"></span></td><td style="padding:6px 0 6px 10px;"><strong>Travel support</strong> to help cover the cost of getting to campus</td></tr>\n' +
+'        <tr><td style="padding:6px 0;vertical-align:top;width:12px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#469E92;margin-top:7px;"></span></td><td style="padding:6px 0 6px 10px;"><strong>Travel support</strong> to help cover the cost of getting to campus — and if you indicated on your application that a parent or guardian will accompany you, we\'re covering their travel too.</td></tr>\n' +
 '        <tr><td style="padding:6px 0;vertical-align:top;width:12px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#469E92;margin-top:7px;"></span></td><td style="padding:6px 0 6px 10px;"><strong>DoorDash credits</strong> for your first days: meals and groceries while you\'re getting settled</td></tr>\n' +
 '        <tr><td style="padding:6px 0;vertical-align:top;width:12px;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#469E92;margin-top:7px;"></span></td><td style="padding:6px 0 6px 10px;"><strong>A gift card for incidentals:</strong> because there\'s always something else you need</td></tr>\n' +
 '      </table>\n' +
@@ -883,7 +883,11 @@ function sendWinnerEmail(firstName, email) {
 '      </table>\n' +
 '\n' +
 '      <p style="margin:0 0 20px;">Questions before then? Reach us at <a href="mailto:hello@campusready.org" style="color:#469E92;text-decoration:none;">hello@campusready.org</a>.</p>\n' +
-'      <p style="margin:0 0 32px;">We\'re proud of you, and we\'ll be in touch. Now, have a great summer!</p>\n' +
+'      <p style="margin:0 0 20px;">We know high school graduation is coming. This is a big few weeks. Finish strong and we\'ll be in touch, soon.</p>\n' +
+'      <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin:0 0 32px;">\n' +
+'        <p style="margin:0 0 8px;font-size:14px;color:#231F20;">We\'d love to share your story. We plan to use photos and video from our events on our website, LinkedIn, and social media to celebrate our students and inspire future applicants. Unless you let us know otherwise, we\'ll assume you\'re comfortable being included.</p>\n' +
+'        <p style="margin:0;font-size:14px;color:#231F20;">If you\'d prefer we don\'t use your image, just email <a href="mailto:hello@campusready.org" style="color:#469E92;text-decoration:none;">hello@campusready.org</a> with <strong>&#34;No photos please&#34;</strong> in the subject line. No explanation needed. If you\'re under 18, this note applies to your parent or guardian as well.</p>\n' +
+'      </div>\n' +
 '\n' +
 '      <div style="border-top:1px solid #e5e7eb;padding-top:24px;">\n' +
 '        <p style="margin:0 0 4px;font-weight:600;">The Campus Ready Foundation Team</p>\n' +
@@ -897,7 +901,7 @@ function sendWinnerEmail(firstName, email) {
 'You\'ve earned a Campus Ready Foundation grant.\n\n' +
 'Here\'s what you\'ll be receiving:\n' +
 '• Move-in essentials, personalized for you: bedding, towels, personal care items, and room basics\n' +
-'• Travel support to help cover the cost of getting to campus\n' +
+'• Travel support to help cover the cost of getting to campus — and if you indicated on your application that a parent or guardian will accompany you, we\'re covering their travel too.\n' +
 '• DoorDash credits for your first days\n' +
 '• A gift card for incidentals\n\n' +
 'Here\'s what happens next:\n\n' +
@@ -905,7 +909,8 @@ function sendWinnerEmail(firstName, email) {
 'July 15 — Join us for our Orientation & Celebration. In person or Zoom. Details coming soon.\n\n' +
 '2 weeks before move-in — Your items arrive.\n\n' +
 'Questions? hello@campusready.org\n\n' +
-'We\'re proud of you, and we\'ll be in touch. Now, have a great summer!\n\n' +
+'We know high school graduation is coming. This is a big few weeks. Finish strong and we\'ll be in touch.\n\n' +
+'A note on photos: We plan to share photos and video from our events on our website, LinkedIn, and social media to celebrate our students and inspire future applicants. Unless you let us know otherwise, we\'ll assume you\'re comfortable being included. If you\'d prefer we don\'t use your image, email hello@campusready.org with "No photos please" in the subject. No explanation needed. If you\'re under 18, this applies to your parent or guardian.\n\n' +
 'The Campus Ready Foundation Team';
 
   GmailApp.sendEmail(email, subject, textBody, {
