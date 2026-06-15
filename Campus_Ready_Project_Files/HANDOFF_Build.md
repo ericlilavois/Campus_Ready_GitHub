@@ -295,7 +295,3 @@ These are the highest-risk areas for technical changes:
 ---
 
 *These systems process real student applications for real financial support. Precision matters more than speed.*
-
-## Recent Completions
-
-**[2026-06-15] Orientation Email Guest Support:** Added Orientation_Guests tab to Email_Orientation.gs. sendOrientationEmails() now pulls from both Grant_Recipients and guest list. Created previewOrientationRecipients() logger-only function for dry-run verification without spreadsheet context. Resolved clasp auth failure (stale ~/.clasprc-crf.json). All changes committed to main.
