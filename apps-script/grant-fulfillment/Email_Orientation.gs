@@ -88,6 +88,54 @@ function buildRsvpThankYouHtml(isAttending, responseLabel) {
     '</div></body></html>';
 }
 
+function previewOrientationRecipients() {
+  const ss         = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet      = ss.getSheetByName('Grant_Recipients');
+  const guestSheet = ss.getSheetByName('Orientation_Guests');
+  const ui         = SpreadsheetApp.getUi();
+
+  if (!sheet) { ui.alert('Error', 'Grant_Recipients sheet not found.', ui.ButtonSet.OK); return; }
+
+  const toSend = [];
+
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    const applicationId = data[i][0] ? data[i][0].toString().trim() : '';
+    const name          = data[i][1] ? data[i][1].toString().trim() : '';
+    const email         = data[i][2] ? data[i][2].toString().trim() : '';
+    if (!applicationId || !name || !email) continue;
+    toSend.push({ type: 'Student', firstName: name.split(' ')[0], fullName: name, email, applicationId });
+  }
+
+  if (guestSheet) {
+    const guestData = guestSheet.getDataRange().getValues();
+    for (let i = 1; i < guestData.length; i++) {
+      const name  = guestData[i][0] ? guestData[i][0].toString().trim() : '';
+      const email = guestData[i][1] ? guestData[i][1].toString().trim() : '';
+      if (!name || !email) continue;
+      toSend.push({ type: 'Guest', firstName: name.split(' ')[0], fullName: name, email, applicationId: 'GUEST_' + name.replace(/\s+/g, '') });
+    }
+  }
+
+  // Log full list to Apps Script Logger
+  Logger.log('=== ORIENTATION EMAIL PREVIEW — ' + toSend.length + ' recipients ===');
+  toSend.forEach(function(r, i) {
+    Logger.log((i + 1) + '. [' + r.type + '] "Hi ' + r.firstName + '," → ' + r.email + ' (' + r.applicationId + ')');
+  });
+
+  // Build a readable alert
+  const students = toSend.filter(function(r) { return r.type === 'Student'; });
+  const guests   = toSend.filter(function(r) { return r.type === 'Guest'; });
+
+  let msg = 'STUDENTS (' + students.length + '):\n';
+  students.forEach(function(r) { msg += '  • ' + r.fullName + ' → ' + r.email + '\n'; });
+  msg += '\nGUESTS (' + guests.length + '):\n';
+  guests.forEach(function(r) { msg += '  • ' + r.fullName + ' → ' + r.email + '\n'; });
+  msg += '\nTotal: ' + toSend.length + ' recipients. No emails sent.';
+
+  ui.alert('Orientation Email Preview', msg, ui.ButtonSet.OK);
+}
+
 function testOrientationEmail() {
   const ss    = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName('Grant_Recipients');
