@@ -246,3 +246,7 @@
 ---
 
 *45 applications received. 41 awarded, 4 denied. Award emails sent and winners transferred May 27, 2026. Kit form fully rebuilt, confirmed working, confirmation email deployed. Preferences form goes out July 1. July 15 event venue confirmed.*
+
+## Grant Fulfillment Status
+
+**Orientation emails:** Script deployed and ready for July 15 event. Orientation_Guests tab added to support non-student recipients (guests receive GUEST_FirstnameLastname as RSVP ID). previewOrientationRecipients() dry-run function available in Apps Script editor. Eric to populate 7 guests in Orientation_Guests tab (Name/Email columns) and run preview before sending.
