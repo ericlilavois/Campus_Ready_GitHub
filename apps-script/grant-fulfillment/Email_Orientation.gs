@@ -92,9 +92,8 @@ function previewOrientationRecipients() {
   const ss         = SpreadsheetApp.getActiveSpreadsheet();
   const sheet      = ss.getSheetByName('Grant_Recipients');
   const guestSheet = ss.getSheetByName('Orientation_Guests');
-  const ui         = SpreadsheetApp.getUi();
 
-  if (!sheet) { ui.alert('Error', 'Grant_Recipients sheet not found.', ui.ButtonSet.OK); return; }
+  if (!sheet) { Logger.log('ERROR: Grant_Recipients sheet not found.'); return; }
 
   const toSend = [];
 
@@ -117,23 +116,22 @@ function previewOrientationRecipients() {
     }
   }
 
-  // Log full list to Apps Script Logger
-  Logger.log('=== ORIENTATION EMAIL PREVIEW — ' + toSend.length + ' recipients ===');
-  toSend.forEach(function(r, i) {
-    Logger.log((i + 1) + '. [' + r.type + '] "Hi ' + r.firstName + '," → ' + r.email + ' (' + r.applicationId + ')');
-  });
-
-  // Build a readable alert
   const students = toSend.filter(function(r) { return r.type === 'Student'; });
   const guests   = toSend.filter(function(r) { return r.type === 'Guest'; });
 
-  let msg = 'STUDENTS (' + students.length + '):\n';
-  students.forEach(function(r) { msg += '  • ' + r.fullName + ' → ' + r.email + '\n'; });
-  msg += '\nGUESTS (' + guests.length + '):\n';
-  guests.forEach(function(r) { msg += '  • ' + r.fullName + ' → ' + r.email + '\n'; });
-  msg += '\nTotal: ' + toSend.length + ' recipients. No emails sent.';
-
-  ui.alert('Orientation Email Preview', msg, ui.ButtonSet.OK);
+  Logger.log('=== ORIENTATION EMAIL PREVIEW — ' + toSend.length + ' total recipients ===');
+  Logger.log('');
+  Logger.log('STUDENTS (' + students.length + '):');
+  students.forEach(function(r, i) {
+    Logger.log('  ' + (i + 1) + '. "Hi ' + r.firstName + '," → ' + r.email);
+  });
+  Logger.log('');
+  Logger.log('GUESTS (' + guests.length + '):');
+  guests.forEach(function(r, i) {
+    Logger.log('  ' + (i + 1) + '. "Hi ' + r.firstName + '," → ' + r.email);
+  });
+  Logger.log('');
+  Logger.log('No emails sent. Verify the list above before running sendOrientationEmails().');
 }
 
 function testOrientationEmail() {
