@@ -111,9 +111,10 @@ function testOrientationEmail() {
 }
 
 function sendOrientationEmails() {
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = ss.getSheetByName('Grant_Recipients');
-  const ui    = SpreadsheetApp.getUi();
+  const ss         = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet      = ss.getSheetByName('Grant_Recipients');
+  const guestSheet = ss.getSheetByName('Orientation_Guests');
+  const ui         = SpreadsheetApp.getUi();
 
   if (!sheet) { ui.alert('Error', 'Grant_Recipients sheet not found.', ui.ButtonSet.OK); return; }
 
@@ -126,6 +127,17 @@ function sendOrientationEmails() {
     const email         = data[i][2] ? data[i][2].toString().trim() : '';
     if (!applicationId || !name || !email) continue;
     toSend.push({ applicationId, firstName: name.split(' ')[0], email });
+  }
+
+  // Pull guests from Orientation_Guests tab (columns: Name, Email)
+  if (guestSheet) {
+    const guestData = guestSheet.getDataRange().getValues();
+    for (let i = 1; i < guestData.length; i++) {
+      const name  = guestData[i][0] ? guestData[i][0].toString().trim() : '';
+      const email = guestData[i][1] ? guestData[i][1].toString().trim() : '';
+      if (!name || !email) continue;
+      toSend.push({ applicationId: 'GUEST_' + name.replace(/\s+/g, ''), firstName: name.split(' ')[0], email });
+    }
   }
 
   if (toSend.length === 0) {
