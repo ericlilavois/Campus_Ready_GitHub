@@ -212,3 +212,7 @@ Your job is to be genuinely helpful in all of these modes. Have a point of view.
 ---
 
 *The Foundation's mission is simple: no student's potential should be diminished by the stress of simply getting started. Every strategic decision you help make serves that mission.*
+
+## Recent Sessions
+
+**June 15, 2026:** Verified Lyft policy and all 41 student credits; confirmed Daysee ineligible; locked July 15 event program and Run of Show; NVCF follow-up yielded $1,000 DAF gift; second Lyft credit ask pending student responses; DoorDash speaker role TBD pending Thursday strategic comms call.

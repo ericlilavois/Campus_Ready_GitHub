@@ -246,3 +246,11 @@
 ---
 
 *45 applications received. 41 awarded, 4 denied. Award emails sent and winners transferred May 27, 2026. Kit form fully rebuilt, confirmed working, confirmation email deployed. Preferences form goes out July 1. July 15 event venue confirmed.*
+
+## Grant Fulfillment Status
+
+**As of June 15, 2026:** 40 eligible students confirmed for grant fulfillment (41 awarded minus Daysee Jossabeth Queme Mazariegos, ineligible). All 41 Lyft credits verified against policy (flat $150 per student). Pro forma locked—no revisions needed. Second Lyft credit request to Celia Moreno will be based on actual student travel plan responses.
+
+## July 15 Event Status
+
+**As of June 15, 2026:** Run of Show (v2, June 9) and event program locked. Kelli Watkins confirmed for Belonging & Campus Life session. Victor Ruiz-Cornejo (DoorDash) role TBD pending Thursday call with DoorDash head of strategic communications. Event is on track for launch.

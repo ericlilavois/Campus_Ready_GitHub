@@ -23,102 +23,7 @@ Each partner entry covers: what they provide, key contacts, approved public lang
 
 ### Lyft
 
-**Status:** Active — 2026 grant closed. 50 credits confirmed at $150 each ($7,500 total).
-
-**What They Provide:**
-Ride credits for student travel to campus. 50 credits at $150 each = $7,500 total grant value. Code prefix: "READY" (codes look like: READYj98xj3nvi9). Validity window: August 1 – September 15.
-
-**Key Contacts:**
-
-| Name | Title | Contact | Notes |
-|------|-------|---------|-------|
-| Celia Moreno | Social Impact | — | Day-to-day operational contact. Manages grant execution and code delivery. |
-| David Risher | CEO | david@risher.net | Original relationship. Introduction to Celia came through him. Relationship-deepening play — do not conflate with Celia's operational track. Introduction via Stefanie Jay pending. |
-
-**Approved Public Language:**
-> "Lyft joined us as a transportation partner."
-> "Lyft is providing ride credits for our students' travel to campus."
-
-Logo approved for use on Partners page and in communications.
-
-**Protocol Notes:**
-- Lyft and David Risher are two separate relationship tracks. Celia owns the operational partnership. David is a CEO-level relationship being developed separately. Do not conflate.
-
-**Outstanding Items:**
-- [ ] David Risher introduction: sequencing per Stefanie Jay — wait for Risher's response before looping Stefanie in.
-
-**Next Move:** 2026 grant is closed. Steward the relationship with Celia. Deepen the David Risher relationship track separately.
-
----
-
-### Target
-
-**Status:** Active — Community Engagement Fund grant received
-
-**What They Provide:**
-Community Engagement Fund grant. First outside grant the Foundation received. Confirmation that the model resonates with organizations that understand the gap being addressed.
-
-**Key Contacts:**
-
-| Name | Title | Notes |
-|------|-------|-------|
-| Tracy Curry | — | Original connection. Introduced Eric to George Juarez. |
-| George Juarez | — | Primary relationship contact post-introduction. |
-
-**Approved Public Language:**
-> "Target provided an early Community Engagement Grant."
-> "Target" (name only, as a partner reference)
-
-Logo approved for use on Partners page.
-
-**Protocol Notes:**
-- Steward this relationship. Return with 2026 cohort results — Target giving programs reward demonstrated outcomes.
-
-**Outstanding Items:**
-- [ ] Follow up with 2026 cohort results when available (post-August fulfillment)
-
-**Next Move:** No immediate action. Steward relationship with outcomes update after first cohort.
-
----
-
-### DoorDash
-
-**Status:** Active — Community Credits confirmed and in hand
-
-**What They Provide:**
-50 Community Credits at $100 each ($5,000 total). Students can use for meal delivery or grocery delivery. Credits carry true monetary value, usable anywhere on DoorDash, non-expiring. Distributed as digital codes — built into fulfillment process.
-
-Additional programs to surface to students:
-- Student DashPass (discounted plan, first month free for new members)
-- SNAP/EBT accepted for eligible grocery purchases from participating stores
-
-DoorDash has offered to amplify on their channels — include them in press, social media mentions, and events.
-
-**Key Contacts:**
-
-| Name | Title | Contact | Notes |
-|------|-------|---------|-------|
-| Sueli Shaw | Head of Social Impact & Sustainability | — | Original relationship contact. Confirmed the grant. |
-| Victor Ruiz-Cornejo | Head of California Public Policy | — | Day-to-day contact and approval authority for public materials. |
-| Peter Esmond | Restaurant Integration | — | Original introduction. Friend of Eric's. Bcc'd off once Sueli engaged. |
-
-**Approved Public Language:**
-Logo use and public language approved by Victor Ruiz-Cornejo.
-
-> "DoorDash joined us as a partner, providing digital gift cards our students can use for meal delivery or groceries during the early-arrival window."
-
-**Protocol Notes:**
-- All public materials (logos, announcements, social posts) require Victor Ruiz-Cornejo's approval before going live.
-- DoorDash cannot track how gift cards are spent — this is a known limitation, not a concern.
-- Unlike Lyft codes, DoorDash credits are not program-specific (they carry true monetary value and can be used for anything on the platform). Worth noting internally — not a problem, but different from the Lyft model.
-
-**Outstanding Items:**
-- [ ] Surface Student DashPass and SNAP/EBT information to students in fulfillment communications
-
-**Next Move:** Credits in hand. Incorporate into fulfillment process. Surface DashPass and SNAP/EBT info to students in kit communications.
-
----
-
+**Status:** Active partnership. $150 flat credit per eligible student confirmed and verified across all 40 grant recipients. Second credit ask (pending actual student responses) to be coordinated with Celia Moreno. Contact for follow-up: Celia Moreno.
 ## Operational Partners
 
 ---
@@ -264,3 +169,11 @@ Do NOT use:
 ---
 
 *This document is a living reference. Update it whenever a partner relationship materially changes: new contacts, new commitments, confirmed grants or credits, new constraints, or resolved outstanding items. The goal is that any agent can read this document and have an accurate picture of every partner relationship without needing to reconstruct it from conversation history.*
+
+## DoorDash
+
+**Status:** Active partnership. July 15 event participation confirmed. Victor Ruiz-Cornejo role TBD pending Thursday call with DoorDash head of strategic communications. Event program locked; final speaker/role details pending that call.
+
+## Nevada Community Foundation (NVCF)
+
+**Status:** Active and productive. Follow-up sent in June 2026. DAF donor gave $1,000 as a result. Relationship generating concrete revenue. Continue engagement.
