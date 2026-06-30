@@ -75,7 +75,6 @@ function sendKitFormEmail(firstName, email, personalizedLink) {
 '      <p style="font-size:16px;color:rgba(255,255,255,0.88);margin:0;font-weight:400;">It\'s time to customize your kit.</p>\n' +
 '    </div>\n' +
 '    <div style="padding:32px;font-size:15px;line-height:1.7;color:#231F20;">\n' +
-'      <p style="margin:0 0 20px;">Hi ' + firstName + ',</p>\n' +
 '      <p style="margin:0 0 20px;">We promised we\'d be back in touch, and here we are. Your Campus Ready Move-In Essentials are ready for you to personalize — colors, sizes, scents, and where you\'d like everything shipped.</p>\n' +
 '      <p style="margin:0 0 28px;">Get your <strong>housing confirmation</strong> and <strong>college acceptance letter</strong> handy. You\'ll need to upload them as part of the process.</p>\n' +
 '      <div style="background:#f9fafb;border-radius:12px;padding:24px;margin:0 0 28px;">\n' +
@@ -120,7 +119,7 @@ function sendKitFormEmail(firstName, email, personalizedLink) {
 '      </div>\n' +
 '      <div style="background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:20px 24px;margin:0 0 28px;">\n' +
 '        <p style="margin:0 0 6px;font-weight:600;color:#0f766e;font-size:15px;">&#x1F4C5; Remember to mark your calendars for the July 15th Orientation &amp; Celebration.</p>\n' +
-'        <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;">On July 15 we\'re hosting a celebration for our grant award winners. We\'ll walk through everything you\'re getting, distribute credits and cards, and talk about your first days on campus. You can join us in person or on Zoom. Details coming soon.</p>\n' +
+'        <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;">We\'re going to walk through everything you\'re getting, distribute credits and cards, and talk about your first days on campus. If you can\'t join, don\'t worry. We\'ll be in touch to set up a separate Zoom or individual call.</p>\n' +
 '      </div>\n' +
 '      <div style="text-align:center;margin:0 0 28px;">\n' +
 '        <a href="' + personalizedLink + '" style="display:inline-block;background:#469E92;color:#ffffff;font-family:\'Inter\',-apple-system,sans-serif;font-size:16px;font-weight:600;text-decoration:none;padding:16px 40px;border-radius:8px;letter-spacing:0.01em;">Customize My Kit</a>\n' +
@@ -136,7 +135,6 @@ function sendKitFormEmail(firstName, email, personalizedLink) {
 '</html>';
 
   const textBody =
-'Hi ' + firstName + ',\n\n' +
 'We promised we\'d be back in touch, and here we are. Your Campus Ready Move-In Essentials are ready for you to personalize — colors, sizes, scents, and where you\'d like everything shipped.\n\n' +
 'Get your housing confirmation and college acceptance letter handy. You\'ll need to upload them as part of the process.\n\n' +
 'Your 2026 Campus Ready Grant includes:\n\n' +
@@ -145,7 +143,7 @@ function sendKitFormEmail(firstName, email, personalizedLink) {
 '• DoorDash Credits — Meal or grocery delivery for your first days on campus.\n' +
 '• Incidentals Gift Card — For anything that comes up in those first few days.\n\n' +
 'Remember to mark your calendars for the July 15th Orientation & Celebration.\n' +
-'On July 15 we\'re hosting a celebration for our grant award winners. Details coming soon.\n\n' +
+'We\'re going to walk through everything you\'re getting, distribute credits and cards, and talk about your first days on campus. If you can\'t join, don\'t worry. We\'ll be in touch to set up a separate Zoom or individual call.\n\n' +
 'Customize your kit here (this link is just for you):\n' +
 personalizedLink + '\n\n' +
 'Can\'t wait to see your kit take shape. See you on the 15th.\n\n' +
