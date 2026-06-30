@@ -14,3 +14,6 @@
 # are documented at the top of tools/build_schools/build.py.
 tools/build_schools/raw/
 tools/build_schools/dict/
+
+# Node dependencies — install locally with `npm install`
+tools/node_modules/
