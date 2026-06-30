@@ -119,7 +119,7 @@ function sendKitFormEmail(firstName, email, personalizedLink) {
 '        </table>\n' +
 '      </div>\n' +
 '      <div style="background:#f0fdfa;border:1px solid #99f6e4;border-radius:10px;padding:20px 24px;margin:0 0 28px;">\n' +
-'        <p style="margin:0 0 6px;font-weight:600;color:#0f766e;font-size:15px;">&#x1F4C5; Save the date — July 15</p>\n' +
+'        <p style="margin:0 0 6px;font-weight:600;color:#0f766e;font-size:15px;">&#x1F4C5; Remember to mark your calendars for the July 15th Orientation &amp; Celebration.</p>\n' +
 '        <p style="margin:0;color:#374151;font-size:14px;line-height:1.6;">On July 15 we\'re hosting a celebration for our grant award winners. We\'ll walk through everything you\'re getting, distribute credits and cards, and talk about your first days on campus. You can join us in person or on Zoom. Details coming soon.</p>\n' +
 '      </div>\n' +
 '      <div style="text-align:center;margin:0 0 28px;">\n' +
