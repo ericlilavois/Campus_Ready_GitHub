@@ -144,7 +144,7 @@ function sendKitFormEmail(firstName, email, personalizedLink) {
 '• Lyft Credits — Rides to the airport or directly to campus.\n' +
 '• DoorDash Credits — Meal or grocery delivery for your first days on campus.\n' +
 '• Incidentals Gift Card — For anything that comes up in those first few days.\n\n' +
-'Save the date — July 15\n' +
+'Remember to mark your calendars for the July 15th Orientation & Celebration.\n' +
 'On July 15 we\'re hosting a celebration for our grant award winners. Details coming soon.\n\n' +
 'Customize your kit here (this link is just for you):\n' +
 personalizedLink + '\n\n' +
