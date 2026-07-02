@@ -81,12 +81,12 @@ function uploadDocuments(email, applicationId, housingFile, acceptanceFile) {
     const housingBlob = Utilities.newBlob(
       Utilities.base64Decode(housingFile.data),
       getMimeType(housingFile.name),
-      applicationId + '_Housing.pdf'
+      applicationId + '_Housing.' + housingFile.name.split('.').pop().toLowerCase()
     );
     const acceptanceBlob = Utilities.newBlob(
       Utilities.base64Decode(acceptanceFile.data),
       getMimeType(acceptanceFile.name),
-      applicationId + '_Acceptance.pdf'
+      applicationId + '_Acceptance.' + acceptanceFile.name.split('.').pop().toLowerCase()
     );
 
     const housingDriveFile    = folder.createFile(housingBlob);
