@@ -117,7 +117,10 @@ function doPost(e) {
         }
       }
       if (!grantRecipientsRowIndex) {
-        Logger.log(`Warning: Student ${studentEmail} not found in Grant_Recipients. Using default year ${cohortYear}`);
+        Logger.log(`Rejected: ${studentEmail} not found in Grant_Recipients`);
+        return ContentService
+          .createTextOutput(JSON.stringify({ status: 'error', message: 'not_authorized' }))
+          .setMimeType(ContentService.MimeType.JSON);
       }
     }
 
