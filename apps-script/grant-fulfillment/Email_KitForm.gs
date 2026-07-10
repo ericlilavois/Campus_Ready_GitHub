@@ -6,6 +6,13 @@
 
 const KIT_FORM_BASE_URL = 'https://award.campusready.org/Customize_Your_Kit.html';
 
+// Grant_Recipients column indices (0-based)
+const GR_COL_APP_ID            = 0;   // A: Application ID
+const GR_COL_NAME              = 1;   // B: Student Name
+const GR_COL_EMAIL             = 2;   // C: Email Address
+const GR_COL_KIT_EMAIL_SENT    = 25;  // Z: Kit Email Sent ("Yes")
+const GR_COL_KIT_EMAIL_SENT_AT = 26;  // AA: Kit Email Sent At (timestamp)
+
 function sendKitFormEmails() {
   const ss    = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName('Grant_Recipients');
@@ -13,28 +20,42 @@ function sendKitFormEmails() {
 
   if (!sheet) { ui.alert('Error', 'Grant_Recipients sheet not found.', ui.ButtonSet.OK); return; }
 
-  const data   = sheet.getDataRange().getValues();
-  const toSend = [];
+  const data    = sheet.getDataRange().getValues();
+  const toSend  = [];
+  const skipped = [];
 
   for (let i = 1; i < data.length; i++) {
-    const applicationId = data[i][0] ? data[i][0].toString().trim() : '';
-    const name          = data[i][1] ? data[i][1].toString().trim() : '';
-    const email         = data[i][2] ? data[i][2].toString().trim() : '';
+    const applicationId = data[i][GR_COL_APP_ID]  ? data[i][GR_COL_APP_ID].toString().trim()  : '';
+    const name          = data[i][GR_COL_NAME]     ? data[i][GR_COL_NAME].toString().trim()     : '';
+    const email         = data[i][GR_COL_EMAIL]    ? data[i][GR_COL_EMAIL].toString().trim()    : '';
     if (!applicationId || !name || !email) continue;
-    toSend.push({ applicationId, firstName: name.split(' ')[0], email });
+
+    if (data[i][GR_COL_KIT_EMAIL_SENT] === 'Yes') {
+      skipped.push(email);
+      continue;
+    }
+
+    toSend.push({ applicationId, firstName: name.split(' ')[0], email, rowIndex: i + 1 });
   }
 
   if (toSend.length === 0) {
-    ui.alert('Nothing to Send', 'No recipients found in Grant_Recipients.', ui.ButtonSet.OK);
+    ui.alert(
+      'Nothing to Send',
+      'All ' + skipped.length + ' recipient(s) have already been sent the kit form email.',
+      ui.ButtonSet.OK
+    );
     return;
   }
 
-  const confirm = ui.alert(
-    'Send Kit Form Emails?',
+  let confirmMsg =
     'Ready to send personalized links to ' + toSend.length + ' recipient(s).\n\n' +
-    'Each student will receive a unique link that takes them directly into the form.\n\nThis cannot be undone. Continue?',
-    ui.ButtonSet.YES_NO
-  );
+    'Each student will receive a unique link that takes them directly into the form.\n\n';
+  if (skipped.length > 0) {
+    confirmMsg += skipped.length + ' recipient(s) already sent — will be skipped.\n\n';
+  }
+  confirmMsg += 'This cannot be undone. Continue?';
+
+  const confirm = ui.alert('Send Kit Form Emails?', confirmMsg, ui.ButtonSet.YES_NO);
   if (confirm !== ui.Button.YES) return;
 
   let successCount = 0;
@@ -44,6 +65,7 @@ function sendKitFormEmails() {
     try {
       const personalizedLink = KIT_FORM_BASE_URL + '?id=' + encodeURIComponent(student.applicationId);
       sendKitFormEmail(student.firstName, student.email, personalizedLink);
+      _stampKitEmailSent(sheet, student.rowIndex);
       successCount++;
       Logger.log('Kit form email sent: ' + student.email + ' → ' + personalizedLink);
     } catch (error) {
@@ -53,8 +75,37 @@ function sendKitFormEmails() {
   });
 
   let summary = successCount + ' email(s) sent with personalized links.';
-  if (failCount > 0) summary += '\n' + failCount + ' failed — check Logs for details.';
+  if (skipped.length > 0) summary += '\n' + skipped.length + ' already sent — skipped.';
+  if (failCount > 0)       summary += '\n' + failCount + ' failed — check Logs for details.';
   ui.alert('Done', summary, ui.ButtonSet.OK);
+}
+
+// Stamps Kit Email Sent = Yes and Kit Email Sent At = now for the given sheet row (1-based).
+function _stampKitEmailSent(sheet, rowIndex) {
+  const ts = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
+  sheet.getRange(rowIndex, GR_COL_KIT_EMAIL_SENT    + 1).setValue('Yes');
+  sheet.getRange(rowIndex, GR_COL_KIT_EMAIL_SENT_AT + 1).setValue(ts);
+}
+
+// Resend the kit form email to a single student by email address.
+// Bypasses the "already sent" check — use when a student claims they never received it.
+function resendKitFormEmailToOne(targetEmail) {
+  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Grant_Recipients');
+  const data  = sheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][GR_COL_EMAIL].toString().trim().toLowerCase() === targetEmail.toLowerCase()) {
+      const applicationId    = data[i][GR_COL_APP_ID].toString().trim();
+      const firstName        = data[i][GR_COL_NAME].toString().split(' ')[0];
+      const personalizedLink = KIT_FORM_BASE_URL + '?id=' + encodeURIComponent(applicationId);
+      sendKitFormEmail(firstName, targetEmail, personalizedLink);
+      _stampKitEmailSent(sheet, i + 1);
+      Logger.log('Resent kit form email to ' + firstName + ' (' + targetEmail + ') → ' + personalizedLink);
+      return;
+    }
+  }
+  Logger.log('resendKitFormEmailToOne: student not found — ' + targetEmail);
 }
 
 function sendKitFormEmail(firstName, email, personalizedLink) {
