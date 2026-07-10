@@ -70,35 +70,8 @@ const NON_ATTENDEE_TRAVEL_STUDENTS = [
     companion:    'your mom',
     docsApproved: true
   },
-  {
-    firstName:    'Henry',
-    email:        'henryray2026@gmail.com',
-    college:      'Oregon State University - Cascades',
-    travelMode:   'drive',
-    departure:    'Saint Helena, CA',
-    destination:  'Bend, OR',
-    docsApproved: true
-  },
-  {
-    firstName:    'Amara',
-    email:        'amaraboerner5@gmail.com',
-    college:      'CSU San Marcos',
-    travelMode:   'drive',
-    departure:    'Santa Rosa, CA',
-    destination:  'San Marcos, CA',
-    docsApproved: true
-  },
-  {
-    firstName:    'Melanie',
-    email:        'melanieavila1515@gmail.com',
-    college:      'Cal Poly SLO',
-    travelMode:   'drive',
-    departure:    'Sonoma, CA',
-    destination:  'San Luis Obispo, CA',
-    docsApproved: true
-  }
-  // Marisol Navarro: Saint Helena → Chico (CSU Chico), 144 mi Lyft-direct.
-  // travelMode 'lyft' not yet implemented — add once variant is built and docs approved.
+  // Henry Ray, Amara Boerner, Melanie Avila, and Marisol Navarro are all attending
+  // the July 15 event — they receive their benefits in person, not via this email.
 ];
 
 // ============================================
