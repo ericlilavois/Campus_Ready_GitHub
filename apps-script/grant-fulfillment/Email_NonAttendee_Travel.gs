@@ -120,24 +120,24 @@ function testNonAttendeeTravelEmails() {
 function _nonAttendeeTravelSection_Flight(student) {
   return {
     html:
-      '<p style="margin:0 0 12px;">We\'re also setting up a Ramp virtual card to cover your flight to ' + student.college + '. It\'s a secure digital card number you\'ll use to book your ticket directly — not a physical card. We\'ll share the details once we\'ve confirmed your plans.</p>' +
-      '<div style="background:#EEF2FF;border-left:4px solid #4F46E5;border-radius:0 8px 8px 0;padding:16px;font-size:14px;color:#1e1b4b;">Based on your application, we\'re planning to cover a flight from <strong>' + student.departure + '</strong> to <strong>' + student.destination + '</strong>. Let us know if you\'re planning to get to school a different way.</div>',
+      '<p style="font-size:13px;color:#374151;line-height:1.65;margin:0 0 10px;">We\'re setting up a Ramp virtual card to cover your flight to ' + student.college + '. It\'s a secure digital card number you\'ll use to book your ticket directly — not a physical card. We\'ll share the details once we\'ve confirmed your plans.</p>' +
+      '<p style="font-size:12px;color:#6b7280;margin:0;">Based on your application: flight from <strong>' + student.departure + '</strong> to <strong>' + student.destination + '</strong>. Let us know if your plans have changed.</p>',
     text:
       'YOUR TRAVEL CARD\n\n' +
-      'We\'re also setting up a Ramp virtual card to cover your flight to ' + student.college + '. It\'s a secure digital card number you\'ll use to book your ticket directly — not a physical card. We\'ll share the details once we\'ve confirmed your plans.\n\n' +
-      'Based on your application, we\'re planning to cover a flight from ' + student.departure + ' to ' + student.destination + '. Let us know if you\'re planning to get to school a different way.\n\n'
+      'We\'re setting up a Ramp virtual card to cover your flight to ' + student.college + '. It\'s a secure digital card number you\'ll use to book your ticket directly — not a physical card. We\'ll share the details once we\'ve confirmed your plans.\n\n' +
+      'Based on your application: flight from ' + student.departure + ' to ' + student.destination + '. Let us know if your plans have changed.\n\n'
   };
 }
 
 function _nonAttendeeTravelSection_Drive(student) {
   return {
     html:
-      '<p style="margin:0 0 12px;">We\'re also setting up a Ramp virtual card to cover gas for your drive to ' + student.college + ', plus one night of hotel if you need it along the way. It\'s a secure digital card number — no physical card. We\'ll share the details once we\'ve confirmed your plans.</p>' +
-      '<div style="background:#ECFDF5;border-left:4px solid #059669;border-radius:0 8px 8px 0;padding:16px;font-size:14px;color:#064E3B;">Based on your application, we\'re planning to cover gas and a hotel stop for your drive from <strong>' + student.departure + '</strong> to <strong>' + student.destination + '</strong>' + (student.companion ? ' with ' + student.companion : '') + '. Let us know if your plans have changed.</div>',
+      '<p style="font-size:13px;color:#374151;line-height:1.65;margin:0 0 10px;">We\'re setting up a Ramp virtual card to cover gas for your drive to ' + student.college + ', plus one night of hotel if you need it along the way. It\'s a secure digital card number — no physical card. We\'ll share the details once we\'ve confirmed your plans.</p>' +
+      '<p style="font-size:12px;color:#6b7280;margin:0;">Based on your application: drive from <strong>' + student.departure + '</strong> to <strong>' + student.destination + '</strong>' + (student.companion ? ' with ' + student.companion : '') + '. Let us know if your plans have changed.</p>',
     text:
-      'YOUR TRAVEL CARD\n\n' +
-      'We\'re also setting up a Ramp virtual card to cover gas for your drive to ' + student.college + ', plus one night of hotel if you need it along the way. It\'s a secure digital card number — no physical card. We\'ll share the details once we\'ve confirmed your plans.\n\n' +
-      'Based on your application, we\'re planning to cover gas and a hotel stop for your drive from ' + student.departure + ' to ' + student.destination + (student.companion ? ' with ' + student.companion : '') + '. Let us know if your plans have changed.\n\n'
+      'YOUR GAS & HOTEL CARD\n\n' +
+      'We\'re setting up a Ramp virtual card to cover gas for your drive to ' + student.college + ', plus one night of hotel if you need it along the way. It\'s a secure digital card number — no physical card. We\'ll share the details once we\'ve confirmed your plans.\n\n' +
+      'Based on your application: drive from ' + student.departure + ' to ' + student.destination + (student.companion ? ' with ' + student.companion : '') + '. Let us know if your plans have changed.\n\n'
   };
 }
 
@@ -145,103 +145,106 @@ function _nonAttendeeTravelSection_Drive(student) {
 // HTML + TEXT BUILDERS
 // ============================================
 
-// Lyft logo SVG (inline, pink wordmark-style)
-var LYFT_LOGO =
-  '<svg width="48" height="22" viewBox="0 0 120 54" xmlns="http://www.w3.org/2000/svg">' +
-  '<rect width="120" height="54" rx="8" fill="#EA0B8C"/>' +
-  '<text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="32" fill="#ffffff" letter-spacing="-1">Lyft</text>' +
-  '</svg>';
-
-// DoorDash logo SVG (inline, red wordmark-style)
-var DOORDASH_LOGO =
-  '<svg width="80" height="22" viewBox="0 0 200 54" xmlns="http://www.w3.org/2000/svg">' +
-  '<rect width="200" height="54" rx="8" fill="#FF3008"/>' +
-  '<text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="26" fill="#ffffff" letter-spacing="-0.5">DoorDash</text>' +
-  '</svg>';
-
-// Target bullseye SVG
-var TARGET_LOGO =
-  '<svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">' +
-  '<circle cx="14" cy="14" r="14" fill="#CC0000"/>' +
-  '<circle cx="14" cy="14" r="9" fill="#ffffff"/>' +
-  '<circle cx="14" cy="14" r="4.5" fill="#CC0000"/>' +
-  '</svg>';
-
 function _nonAttendeeTravelHtml(firstName, giftCardLine, travelSection, travelMode) {
-  var travelAccentBg    = travelMode === 'drive' ? '#ECFDF5' : '#EEF2FF';
-  var travelAccentColor = travelMode === 'drive' ? '#059669' : '#4F46E5';
-  var travelEmoji       = travelMode === 'drive' ? '⛽' : '✈️';
-  var travelLabel       = travelMode === 'drive' ? 'Your gas &amp; hotel card' : 'Your travel card';
+  var travelBg    = travelMode === 'drive' ? '#ECFDF5' : '#EEF2FF';
+  var travelColor = travelMode === 'drive' ? '#065F46' : '#3730A3';
+  var travelLabel = travelMode === 'drive' ? 'Gas & Hotel Card' : 'Travel Card';
 
-  return '<!DOCTYPE html>\n' +
-'<html lang="en">\n' +
-'<head>\n' +
-'  <meta charset="UTF-8">\n' +
-'  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-'  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">\n' +
-'</head>\n' +
-'<body style="margin:0;padding:0;background:#f9fafb;font-family:\'Inter\',-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;">\n' +
-'  <div style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;">\n' +
+  return '<!DOCTYPE html>' +
+'<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>' +
+'<body style="margin:0;padding:0;background:#f9fafb;font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;">' +
+'<table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;">' +
+'<tr><td align="center" style="padding:20px 12px;">' +
+'<table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;">' +
 
-'    <div style="background:#469E92;padding:40px 32px;text-align:center;">\n' +
-'      <p style="font-family:\'Playfair Display\',Georgia,serif;font-size:36px;font-weight:700;color:#ffffff;margin:0 0 8px;letter-spacing:-0.5px;">' + firstName + '!</p>\n' +
-'    </div>\n' +
+// Header
+'<tr><td style="background:#469E92;padding:32px 24px;text-align:center;">' +
+  '<p style="font-size:11px;color:rgba(255,255,255,.7);margin:0 0 6px;text-transform:uppercase;letter-spacing:.1em;font-weight:500;">For</p>' +
+  '<p style="font-size:38px;font-weight:700;color:#ffffff;margin:0;letter-spacing:-.5px;font-family:Georgia,serif;">' + firstName + '</p>' +
+'</td></tr>' +
 
-'    <div style="padding:32px;font-size:15px;line-height:1.7;color:#231F20;">\n' +
+// Intro
+'<tr><td style="padding:16px 24px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#374151;line-height:1.65;">' +
+  '<p style="margin:0 0 8px;">We\'re sorry you won\'t be with us on Wednesday, but rest assured — we\'re going to make sure you get everything we promised.</p>' +
+  '<p style="margin:0;color:#6b7280;">Here\'s what we planned to disburse at the event.</p>' +
+'</td></tr>' +
 
-'      <p style="margin:0 0 24px;">We\'re sorry you won\'t be with us on Wednesday but rest assured, we\'re going to get you all the support we promised.</p>\n' +
-'      <p style="margin:0 0 28px;font-weight:500;">Here\'s what we planned to disburse at the event.</p>\n' +
+// Lyft + DoorDash — logos via Clearbit, brand-color buttons
+'<tr><td style="padding:0;">' +
+  '<table width="100%" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #e5e7eb;">' +
+    '<tr><td style="padding:16px 24px 12px;">' +
+      '<table cellpadding="0" cellspacing="0" style="margin-bottom:12px;">' +
+        '<tr>' +
+          '<td style="padding-right:10px;vertical-align:middle;">' +
+            '<img src="https://logo.clearbit.com/lyft.com?size=64" width="32" height="32" style="border-radius:6px;display:block;" alt="Lyft">' +
+          '</td>' +
+          '<td style="padding-right:24px;vertical-align:middle;">' +
+            '<div style="font-size:13px;font-weight:600;color:#111827;">Lyft</div>' +
+          '</td>' +
+          '<td style="padding-right:10px;vertical-align:middle;">' +
+            '<img src="https://logo.clearbit.com/doordash.com?size=64" width="32" height="32" style="border-radius:6px;display:block;" alt="DoorDash">' +
+          '</td>' +
+          '<td style="vertical-align:middle;">' +
+            '<div style="font-size:13px;font-weight:600;color:#111827;">DoorDash</div>' +
+          '</td>' +
+        '</tr>' +
+      '</table>' +
+      '<div style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Download Lyft and DoorDash Apps</div>' +
+      '<p style="font-size:13px;color:#374151;line-height:1.65;margin:0 0 8px;">We set up a <strong>Lyft credit ($150)</strong> for you to use to get to school, get to and from the airport, or get around town. We also set up a <strong>DoorDash credit ($100)</strong> for meals during your first days on campus.</p>' +
+      '<p style="font-size:13px;color:#374151;line-height:1.65;margin:0 0 16px;">Download both apps, then text us at <strong>(707) 595-8281</strong> to let us know you have them. Once we have your confirmation, we\'ll text you your dedicated codes and you\'ll get the credit.</p>' +
+    '</td></tr>' +
+    '<tr><td style="padding:0 24px 16px;">' +
+      '<table width="100%" cellpadding="0" cellspacing="0">' +
+        '<tr>' +
+          '<td width="50%" style="padding-right:6px;">' +
+            '<a href="https://lyft.com/app" style="display:block;background:#EA0B8C;color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;padding:12px 16px;border-radius:6px;text-align:center;">Download Lyft</a>' +
+          '</td>' +
+          '<td width="50%" style="padding-left:6px;">' +
+            '<a href="https://doordash.com" style="display:block;background:#FF3008;color:#ffffff;font-size:13px;font-weight:600;text-decoration:none;padding:12px 16px;border-radius:6px;text-align:center;">Download DoorDash</a>' +
+          '</td>' +
+        '</tr>' +
+      '</table>' +
+    '</td></tr>' +
+  '</table>' +
+'</td></tr>' +
 
-'      <!-- Lyft + DoorDash -->\n' +
-'      <div style="background:#f9fafb;border-radius:12px;padding:24px;margin:0 0 16px;">\n' +
-'        <table style="width:100%;border-collapse:collapse;margin:0 0 16px;">\n' +
-'          <tr>\n' +
-'            <td style="vertical-align:middle;">' + LYFT_LOGO + '</td>\n' +
-'            <td style="vertical-align:middle;padding-left:12px;">' + DOORDASH_LOGO + '</td>\n' +
-'          </tr>\n' +
-'        </table>\n' +
-'        <p style="font-weight:700;font-size:16px;color:#231F20;margin:0 0 10px;font-family:\'Playfair Display\',Georgia,serif;">Download Lyft and DoorDash Apps</p>\n' +
-'        <p style="margin:0 0 12px;font-size:14px;color:#374151;">We set up a <strong>Lyft credit ($150)</strong> for you to use to get to school, get to and from the airport, or get around town. We also set up a <strong>DoorDash credit ($100)</strong> for meals during those first days on campus.</p>\n' +
-'        <p style="margin:0 0 20px;font-size:14px;color:#374151;">Download both apps, then text us at <strong>(707) 595-8281</strong> to let us know you\'ve got them. Once we have your confirmation, we\'ll text you your dedicated codes and you\'ll get the credit.</p>\n' +
-'        <table style="width:100%;border-collapse:collapse;">\n' +
-'          <tr>\n' +
-'            <td style="width:50%;padding-right:6px;">\n' +
-'              <a href="https://lyft.com/app" style="display:block;background:#EA0B8C;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:13px 16px;border-radius:8px;text-align:center;">🚗 Download Lyft</a>\n' +
-'            </td>\n' +
-'            <td style="width:50%;padding-left:6px;">\n' +
-'              <a href="https://doordash.com" style="display:block;background:#FF3008;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:13px 16px;border-radius:8px;text-align:center;">🍔 Download DoorDash</a>\n' +
-'            </td>\n' +
-'          </tr>\n' +
-'        </table>\n' +
-'      </div>\n' +
+// Target gift card
+'<tr><td style="padding:0;">' +
+  '<table width="100%" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #e5e7eb;">' +
+    '<tr><td style="padding:16px 24px;">' +
+      '<table cellpadding="0" cellspacing="0" style="margin-bottom:10px;">' +
+        '<tr>' +
+          '<td style="padding-right:10px;vertical-align:middle;">' +
+            '<img src="https://logo.clearbit.com/target.com?size=64" width="32" height="32" style="border-radius:6px;display:block;" alt="Target">' +
+          '</td>' +
+          '<td style="vertical-align:middle;">' +
+            '<div style="font-size:13px;font-weight:600;color:#111827;">Target</div>' +
+          '</td>' +
+        '</tr>' +
+      '</table>' +
+      '<div style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">$100 Target Gift Card</div>' +
+      '<p style="font-size:13px;color:#374151;line-height:1.65;margin:0;">' + giftCardLine + ' Use it for whatever helps most with your move-in.</p>' +
+    '</td></tr>' +
+  '</table>' +
+'</td></tr>' +
 
-'      <!-- Target gift card -->\n' +
-'      <div style="background:#FFF5F5;border-radius:12px;padding:24px;margin:0 0 16px;">\n' +
-'        <table style="border-collapse:collapse;margin:0 0 12px;">\n' +
-'          <tr>\n' +
-'            <td style="vertical-align:middle;padding-right:10px;">' + TARGET_LOGO + '</td>\n' +
-'            <td style="vertical-align:middle;font-weight:700;font-size:16px;color:#CC0000;font-family:\'Playfair Display\',Georgia,serif;">🎁 A $100 Target gift card</td>\n' +
-'          </tr>\n' +
-'        </table>\n' +
-'        <p style="margin:0;font-size:14px;color:#374151;">' + giftCardLine + ' You can use it for whatever helps most with move-in before or after your arrival.</p>\n' +
-'      </div>\n' +
+// Travel card — colored background row
+'<tr><td style="padding:0;background:' + travelBg + ';">' +
+  '<table width="100%" cellpadding="0" cellspacing="0" style="border-bottom:1px solid #e5e7eb;">' +
+    '<tr><td style="padding:16px 24px;">' +
+      '<div style="font-size:11px;font-weight:600;color:' + travelColor + ';text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">' + travelLabel + '</div>' +
+      travelSection.html +
+    '</td></tr>' +
+  '</table>' +
+'</td></tr>' +
 
-'      <!-- Travel card -->\n' +
-'      <div style="background:' + travelAccentBg + ';border-radius:12px;padding:24px;margin:0 0 28px;">\n' +
-'        <p style="font-weight:700;font-size:16px;color:' + travelAccentColor + ';margin:0 0 12px;font-family:\'Playfair Display\',Georgia,serif;">' + travelEmoji + ' ' + travelLabel + '</p>\n' +
-        travelSection.html +
-'      </div>\n' +
+// Footer
+'<tr><td style="padding:16px 24px 20px;background:#f9fafb;">' +
+  '<p style="font-size:12px;color:#6b7280;line-height:1.6;margin:0;">You\'ve worked hard to get here. We\'re glad to be a small part of your start.</p>' +
+  '<p style="font-size:12px;color:#6b7280;line-height:1.6;margin:8px 0 0;">Questions? <a href="mailto:hello@campusready.org" style="color:#469E92;text-decoration:none;font-weight:500;">hello@campusready.org</a></p>' +
+'</td></tr>' +
 
-'      <div style="border-top:1px solid #e5e7eb;padding-top:24px;">\n' +
-'        <p style="margin:0 0 4px;color:#374151;font-size:15px;">You\'ve worked hard to get here. We\'re glad to be a small part of your start.</p>\n' +
-'        <p style="margin:8px 0 4px;font-weight:600;">The Campus Ready team</p>\n' +
-'        <a href="https://campusready.org" style="color:#469E92;text-decoration:none;font-size:14px;">campusready.org</a>\n' +
-'      </div>\n' +
-
-'    </div>\n' +
-'  </div>\n' +
-'</body>\n' +
-'</html>';
+'</table></td></tr></table></body></html>';
 }
 
 function _nonAttendeeTravelText(firstName, giftCardLine, student) {
@@ -250,15 +253,15 @@ function _nonAttendeeTravelText(firstName, giftCardLine, student) {
     : _nonAttendeeTravelSection_Flight(student).text;
 
   return 'Hi ' + firstName + ',\n\n' +
-'We\'re sorry you won\'t be with us on Wednesday but rest assured, we\'re going to get you all the support we promised.\n\n' +
+'We\'re sorry you won\'t be with us on Wednesday, but rest assured — we\'re going to make sure you get everything we promised.\n\n' +
 'Here\'s what we planned to disburse at the event.\n\n' +
 'DOWNLOAD LYFT AND DOORDASH APPS\n\n' +
-'We set up a Lyft credit ($150) for you to use to get to school, get to and from the airport, or get around town. We also set up a DoorDash credit ($100) for meals during those first days on campus.\n\n' +
-'Download both apps, then text us at (707) 595-8281 to let us know you\'ve got them. Once we have your confirmation, we\'ll text you your dedicated codes and you\'ll get the credit.\n\n' +
+'We set up a Lyft credit ($150) for you to use to get to school, get to and from the airport, or get around town. We also set up a DoorDash credit ($100) for meals during your first days on campus.\n\n' +
+'Download both apps, then text us at (707) 595-8281 to let us know you have them. Once we have your confirmation, we\'ll text you your dedicated codes and you\'ll get the credit.\n\n' +
 'Download Lyft: https://lyft.com/app\n' +
 'Download DoorDash: https://doordash.com\n\n' +
-'A $100 TARGET GIFT CARD\n\n' +
-giftCardLine + ' You can use it for whatever helps most with move-in before or after your arrival.\n\n' +
+'$100 TARGET GIFT CARD\n\n' +
+giftCardLine + ' Use it for whatever helps most with your move-in.\n\n' +
 travelSection +
 'You\'ve worked hard to get here. We\'re glad to be a small part of your start.\n\n' +
 'The Campus Ready team\n' +
