@@ -23,5 +23,8 @@ function onOpen() {
   .addSeparator()
   .addItem('🎉 Send Orientation Emails',        'sendOrientationEmails')
   .addItem('📬 Test — Orientation Email',       'testOrientationEmail')
+  .addSeparator()
+  .addItem('✈️ Send Non-Attendee Travel Emails', 'sendNonAttendeeTravelEmails')
+  .addItem('📬 Test — Non-Attendee Travel Email','testNonAttendeeTravelEmails')
   .addToUi();
 }
