@@ -69,6 +69,15 @@ const NON_ATTENDEE_TRAVEL_STUDENTS = [
     destination:  'Saint Joseph, Minnesota',
     companion:    'your mom',
     docsApproved: true
+  },
+  {
+    firstName:    'Henry',
+    email:        'henryray2026@gmail.com',
+    college:      'Oregon State University - Cascades',
+    travelMode:   'drive',
+    departure:    'Saint Helena, CA',
+    destination:  'Bend, OR',
+    docsApproved: true
   }
 ];
 
@@ -151,16 +160,16 @@ function buildNonAttendeeTravelHtml(student) {
     : 'A $100 Target gift card will be sent to your email address once your housing and college acceptance documents are approved.';
 
   // Travel card copy
-  const travelIcon    = isFlight ? '✈️' : '🚗';
-  const travelEyebrow = travelIcon + ' Travel to ' + student.college;
+  const travelIcon = isFlight ? '&#x2708;&#xFE0F;' : '&#x1F697;';
+  const travelEyebrow = '<span style="font-size:15px;">' + travelIcon + '</span> Travel to ' + student.college;
 
   const travelBody = isFlight
     ? "We’re setting up a Ramp virtual card to cover your flight. It’s a secure digital card number you’ll use to book your ticket directly — not a physical card. We’ll share the details once you’ve confirmed your plans."
     : "We’re setting up a Ramp virtual card to cover gas for your drive, plus one night of hotel if you need it along the way. It’s a secure digital card number — no physical card. We’ll share the details once you’ve confirmed your plans.";
 
   const travelSubBase = isFlight
-    ? 'Based on your application: flight from ' + student.departure + ' to ' + student.destination + '.'
-    : 'Based on your application: drive from ' + student.departure + ' to ' + student.destination + (student.companion ? ' with ' + student.companion : '') + '.';
+  ? "Based on your application, here\u2019s what we\u2019re preparing for: flight from " + student.departure + ' to ' + student.destination + '.'
+  : "Based on your application, here\u2019s what we\u2019re preparing for: drive from " + student.departure + ' to ' + student.destination + (student.companion ? ' with ' + student.companion : '') + '.';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -241,7 +250,7 @@ function buildNonAttendeeTravelHtml(student) {
                 <td style="padding:20px 24px;">
                   <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#14b8a6;">${travelEyebrow}</p>
                   <p style="margin:0 0 10px;font-size:14px;line-height:1.7;color:#374151;">${travelBody}</p>
-                  <p style="margin:0;font-size:12px;line-height:1.6;color:#475569;font-style:italic;">${travelSubBase} <a href="mailto:hello@campusready.org" style="color:#14b8a6;text-decoration:none;font-weight:600;font-style:italic;">Let us know</a> if your plans have changed.</p>
+                  <p style="margin:0;font-size:12px;line-height:1.6;color:#475569;font-style:italic;">${travelSubBase} <a href="mailto:hello@campusready.org" style="color:#14b8a6;text-decoration:none;font-weight:600;font-style:italic;">Please let us know</a> if your plans have changed and we'll adjust accordingly.</p>
                 </td>
               </tr>
             </table>
