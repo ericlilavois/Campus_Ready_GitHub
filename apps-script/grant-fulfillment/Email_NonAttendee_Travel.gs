@@ -83,7 +83,7 @@ function testNonAttendeeTravelEmails() {
     Logger.log('Test sent to ' + NAT_TEST_EMAIL + ' for ' + student.firstName);
     Utilities.sleep(300);
   });
-  SpreadsheetApp.getUi().alert('4 test variants sent to ' + NAT_TEST_EMAIL);
+  Logger.log('Done — 4 test variants sent to ' + NAT_TEST_EMAIL);
 }
 
 // ============================================
