@@ -1,65 +1,45 @@
 // ============================================
-// CAMPUS READY — NON-ATTENDEE TRAVEL EMAIL
+// CAMPUS READY — NON-ATTENDEE NO-TRAVEL EMAIL
 // ============================================
-// For students NOT attending July 15 event who have flight or drive support.
+// For students NOT attending July 15 event with no travel support.
 // Only sends to students with Housing Status = Approved AND
 // Acceptance Status = Approved in Grant_Recipients.
 // Tracks sends in Grant_Recipients "Non-Attendee Email Sent" column.
 //
-// Recipients: Gabrielle Pina, Lilian Barrientos Aceituno, Anastasia Guerrier
+// Recipients: Alice Baxter, Cristian Fonseca Nunez,
+//             Diego Perez Herrera, Fernanda Contreras Alcaraz,
+//             Xadani Ramirez Herrera
 // ============================================
 
-const NAT_LOGO_URL          = 'https://campusready.org/assets/img/brand/CRF_logo.lockup.GRN.png';
-const NAT_LYFT_LOGO_URL     = 'https://award.campusready.org/2026_Orientation_Event/design_handoff_orientation_email/assets/Partners/Lyft_Logo_Pink_RGB.png';
-const NAT_DOORDASH_LOGO_URL = 'https://award.campusready.org/2026_Orientation_Event/design_handoff_orientation_email/assets/Partners/DoorDash.png';
+const NAL_LOGO_URL          = 'https://campusready.org/assets/img/brand/CRF_logo.lockup.GRN.png';
+const NAL_LYFT_LOGO_URL     = 'https://award.campusready.org/2026_Orientation_Event/design_handoff_orientation_email/assets/Partners/Lyft_Logo_Pink_RGB.png';
+const NAL_DOORDASH_LOGO_URL = 'https://award.campusready.org/2026_Orientation_Event/design_handoff_orientation_email/assets/Partners/DoorDash.png';
 
-const NAT_LYFT_APP_URL      = 'https://apps.apple.com/us/app/lyft/id529379082';
-const NAT_DOORDASH_APP_URL  = 'https://apps.apple.com/us/app/doordash-food-delivery/id719972451';
+const NAL_LYFT_APP_URL      = 'https://apps.apple.com/us/app/lyft/id529379082';
+const NAL_DOORDASH_APP_URL  = 'https://apps.apple.com/us/app/doordash-food-delivery/id719972451';
 
-const NAT_SUBJECT           = 'What we have for you.';
-const NAT_SENDER_NAME       = 'Campus Ready Foundation';
-const NAT_TEST_EMAIL        = 'elilavois@gmail.com';
+const NAL_SUBJECT           = 'What we have for you.';
+const NAL_SENDER_NAME       = 'Campus Ready Foundation';
+const NAL_TEST_EMAIL        = 'elilavois@gmail.com';
 
 // ============================================
 // STUDENT ROSTER
 // ============================================
 // docsApproved is NOT hardcoded — read live from Grant_Recipients.
-// travelMode: 'flight' or 'drive'
-// Arianna Deibert removed — confirmed attending July 15 event.
 
-const NON_ATTENDEE_TRAVEL_STUDENTS = [
-  {
-    firstName:   'Gabrielle',
-    email:       'gabriellemonteiro938@gmail.com',
-    college:     'Whittier College',
-    travelMode:  'flight',
-    departure:   'SFO',
-    destination: 'Los Angeles'
-  },
-  {
-    firstName:   'Lilian',
-    email:       'barrientoslilian367@gmail.com',
-    college:     'University of Chicago',
-    travelMode:  'flight',
-    departure:   'SFO',
-    destination: 'Chicago'
-  },
-  {
-    firstName:   'Anastasia',
-    email:       'guerrieranastasia511@gmail.com',
-    college:     'College of Saint Benedict',
-    travelMode:  'drive',
-    departure:   'Miami',
-    destination: 'Saint Joseph, Minnesota',
-    companion:   'your mom'
-  }
+const NON_ATTENDEE_LYFT_STUDENTS = [
+  { firstName: 'Alice',    email: 'alicebaxter2008@gmail.com',      college: 'UC Santa Cruz' },
+  { firstName: 'Cristian', email: 'cris022881@gmail.com',           college: 'UC Davis' },
+  { firstName: 'Diego',    email: 'perez.diegop443@gmail.com',      college: 'San Jose State University' },
+  { firstName: 'Fernanda', email: 'fernanda.gca.2008@gmail.com',    college: 'UC Davis' },
+  { firstName: 'Xadani',   email: 'xadaniherrera073@gmail.com',     college: 'University of San Francisco' }
 ];
 
 // ============================================
 // GRANT_RECIPIENTS LOOKUP
 // ============================================
 
-function _getNATGrantData() {
+function _getNALGrantData() {
   var ss    = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName('Grant_Recipients');
   if (!sheet) throw new Error('Grant_Recipients sheet not found');
@@ -98,28 +78,28 @@ function _getNATGrantData() {
 // TEST — sends all variants to test address
 // ============================================
 
-function testNonAttendeeTravelEmails() {
-  NON_ATTENDEE_TRAVEL_STUDENTS.forEach(function(student) {
-    var testStudent = Object.assign({}, student, { email: NAT_TEST_EMAIL });
-    _sendNATEmail(testStudent);
-    Logger.log('Test sent to ' + NAT_TEST_EMAIL + ' for ' + student.firstName);
+function testNonAttendeeLyftEmails() {
+  NON_ATTENDEE_LYFT_STUDENTS.forEach(function(student) {
+    var testStudent = Object.assign({}, student, { email: NAL_TEST_EMAIL });
+    _sendNALEmail(testStudent);
+    Logger.log('Test sent to ' + NAL_TEST_EMAIL + ' for ' + student.firstName);
     Utilities.sleep(300);
   });
-  Logger.log('Done — ' + NON_ATTENDEE_TRAVEL_STUDENTS.length + ' test variants sent to ' + NAT_TEST_EMAIL);
+  Logger.log('Done — ' + NON_ATTENDEE_LYFT_STUDENTS.length + ' test variants sent to ' + NAL_TEST_EMAIL);
 }
 
 // ============================================
 // MAIN SEND
 // ============================================
 
-function sendNonAttendeeTravelEmails() {
+function sendNonAttendeeLyftEmails() {
   var ui        = SpreadsheetApp.getUi();
-  var grantData = _getNATGrantData();
+  var grantData = _getNALGrantData();
   var lookup    = grantData.lookup;
   var sheet     = grantData.sheet;
   var sentCol   = grantData.sentCol;
 
-  var eligible = NON_ATTENDEE_TRAVEL_STUDENTS.filter(function(student) {
+  var eligible = NON_ATTENDEE_LYFT_STUDENTS.filter(function(student) {
     var record = lookup[student.email.toLowerCase()];
     if (!record) {
       Logger.log('Not found in Grant_Recipients: ' + student.email);
@@ -144,11 +124,11 @@ function sendNonAttendeeTravelEmails() {
     return;
   }
 
-  var skipped  = NON_ATTENDEE_TRAVEL_STUDENTS.length - eligible.length;
+  var skipped  = NON_ATTENDEE_LYFT_STUDENTS.length - eligible.length;
   var skipNote = skipped > 0 ? '\n\n' + skipped + ' student(s) skipped — docs not approved or already sent.' : '';
 
   var confirm = ui.alert(
-    'Send ' + eligible.length + ' Travel Email(s)?',
+    'Send ' + eligible.length + ' No-Travel Email(s)?',
     'Ready to send to:\n\n' +
     eligible.map(function(s) { return s.firstName + ' — ' + s.email; }).join('\n') +
     skipNote + '\n\nThis cannot be undone. Continue?',
@@ -161,7 +141,7 @@ function sendNonAttendeeTravelEmails() {
 
   eligible.forEach(function(student) {
     try {
-      _sendNATEmail(student);
+      _sendNALEmail(student);
       var record = lookup[student.email.toLowerCase()];
       sheet.getRange(record.rowIndex, sentCol + 1).setValue('Yes');
       successCount++;
@@ -182,10 +162,10 @@ function sendNonAttendeeTravelEmails() {
 // INTERNAL SENDER
 // ============================================
 
-function _sendNATEmail(student) {
-  GmailApp.sendEmail(student.email, NAT_SUBJECT, _buildNATText(student), {
-    htmlBody: _buildNATHtml(student),
-    name:     NAT_SENDER_NAME,
+function _sendNALEmail(student) {
+  GmailApp.sendEmail(student.email, NAL_SUBJECT, _buildNALText(student), {
+    htmlBody: _buildNALHtml(student),
+    name:     NAL_SENDER_NAME,
     from:     'hello@campusready.org',
     replyTo:  'hello@campusready.org'
   });
@@ -195,19 +175,7 @@ function _sendNATEmail(student) {
 // HTML BUILDER
 // ============================================
 
-function _buildNATHtml(student) {
-  var isFlight     = student.travelMode === 'flight';
-  var travelIcon   = isFlight ? '&#x2708;&#xFE0F;' : '&#x1F697;';
-  var travelEyebrow = '<span style="font-size:15px;">' + travelIcon + '</span> Travel to ' + student.college;
-
-  var travelBody = isFlight
-    ? "We're setting up a Ramp virtual card to cover your flight. It's a secure digital card number you'll use to book your ticket directly — not a physical card. We'll share the details once you've confirmed your plans."
-    : "We're setting up a Ramp virtual card to cover gas for your drive, plus one night of hotel if you need it along the way. It's a secure digital card number — no physical card. We'll share the details once you've confirmed your plans.";
-
-  var travelSub = isFlight
-    ? 'Based on your application: flight from ' + student.departure + ' to ' + student.destination + '.'
-    : 'Based on your application: drive from ' + student.departure + ' to ' + student.destination + (student.companion ? ' with ' + student.companion : '') + '.';
-
+function _buildNALHtml(student) {
   return '<!DOCTYPE html>\n' +
 '<html lang="en">\n' +
 '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>\n' +
@@ -216,7 +184,7 @@ function _buildNATHtml(student) {
 '  <tr><td align="center">\n' +
 '    <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;">\n' +
 '      <tr><td align="center" style="background:#ffffff;padding:28px 32px 24px;border-bottom:1px solid #e2e8f0;">\n' +
-'        <img src="' + NAT_LOGO_URL + '" alt="Campus Ready Foundation" style="height:110px;width:auto;display:block;margin:0 auto;">\n' +
+'        <img src="' + NAL_LOGO_URL + '" alt="Campus Ready Foundation" style="height:110px;width:auto;display:block;margin:0 auto;">\n' +
 '      </td></tr>\n' +
 '      <tr><td style="padding:40px 40px 32px;font-family:\'Inter\',-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;">\n' +
 '\n' +
@@ -231,14 +199,14 @@ function _buildNATHtml(student) {
 '            <p style="margin:0 0 20px;font-size:14px;line-height:1.7;color:#374151;">We set up a <strong>Lyft credit ($150)</strong> to help you get to campus, the airport, or around town — and a <strong>DoorDash credit ($100)</strong> for meals during your first days. Download both apps, then text us at <strong>(707) 595-8281</strong>. Once we hear from you, we\'ll send your codes.</p>\n' +
 '            <table width="100%" cellpadding="0" cellspacing="0"><tr>\n' +
 '              <td width="50%" style="padding-right:8px;">\n' +
-'                <a href="' + NAT_LYFT_APP_URL + '" style="display:block;background:#ffffff;border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 16px;text-decoration:none;text-align:center;">\n' +
-'                  <img src="' + NAT_LYFT_LOGO_URL + '" alt="Lyft" style="height:22px;width:auto;display:block;margin:0 auto 6px;">\n' +
+'                <a href="' + NAL_LYFT_APP_URL + '" style="display:block;background:#ffffff;border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 16px;text-decoration:none;text-align:center;">\n' +
+'                  <img src="' + NAL_LYFT_LOGO_URL + '" alt="Lyft" style="height:22px;width:auto;display:block;margin:0 auto 6px;">\n' +
 '                  <span style="font-size:12px;font-weight:600;color:#475569;">Download Lyft</span>\n' +
 '                </a>\n' +
 '              </td>\n' +
 '              <td width="50%" style="padding-left:8px;">\n' +
-'                <a href="' + NAT_DOORDASH_APP_URL + '" style="display:block;background:#ffffff;border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 16px;text-decoration:none;text-align:center;">\n' +
-'                  <img src="' + NAT_DOORDASH_LOGO_URL + '" alt="DoorDash" style="height:22px;width:auto;display:block;margin:0 auto 6px;">\n' +
+'                <a href="' + NAL_DOORDASH_APP_URL + '" style="display:block;background:#ffffff;border:1.5px solid #e2e8f0;border-radius:8px;padding:12px 16px;text-decoration:none;text-align:center;">\n' +
+'                  <img src="' + NAL_DOORDASH_LOGO_URL + '" alt="DoorDash" style="height:22px;width:auto;display:block;margin:0 auto 6px;">\n' +
 '                  <span style="font-size:12px;font-weight:600;color:#475569;">Download DoorDash</span>\n' +
 '                </a>\n' +
 '              </td>\n' +
@@ -247,7 +215,7 @@ function _buildNATHtml(student) {
 '        </table>\n' +
 '\n' +
 '        <!-- Target gift card -->\n' +
-'        <table width="100%" cellpadding="0" cellspacing="0" style="background:#fefce8;border:1px solid #fde68a;border-radius:12px;margin:0 0 16px;">\n' +
+'        <table width="100%" cellpadding="0" cellspacing="0" style="background:#fefce8;border:1px solid #fde68a;border-radius:12px;margin:0 0 28px;">\n' +
 '          <tr><td style="padding:20px 24px;">\n' +
 '            <table cellpadding="0" cellspacing="0" style="margin:0 0 8px;"><tr>\n' +
 '              <td style="vertical-align:middle;padding-right:10px;">\n' +
@@ -258,15 +226,6 @@ function _buildNATHtml(student) {
 '              </td>\n' +
 '            </tr></table>\n' +
 '            <p style="margin:0;font-size:14px;line-height:1.7;color:#374151;">A $100 Target gift card will be sent to your email address in the coming days. Use it for whatever helps most with move-in.</p>\n' +
-'          </td></tr>\n' +
-'        </table>\n' +
-'\n' +
-'        <!-- Travel card -->\n' +
-'        <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;margin:0 0 28px;">\n' +
-'          <tr><td style="padding:20px 24px;">\n' +
-'            <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#14b8a6;">' + travelEyebrow + '</p>\n' +
-'            <p style="margin:0 0 10px;font-size:14px;line-height:1.7;color:#374151;">' + travelBody + '</p>\n' +
-'            <p style="margin:0;font-size:12px;line-height:1.6;color:#475569;font-style:italic;">' + travelSub + ' <a href="mailto:hello@campusready.org" style="color:#14b8a6;text-decoration:none;font-weight:600;font-style:italic;">Please let us know</a> if your plans have changed and we\'ll adjust accordingly.</p>\n' +
 '          </td></tr>\n' +
 '        </table>\n' +
 '\n' +
@@ -295,26 +254,15 @@ function _buildNATHtml(student) {
 // PLAIN TEXT FALLBACK
 // ============================================
 
-function _buildNATText(student) {
-  var isFlight = student.travelMode === 'flight';
-
-  var travelSection = isFlight
-    ? 'FLIGHT TO ' + student.college.toUpperCase() + '\n\n' +
-      "We're setting up a Ramp virtual card to cover your flight. It's a secure digital card number you'll use to book your ticket directly — not a physical card. We'll share the details once we've confirmed your plans.\n\n" +
-      'Based on your application: flight from ' + student.departure + ' to ' + student.destination + '. Let us know if your plans have changed.'
-    : 'DRIVE TO ' + student.college.toUpperCase() + '\n\n' +
-      "We're setting up a Ramp virtual card to cover gas for your drive, plus one night of hotel if you need it along the way. It's a secure digital card number — no physical card. We'll share the details once we've confirmed your plans.\n\n" +
-      'Based on your application: drive from ' + student.departure + ' to ' + student.destination + (student.companion ? ' with ' + student.companion : '') + '. Let us know if your plans have changed.';
-
+function _buildNALText(student) {
   return 'Hi ' + student.firstName + ',\n\n' +
     "You won't be at Wednesday's event — but everything we promised is still yours.\n\n" +
     'BEFORE YOU HEAD TO CAMPUS\n\n' +
     "We set up a Lyft credit ($150) to help you get to campus, the airport, or around town — and a DoorDash credit ($100) for meals during your first days. Download both apps, then text us at (707) 595-8281 and we'll send your codes.\n\n" +
-    'Download Lyft: ' + NAT_LYFT_APP_URL + '\n' +
-    'Download DoorDash: ' + NAT_DOORDASH_APP_URL + '\n\n' +
+    'Download Lyft: ' + NAL_LYFT_APP_URL + '\n' +
+    'Download DoorDash: ' + NAL_DOORDASH_APP_URL + '\n\n' +
     '$100 TARGET GIFT CARD\n\n' +
     'A $100 Target gift card will be sent to your email address in the coming days. Use it for whatever helps most with move-in.\n\n' +
-    travelSection + '\n\n' +
     "We're rooting for you.\n" +
     'Team Campus Ready\n\n' +
     'hello@campusready.org | (707) 595-8281';
