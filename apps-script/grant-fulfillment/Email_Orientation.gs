@@ -19,9 +19,10 @@ function handleRsvp(applicationId, responseCode) {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let rsvpSheet = ss.getSheetByName('RSVP_Responses');
 
+    // Sheet column order: Name | Email | Message | Status | Time Stamp | Application ID
     if (!rsvpSheet) {
       rsvpSheet = ss.insertSheet('RSVP_Responses');
-      const headers = ['Timestamp', 'Application ID', 'Student Name', 'Email', 'RSVP Response', 'Response Code'];
+      const headers = ['Name', 'Email', 'Message', 'Status', 'Time Stamp', 'Application ID'];
       rsvpSheet.getRange(1, 1, 1, headers.length).setValues([headers]);
       rsvpSheet.getRange(1, 1, 1, headers.length)
         .setFontWeight('bold').setBackground('#469E92').setFontColor('#FFFFFF');
@@ -42,17 +43,19 @@ function handleRsvp(applicationId, responseCode) {
       }
     }
 
+    // Application ID is in column F (index 5) — match current sheet column order
     const rsvpData = rsvpSheet.getDataRange().getValues();
     let existingRow = -1;
     for (let i = 1; i < rsvpData.length; i++) {
-      if (rsvpData[i][1] && rsvpData[i][1].toString().trim() === applicationId.toString().trim()) {
+      if (rsvpData[i][5] && rsvpData[i][5].toString().trim() === applicationId.toString().trim()) {
         existingRow = i + 1;
         break;
       }
     }
 
     const timestamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss');
-    const row = [timestamp, applicationId, studentName, studentEmail, responseLabel, responseCode];
+    // Write order matches sheet columns: Name | Email | Message | Status | Time Stamp | Application ID
+    const row = [studentName, studentEmail, responseLabel, responseCode, timestamp, applicationId];
     if (existingRow > 0) {
       rsvpSheet.getRange(existingRow, 1, 1, row.length).setValues([row]);
     } else {
