@@ -78,7 +78,7 @@ function _getNALGrantData() {
 // TEST — sends all variants to test address
 // ============================================
 
-function testNonAttendeeLyftEmails() {
+function testNonAttendeeNoTravelEmails() {
   NON_ATTENDEE_LYFT_STUDENTS.forEach(function(student) {
     var testStudent = Object.assign({}, student, { email: NAL_TEST_EMAIL });
     _sendNALEmail(testStudent);
@@ -92,7 +92,7 @@ function testNonAttendeeLyftEmails() {
 // MAIN SEND
 // ============================================
 
-function sendNonAttendeeLyftEmails() {
+function sendNonAttendeeNoTravelEmails() {
   var ui        = SpreadsheetApp.getUi();
   var grantData = _getNALGrantData();
   var lookup    = grantData.lookup;

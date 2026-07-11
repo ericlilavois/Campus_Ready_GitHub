@@ -21,10 +21,16 @@ function onOpen() {
   .addSeparator()
   .addItem('📬 Test — Kit Confirmation Email', 'testKitConfirmationEmail')
   .addSeparator()
-  .addItem('🎉 Send Orientation Emails',        'sendOrientationEmails')
   .addItem('📬 Test — Orientation Email',       'testOrientationEmail')
+  .addItem('🎉 Send Orientation Emails',        'sendOrientationEmails')
   .addSeparator()
-  .addItem('✈️ Send Non-Attendee Travel Emails', 'sendNonAttendeeTravelEmails')
+  .addItem('📬 Test — Orientation Reminder',    'testOrientationReminderEmail')
+  .addItem('📧 Send Orientation Reminder',      'sendOrientationReminderEmails')
+  .addSeparator()
   .addItem('📬 Test — Non-Attendee Travel Email','testNonAttendeeTravelEmails')
+  .addItem('✈️ Send Non-Attendee Travel Emails', 'sendNonAttendeeTravelEmails')
+  .addSeparator()
+  .addItem('📬 Test — Non-Attendee No-Travel Email',  'testNonAttendeeNoTravelEmails')
+  .addItem('🚗 Send Non-Attendee No-Travel Emails',   'sendNonAttendeeNoTravelEmails')
   .addToUi();
 }
