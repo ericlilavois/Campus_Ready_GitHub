@@ -1,6 +1,6 @@
 # Current Status — Campus Ready Foundation
 
-**Last Updated:** June 14, 2026
+**Last Updated:** July 12, 2026
 
 ---
 
@@ -16,7 +16,7 @@
 
 **Grant Fulfillment System active.** 41 winners transferred May 27. Kit customization form fully rebuilt and live at award.campusready.org. Product_Logic confirmed 174 clean products. Kit confirmation email confirmed working — sends automatically after submission in school colors with full product summary. Personalized link auto-verify and Kit Form Email system deployed. Form is ready for July 1 send.
 
-**Travel cost model — pending revision.** Lyft grant confirmed at $7,500 (50 credits × $150, contact: Celia Moreno). Travel model numbers require reconciliation against confirmed grant value.
+**Travel cost model — reconciled.** Lyft grant confirmed at $7,500 (50 credits × $150). Lyft credit is general-purpose ($150/student), not trip-scoped. Travel Detail fully reconciled July 12, 2026: 36 students, $8,757 CRF cash outlay, $10,071 with 15% contingency. See DEC-042, DEC-046 in Grant Fulfillment DECISION_LOG.md.
 
 **Application Analysis documents produced May 16.** Internal version (for board) and external version (for donors) both finalized.
 
@@ -64,10 +64,10 @@
 | Students on campus (no travel needed) | 0 |
 | Total Travel Cost (before Lyft credits) | $12,759 |
 | Total Lyft Grant Value (confirmed) | $7,500 (50 credits × $150) |
-| Total Lyft Credits Applied (per travel model) | $6,150 — ⚠️ revisit against confirmed grant |
-| CRF Cash Outlay (base, after credits) | $7,636 — ⚠️ revisit against confirmed grant |
-| 15% Contingency | $1,145 |
-| Recommended Cash Budget | $8,781 — ⚠️ revisit against confirmed grant |
+| Total Lyft Credits Applied | $7,500 confirmed (50 × $150, general-purpose) |
+| CRF Cash Outlay (base, after credits) | $8,757 — reconciled July 12, 2026 |
+| 15% Contingency | $1,314 |
+| Recommended Cash Budget | $10,071 — reconciled July 12, 2026 |
 | Blended per student (incl. contingency) | $209 |
 
 ---
@@ -205,7 +205,7 @@
 
 ## What's In Progress
 
-- **Lyft travel model reconciliation** — 50 credits at $150 each ($7,500 total) confirmed. Travel math should be revisited against confirmed grant value. Contact: Celia Moreno.
+- **Lyft travel model** — ✅ Reconciled July 12, 2026. Closed. See DEC-042.
 - **Web filter vendor follow-ups** — Lightspeed and GoGuardian responses still pending.
 - **10,000 Degrees MOU** — in progress, not yet signed.
 - **Checklist Intelligence refinement** — ~600 schools remain in manual lookup queue.
@@ -221,7 +221,7 @@
 |------|-------|----------|
 | Send preferences form link to award recipients | Eric | July 1 |
 | Finalize July 15 event logistics post-June 8 decisions | Eric | July 13 "everything locked" |
-| Reconcile travel model against confirmed Lyft grant ($7,500) | Eric | Before kit shopping |
+| ~~Reconcile travel model against confirmed Lyft grant~~ | ✅ Done | July 12, 2026 |
 | Follow up: Lightspeed and GoGuardian vendor emails | Eric | Overdue (sent May 13) |
 | Rename column 38 header from "Internal Notes" to "Processing Timestamp" | Eric | Before 2027 window |
 | Update testSyncPath() in Apps Script to match current form payload | Build agent | Before 2027 window |
@@ -245,12 +245,4 @@
 
 ---
 
-*45 applications received. 41 awarded, 4 denied. Award emails sent and winners transferred May 27, 2026. Kit form fully rebuilt, confirmed working, confirmation email deployed. Preferences form goes out July 1. July 15 event venue confirmed.*
-
-## Grant Fulfillment Status
-
-**As of June 15, 2026:** 40 eligible students confirmed for grant fulfillment (41 awarded minus Daysee Jossabeth Queme Mazariegos, ineligible). All 41 Lyft credits verified against policy (flat $150 per student). Pro forma locked—no revisions needed. Second Lyft credit request to Celia Moreno will be based on actual student travel plan responses.
-
-## July 15 Event Status
-
-**As of June 15, 2026:** Run of Show (v2, June 9) and event program locked. Kelli Watkins confirmed for Belonging & Campus Life session. Victor Ruiz-Cornejo (DoorDash) role TBD pending Thursday call with DoorDash head of strategic communications. Event is on track for launch.
+*45 applications received. 41 awarded, 4 denied. Award emails sent and winners transferred May 27, 2026. Kit form fully rebuilt, confirmed working, confirmation email deployed. Travel Detail reconciled July 12. July 15 event three days out.*
