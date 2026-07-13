@@ -419,5 +419,267 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 | DEC-001 to DEC-006 | Pre-existing system decisions (documented retroactively) |
 | DEC-007 to DEC-023 | Decisions made May–June 2026 |
 | DEC-024 to DEC-026 | Infrastructure overhaul — June 14, 2026 |
+| DEC-027 to DEC-046 | Grant Fulfillment operations — July 2026 |
 
-**Next available decision number: DEC-027**
+**Next available decision number: DEC-047**
+
+---
+
+## Grant Fulfillment Operations — July 2026
+
+*These decisions were previously in the Grant Fulfillment repo DECISION_LOG. Consolidated here July 13, 2026.*
+
+### DEC-027: Ramp Guest User Model for Student Virtual Cards (July 10, 2026)
+**System:** FULFILLMENT
+**Status:** ⏳ In Progress — Stage 1 complete, Stages 2–4 not started
+
+**Context:** Ramp's card issuance model is built around employees. Grant recipients are external, non-employee individuals. Ramp support confirmed the correct model on July 10, 2026.
+
+**Decision:** Students are added as Guest Users (available on Ramp Plus), not employees. All current guest users are assigned to a "Student" department under a single shared manager. Card issuance runs in four distinct stages, each requiring a separate admin action:
+
+1. **Draft user created** — student exists in Ramp, cannot log in, no email sent.
+2. **Invite published** — admin publishes from People > Invites; triggers invitation email.
+3. **Student accepts** — student sets up their own Ramp account.
+4. **Admin issues virtual card** — only after acceptance, by explicit admin action. Guest users cannot request their own cards or funds, and cannot receive physical cards — virtual only.
+
+**Current Roster (14 draft guest users, as of July 10, 2026):**
+
+| # | Name | Purpose | Minor? |
+|---|------|---------|--------|
+| 1 | Elizabeth Carmichael | Flight | |
+| 2 | Gabrielle Pina | Flight | Yes |
+| 3 | Jimena Reynaga-Castro | Flight | |
+| 4 | Lilian Barrientos Aceituno | Flight | |
+| 5 | Nicholas Avery Joy | Flight | |
+| 6 | Amara Boerner | Flight → **needs gas/hotel correction (DEC-043)** | Yes |
+| 7 | Arianna Deibert | Flight → **needs gas/hotel correction (DEC-041)** | Yes |
+| 8 | Michelle Villafana | Flight | |
+| 9 | Osvaldo Ramirez Hernandez | Flight | Yes |
+| 10 | Henry Ray | Flight | |
+| 11 | Journey Penterman | Flight | |
+| 12 | Melanie Avila | Flight → **needs gas/hotel correction (DEC-043)** | |
+| 13 | Reese Oo | Flight | |
+| 14 | Anastasia Guerrier | Gas card (driving) — correct, no change needed | |
+
+**Not yet in Ramp:** Marisol Navarro — confirmed eligible. Travel mode TBD. Do not add until confirmed.
+
+**Open Items:** Minor authorization mechanism unresolved for Gabrielle Pina, Amara Boerner, Arianna Deibert, Osvaldo Ramirez Hernandez before invitations can be published. Flight cost ceilings ($200 cross-country / $135 short-haul) from pro forma — not confirmed as live quotes.
+
+**Status:** Stage 1 complete. No invitations sent. No cards issued.
+
+---
+
+### DEC-028: Six-Audience Segmentation for 2026 Cohort Comms (July 10, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active framework — use for all cohort communications
+
+**Decision:** All communications must be segmented across six distinct groups:
+1. Attending, no travel involvement — event info only
+2. Attending, travel-involved — event info + travel confirmation
+3. Non-attending, no travel — full orientation content replacement + program info
+4. Non-attending, travel-involved — full orientation replacement + travel confirmation
+5. Minors attending without an on-site guardian — no outreach until guardian/release mechanism resolved
+6. Never RSVP'd — handle separately before segmenting further
+
+**Rationale:** Sending one message to all recipients either overloads students who need less or shortchanges those who need more.
+
+**Important:** Re-verify RSVP data against Travel Detail before every send (see DEC-032).
+
+---
+
+### DEC-029: Travel-Confirmation Message Template (July 10, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Approved — use for all individual travel outreach
+
+**Decision:** State the plan as a fact, ask a contained yes/no question. Correct framing: "We have you flying from [airport] on [date]... Does that still work, or has something changed?" Do not ask open-ended questions about dates, companions, or preferences. The Cole (Nicholas Avery Joy) reply is the canonical reference.
+
+---
+
+### DEC-030: Codes Sent by Text Only — Never Email (July 10, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active rule
+
+**Decision:** Any redeemable code (Ramp card codes, gift card codes, etc.) goes to students by text only. Never by email. A redeemable code in an email inbox is a real security exposure.
+
+---
+
+### DEC-031: Companion Policy — Uniform Terms (July 10, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — apply uniformly regardless of when need surfaces
+
+**Decision:** One parent or guardian may accompany a student. One hotel night covered at the standard rate for that student's distance tier. Applies whether the need was stated on the application, raised in a text reply, or mentioned in an unprompted email.
+
+---
+
+### DEC-032: Travel Detail as Authoritative Data Source (July 10, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active rule
+
+**Decision:** Travel Detail sheet (not Grant_Recipients) is the authoritative source for travel mode, route, and companion status. Treat it as a starting assumption to confirm — not a fact to build on without verification. Three data errors in the July 10 session (Osvaldo's Travel Helper, Yadira's RSVP, Cole's stale plan) proved unverified data propagates to real students.
+
+---
+
+### DEC-033: Kit Email Sent Flag Added to Grant_Recipients (July 10, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Implemented
+
+**Decision:** Add `Kit Email Sent` (col Z) and `Kit Email Sent At` (col AA) columns to Grant_Recipients. `sendKitFormEmails()` skips rows where Kit Email Sent = Yes. Resend path: `resendKitFormEmailToOne(targetEmail)` bypasses the flag intentionally. All 2026 cohort rows backfilled to Yes after initial send confirmed complete.
+
+---
+
+### DEC-034: Non-Attendee Email — No-Travel Segment (July 11, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Built and sent July 11
+
+**Decision:** Standalone `Email_NonAttendee_No_Travel.gs` for students not attending and with no flight or drive travel support (Lyft credit only). Two cards: teal (Lyft $150 + DoorDash $100), yellow (Target $100, conditional on docs). Scripts read docs status directly from Grant_Recipients — no hardcoded flags. Sent July 11 to Cristian Fonseca Nunez, Diego Perez Herrera, Fernanda Contreras Alcaraz. Alice Baxter and Xadani Ramirez Herrera skipped — docs pending.
+
+---
+
+### DEC-035: RSVP Data Hierarchy — Latest Timestamp Wins (July 11, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active rule
+
+**Decision:** When RSVP CSV contains duplicate entries for the same student, the most recent timestamp wins — but verify directly with the student before acting when the change affects what they receive. Arianna Deibert's July 10 attending entry superseded her June 26 not-attending entry; confirmed attending July 11.
+
+---
+
+### DEC-036: Orientation_Reminder.gs Naming Conflicts Resolved (July 11, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Resolved
+
+**Decision:** All function names in `Orientation_Reminder.gs` renamed to avoid conflict with `Email_Orientation.gs` (`testOrientationReminderEmail`, `sendOrientationReminderEmails`, `buildReminderEmailHtml`). File moved into clasp-managed folder. Menu.gs fixed.
+
+**Rule:** All Apps Script files must live in the clasp-managed folder. Never copy-paste directly into the Apps Script editor outside of clasp.
+
+---
+
+### DEC-037: Non-Attendee Emails Gated on Docs Approval (July 11, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Implemented
+
+**Decision:** Both non-attendee scripts read Housing Status and Acceptance Status directly from Grant_Recipients at send time. A student is eligible only if both fields equal Approved. Students with Pending or Uploaded status are skipped automatically. Re-running the script after approval reaches skipped students without code changes.
+
+---
+
+### DEC-038: Non-Attendee Email Sent Tracking Column (July 11, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Implemented
+
+**Decision:** Both non-attendee scripts auto-create a `Non-Attendee Email Sent` column in Grant_Recipients on first run. Writes Yes after successful send. Subsequent runs skip students marked Yes. Mirrors Kit Email Sent pattern (DEC-033).
+
+---
+
+### DEC-039: File Renamed — Email_NonAttendee_Lyft → Email_NonAttendee_No_Travel (July 11, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Implemented
+
+**Decision:** Renamed file and all internal functions from Lyft to NoTravel. "Lyft" described one component, not the audience. "No Travel" matches the audience descriptor and aligns naming with `Email_NonAttendee_Travel.gs`.
+
+---
+
+### DEC-040: Arianna Deibert — Confirmed Attending, Travel Text Sent (July 11, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Resolved
+
+**Decision:** Arianna's July 10 RSVP (attending) superseded her June 26 entry (not_attending) per DEC-035. Removed from non-attendee travel email roster. Travel confirmation text sent July 11 covering her SFO → SAN flight to San Diego State. Stale June 26 RSVP row to be deleted from RSVP_Responses.
+
+---
+
+### DEC-041: Arianna Deibert — Ramp Spend Program Corrected from Flight to Gas/Hotel (July 12, 2026)
+**System:** FULFILLMENT
+**Status:** ⏳ Decision recorded — execution in Ramp pending
+
+**Decision:** Arianna Deibert is confirmed driving to San Diego State, not flying. Her Ramp guest user must be moved from the flight-restricted Spend Program to the gas/hotel Spend Program. Eric must execute this in Ramp directly.
+
+---
+
+### DEC-042: Travel Cost Policy — Gas Coverage, Lyft Scope, Companion Ground Fee (July 12, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — apply uniformly
+
+**Decisions:**
+1. **Gas/mileage coverage** applies only to students driving in lieu of flying (long-distance relocation). Students offered a Lyft credit who opt to drive locally instead are not entitled to gas coverage.
+2. **Lyft credit ($150/student)** is general-purpose — rides to campus, airport, or around town after arrival. Not scoped to the move-in trip. The $7,500 total across 50 codes is fully explained; no further reconciliation needed.
+3. **Companion Ground fee ($50)** applies only to companions of flight-mode students (ground transport at destination). Companions of driving students cost $0 in this line item unless the companion flies back separately.
+
+---
+
+### DEC-043: Ramp Spend Program Corrections — Amara Boerner and Melanie Avila (July 12, 2026)
+**System:** FULFILLMENT
+**Status:** ⏳ Decision recorded — execution in Ramp pending
+
+**Decision:** Amara Boerner and Melanie Avila are confirmed driving students created under the flight-restricted Spend Program in error. Both must be moved to the gas/hotel Spend Program. Consistent rule: any student confirmed driving comes off the flight-restricted program. Eric must execute in Ramp.
+
+---
+
+### DEC-044: Anastasia Guerrier — Legacy Override Status (Permanent) (July 12, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — do not move to formula
+
+**Decision:** Anastasia is driving to campus; her mother is flying home one-way after drop-off (MSP → MIA). This arrangement is not representable by standard Travel Detail formula logic. Her row stays permanently on Legacy Override — manually entered and maintained. This is the intended state, not a gap.
+
+---
+
+### DEC-045: Roster Changes — Daysee Removed, Valeria Added (July 12, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Confirmed
+
+**Daysee Jossabeth Queme Mazariegos:** Confirmed ineligible — no longer on-campus. Removed from Travel Detail.
+**Valeria Alexa Hernandez Correa:** Confirmed eligible, added to roster. Was missing from Travel Detail despite being in Grant_Recipients. Offered Lyft credit.
+
+---
+
+### DEC-046: 2026 Pro Forma Frozen; 2027 Pro Forma Architecture Decided (July 12, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Frozen (2026) / ⏳ Deferred until after July 15 (2027 architecture)
+
+**2026 Pro Forma:** Stays frozen at board-approved figures. No formula link to Travel Detail. An approved budget does not move after approval.
+
+**2027 Pro Forma architecture:**
+1. **Budget vs. Actual tab** (build post–July 15): One side is the frozen 2026 board-approved total (static). The other is a live SUMIF from Travel Detail. The variance is the point — neither side writes back into the other.
+2. **2027 Pro Forma seed** (build after 2026 travel is finalized): AVERAGEIF by transport mode pulls 2026's realized average cost per student into a 2027 Assumptions tab. That average × 2027's projected headcount generates the 2027 Pro Forma.
+3. **Partner/rate assumptions** (Lyft rate, credit cap, hotel table) live in a per-year Assumptions tab, referenced by formula. A future partner swap touches a few cells in Assumptions, not a rebuild.
+
+---
+
+## Pre-existing Grant Fulfillment Decisions — November 2025
+
+*These decisions predate the DEC-XXX numbering system. Documented in the original Grant Fulfillment decision log under a different numbering scheme. Included here as historical record.*
+
+**Decision 1: Email Validation Over Token-Based Access (Nov 13, 2025)** — Email validation against approved recipient list. Simpler, better UX, scalable. Partially superseded by DEC-022 (Personalized Link Auto-Verify), which added token-based ?id= links for the kit form send.
+
+**Decision 2: Submission Lock Policy (Nov 13, 2025)** — Submissions lock permanently after final submit. No edits through form. Students email hello@campusready.co for changes. Still active.
+
+**Decision 5: Warm Error Messages (Nov 13, 2025)** — Error messages are collaborative, not corrective. Examples in original log. Still active.
+
+**Decision 6: Winner Transfer Workflow (Nov 14, 2025)** — "Transfer Winners" button in Application_Reviews populates Grant_Recipients. Board action is the explicit gate. Still active.
+
+**Decision 7: Grant_Recipients Tab Structure (Nov 14–16, 2025)** — Column structure: Application ID, Student Name, Email, Cohort Year, Transfer Date, Housing Status, Housing Doc URL, Acceptance Status, Acceptance Doc URL, Items Selected, Submission Timestamp. Additional columns added since (Kit Email Sent col Z/AA via DEC-033; Non-Attendee Email Sent via DEC-038).
+
+**Decision 8: Multi-Layer Email Validation (Nov 14, 2025)** — Format validation, typo detection, backend validation, submission re-validation. Rate limiting (5 attempts/hour/IP). Still active.
+
+**Decision 9: No Disposable Email Blocking (Nov 14, 2025)** — Do not block any email domains. Small cohort; board-vetted recipients. Still active.
+
+**Decision 10: No DNS/MX Validation (Nov 14, 2025)** — Typo detection is sufficient. Still active.
+
+**Decision 11a: Housing Verification as Fulfillment Gate (Nov 14, 2025)** — Housing verification is a grant fulfillment requirement, not an application selection requirement. Board sees all scored applicants regardless of housing status. Still active.
+
+**Decision 11b: Rate Limiting Parameters (Nov 14, 2025)** — 5 email validation attempts per hour per IP. Status: ⏳ Approved, not yet implemented.
+
+**Decision 12: Document Upload Before Kit Selection (Nov 14, 2025)** — Upload documents before item selection (no point customizing kit if student can't receive it). Form flow: Email Validation → Document Upload → [Admin Review] → Kit Selection → Final Submit. Note: DEC-020 resequenced to Kit Customization first within the post-upload steps, but document upload still precedes kit selection.
+
+**Decision 13: Manual Admin Review Required (Nov 14, 2025)** — Admin/Board must approve documents before item selection unlocks. Status: ⏳ Approved, implementation complete. Dropdown: Pending → Uploaded → Approved/Rejected.
+
+**Decision 14: Document Storage in Google Drive (Nov 14, 2025)** — Folder: "Housing_Verification_&_College_Acceptance_PDFs," ID `1ccJ8lg40PTgMFIXdNoXyHU12ySgSnurf`. Naming: `{ApplicationID}_{DocType}.pdf`. Still active.
+
+**Decision 15a: Warm Document Rejection Messaging (Nov 14, 2025)** — Frame as "we need a bit more information," not "rejected." Status: ⏳ Approved, implementation complete via `sendRejectionEmails()`.
+
+**Decision 15b: readonly Instead of disabled for Auto-Populated Fields (Nov 17, 2025)** — Readonly fields are included in FormData; disabled fields are not. Still active.
+
+**Decision 16a: Shopping List Generation Filter (Nov 14, 2025)** — Filter: data_type=Live AND cohort_year=current AND shopping_list_generated=FALSE AND housing_status=Approved AND acceptance_status=Approved. Still active.
+
+**Decision 16b: Separate Vercel Proxies (Nov 16, 2025)** — Application Proxy and Grant Fulfillment Proxy are independent deployments. Still active.
+
+**Decision 17: Apps Script Parameter Validation (Nov 16, 2025)** — Comprehensive validation in uploadDocuments(). Still active.
+
+**Decision 18: Manual Button Advancement After Document Upload (Nov 17, 2025)** — Replace auto-advance setTimeout with manual "Continue" button. Gives students control over pacing. Still active.
