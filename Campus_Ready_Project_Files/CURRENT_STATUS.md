@@ -76,6 +76,8 @@
 
 **As of July 13, 2026.**
 
+**Active action plan:** `ACTION_PLAN_July_2026_Event.md` — read this before advising on any fulfillment task for the July 14–17 window. It contains step-by-step sequencing, hold logic, ready-to-send text messages, Ramp funding amounts, and gas card guide.
+
 ### Ramp Virtual Cards
 
 - 14 students created as draft guest users in Ramp (Stage 1 complete)
