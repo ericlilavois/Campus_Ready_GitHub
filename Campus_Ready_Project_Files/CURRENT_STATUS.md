@@ -8,12 +8,6 @@
 
 ---
 
-## ⚠️ VENUE CONFLICT — CONFIRM BEFORE JULY 15
-
-Campus Ready files consistently reference **10,000 Degrees (after-hours access via Hugo Que)** as the July 15 event venue. Grant Fulfillment files consistently reference **Napa Valley Community Foundation**. These are different organizations. The event is in two days. Eric must confirm which is correct and update this file before July 15.
-
----
-
 ## Executive Summary
 
 **2026 application window closed May 15.** 45 applications received. 3 were ineligible (submitted after the deadline). 1 was ineligible (no on-campus housing). 41 students awarded grants. Award emails sent May 27, 2026. Winners transferred to Grant Fulfillment May 27, 2026.
@@ -24,7 +18,7 @@ Campus Ready files consistently reference **10,000 Degrees (after-hours access v
 
 **Application System operational.** Scoring rubric (100 points: 70 objective + 30 board-scored essays) implemented. Personalized essay scoring sheets distributed to all three board members. IPEDS-backed college picker shipped May 21 — replaced free-text college fields, distance scoring corruption resolved. Vercel proxy merged to main. Apps Script in version control. API key rotated and moved to Script Properties.
 
-**Grant Fulfillment System active.** Kit form emails sent (July 1 send confirmed — all 37 eligible rows stamped Kit Email Sent = Yes). 36 students in active travel coordination. Orientation & Celebration event is July 15. Travel Detail fully reconciled July 12: 36 students, $8,757 CRF cash outlay, $10,071 with 15% contingency. Ramp virtual card setup in progress — 14 draft guest users created, no invitations sent yet, Spend Program corrections pending.
+**Grant Fulfillment System active.** Kit form emails sent (July 1 send confirmed — all 37 eligible rows stamped Kit Email Sent = Yes). 36 students in active travel coordination. Orientation & Celebration event is Wednesday, July 15 at Napa Valley Community Foundation. Travel Detail fully reconciled July 12: 36 students, $8,757 CRF cash outlay, $10,071 with 15% contingency. Ramp virtual card setup in progress — 14 draft guest users created, no invitations sent yet, Spend Program corrections pending.
 
 **Travel cost model — reconciled July 12, 2026.** Lyft credit confirmed at $7,500 (50 credits × $150, general-purpose). See DEC-042, DEC-046.
 
@@ -49,7 +43,7 @@ Campus Ready files consistently reference **10,000 Degrees (after-hours access v
 | Winners transferred to Grant Fulfillment | May 27, 2026 | ✅ Complete |
 | Advisory Board meeting | June 8, 2026 | ✅ Complete — event logistics decided |
 | Kit form emails sent to 37 eligible recipients | July 1, 2026 | ✅ Complete |
-| Orientation & Celebration event | July 15, 2026 | 2 days out — see venue conflict above |
+| Orientation & Celebration event | Wednesday, July 15, 2026 | This Wednesday — Napa Valley Community Foundation |
 | Kit shopping + assembly | July – August 2026 | Upcoming |
 | Kit delivery | August 2026 (before move-in) | Upcoming |
 | Testimonial outreach | September – October 2026 | Upcoming |
@@ -130,8 +124,7 @@ Campus Ready files consistently reference **10,000 Degrees (after-hours access v
 
 ### Open Items
 
-**Time-sensitive (before July 15):**
-- **⚠️ Confirm event venue** — 10,000 Degrees vs. Napa Valley Community Foundation. See top of this file.
+**Time-sensitive (before Wednesday July 15):**
 - **Lizbeth Pérez Solano RSVP:** No RSVP, docs pending, last contact July 9 with no reply. Follow up directly.
 - **Alice & Xadani docs:** When approved, re-run `sendNonAttendeeNoTravelEmails()`.
 - **Event materials — board/advisor printable:** Alpha-order error identified, hasn't been reviewed since initial flag. Fix before July 15.
@@ -237,8 +230,8 @@ See **Grant Fulfillment Operations** section above for current operational state
 | Lyft | Ride credits (50 credits × $150 = $7,500 total) | ✅ Confirmed — grant closed. Contact: Celia Moreno |
 | Target | Corporate Engagement Foundation grant | Confirmed |
 | DoorDash | Community Credits (digital code delivery) | Confirmed |
-| 10,000 Degrees | Student outreach and referrals; ⚠️ listed as July 15 event venue in some docs — confirm | Active — MOU in progress, not yet signed. Contact: Hugo Que |
-| Napa Valley Community Foundation (NVCF) | Funding partner; ⚠️ listed as July 15 event venue in other docs — confirm | Active — any external mention requires Terence Mulligan review |
+| 10,000 Degrees | Student outreach and referrals | Active — MOU in progress, not yet signed. Contact: Hugo Que |
+| Napa Valley Community Foundation (NVCF) | Funding partner; Wednesday July 15 event venue (after-hours access) | Active — any external mention requires Terence Mulligan review |
 
 ---
 
@@ -292,7 +285,7 @@ See **Grant Fulfillment Operations** section above for current operational state
 - **10,000 Degrees MOU** — in progress, not yet signed.
 - **Checklist Intelligence refinement** — ~600 schools remain in manual lookup queue.
 - **Ramp virtual card issuance** — 14 draft users created; invitations, acceptance, and card issue all pending. Spend Program corrections must happen first.
-- **July 15 event** — venue conflict must be resolved. Event is in 2 days.
+- **Wednesday July 15 event** — Napa Valley Community Foundation. Two days out.
 - **Column 38 header fix** — rename from "Internal Notes" to "Processing Timestamp" before staff use that column for notes.
 
 ---
@@ -301,7 +294,6 @@ See **Grant Fulfillment Operations** section above for current operational state
 
 | Item | Owner | Deadline |
 |------|-------|----------|
-| **Confirm July 15 event venue** — 10,000 Degrees or NVCF? | Eric | Today |
 | Correct Ramp Spend Program for Arianna Deibert, Amara Boerner, Melanie Avila | Eric | Before cards issued |
 | Confirm Ramp email gate cleared — approve or hold `Email_Ramp.gs` | Eric | This week |
 | Confirm flight fare revision go-ahead | Eric | This week |
@@ -324,8 +316,8 @@ See **Grant Fulfillment Operations** section above for current operational state
 | July 1, 2026 | ✅ Kit form emails sent to 37 eligible students |
 | July 11, 2026 | ✅ Non-attendee emails sent |
 | July 12, 2026 | ✅ Travel Detail fully reconciled |
-| July 13, 2026 | "Everything locked" for July 15 event — TODAY |
-| July 15, 2026 | Orientation & Celebration — venue TBD (see conflict above) |
+| July 13, 2026 | "Everything locked" for July 15 event — TODAY (Monday) |
+| Wednesday, July 15, 2026 | Orientation & Celebration — Napa Valley Community Foundation |
 | August 2026 | Kit delivery (before move-in) |
 | September 2026 | Testimonial outreach begins / Annual web filter vendor recheck |
 
