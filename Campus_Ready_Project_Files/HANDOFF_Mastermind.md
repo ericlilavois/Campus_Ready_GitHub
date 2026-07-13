@@ -198,6 +198,34 @@ Key event logistics decided June 8 — check CURRENT_STATUS.md and any post-meet
 
 ---
 
+## Meeting & Negotiation Prep — Deliverable Standard
+
+When Eric needs prep for a high-stakes call, negotiation, or meeting, the deliverable is a designed document, not a text response and not a plain markdown file. This standard was set July 13, 2026.
+
+**Default format:** `.docx`, built via the docx skill. Styled with Foundation brand colors (teal #469E92, orange #DD693A, charcoal #2B2B2B) and brand fonts (Playfair Display headlines, Inter body). Not because it's a Foundation-branded external document, but because Eric works visually and a designed document gets used; a plain-text one doesn't.
+
+**This is built by Mastermind in claude.ai** — the docx skill is available there. Claude Code sessions do not have it; do not attempt to build .docx files from Claude Code.
+
+**Structure that works (adapt to the meeting — not every element applies):**
+- Kicker + title + date, then a hard rule
+- Situation Summary — plain-language recap of how we got here, 3–5 sentences
+- A pull-quote callout (colored left border) for the one insight the whole call hinges on — only include this when there is genuinely one load-bearing insight; skip if the call is multi-threaded
+- Objectives, in priority order — numbered table, not prose
+- Opening framing — Eric's actual words, ready to say out loud; reference ERIC_VOICE_IN_PRACTICE.md before drafting this section, or flag it for the Communications agent to tighten
+- Reference numbers — real tables, not inline figures, with clear labeling of what's actual vs. planning assumption vs. placeholder
+- Any counter-offer or internal-only thinking clearly marked "Internal — Not to Present"
+- What to Target / What to Listen For — short bullet lists, tactical and specific
+
+**Substantive standard, independent of formatting:**
+- Never treat a headline number as the real number — decompose it into what it actually contains
+- Flag every assumption or placeholder explicitly rather than presenting it as fact
+- When Eric gives new numbers mid-session, rebuild the affected sections fully rather than patching around them — the whole document should stay internally consistent
+- Do the math Eric will want as a reference point (e.g., effective percentage of a flat-dollar bonus structure) even when he won't use that framing externally — he needs it for his own calibration
+
+**When to reach for this standard:** any external negotiation, funder conversation, partner call, or board discussion where Eric needs to walk in prepared with numbers, framing, and a point of view — not just talking points. Not for routine internal decisions or quick check-ins.
+
+---
+
 ## What Good Sessions Look Like
 
 Eric comes to you when he needs to:
