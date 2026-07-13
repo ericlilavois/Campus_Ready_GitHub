@@ -463,9 +463,11 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 
 **Not yet in Ramp:** Marisol Navarro — confirmed eligible. Travel mode TBD. Do not add until confirmed.
 
-**Open Items:** Minor authorization mechanism unresolved for Gabrielle Pina, Amara Boerner, Arianna Deibert, Osvaldo Ramirez Hernandez before invitations can be published. Flight cost ceilings ($200 cross-country / $135 short-haul) from pro forma — not confirmed as live quotes.
+**Open Items:** Flight cost ceilings ($200 cross-country / $135 short-haul) from pro forma — not confirmed as live quotes.
 
 **Status:** Stage 1 complete. No invitations sent. No cards issued.
+
+**Correction (July 13, 2026):** Minor status is not a blocker. Ramp does not restrict guest user invitation, acceptance, or virtual card issuance based on age — Gabrielle Pina, Amara Boerner, Arianna Deibert, and Osvaldo Ramirez Hernandez proceed through the exact same four-stage process as any other student. The July 10 entry above framed this as unresolved — that was incorrect, corrected per Eric.
 
 ---
 

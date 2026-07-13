@@ -83,7 +83,7 @@
 - No student has accepted or set up a Ramp account (Stage 3 not started)
 - No cards have been issued (Stage 4 not started)
 - Marisol Navarro confirmed eligible but not yet added to Ramp — travel mode TBD
-- 4 students are minors (Gabrielle Pina, Amara Boerner, Arianna Deibert, Osvaldo Ramirez Hernandez) — authorization mechanism for minors unresolved before invitations can be sent
+- 4 students are minors (Gabrielle Pina, Amara Boerner, Arianna Deibert, Osvaldo Ramirez Hernandez) — confirmed July 13: minor status does not block Ramp invitation, acceptance, or card issuance (DEC-027). No separate mechanism needed.
 
 **Spend Program corrections needed (DEC-041, DEC-043):** Arianna Deibert, Amara Boerner, and Melanie Avila were created under the flight-restricted Spend Program but are confirmed driving. All three must be moved to the gas/hotel Spend Program in Ramp before cards are issued. Anastasia Guerrier is already on the gas/hotel program — correct, no change needed.
 
@@ -131,7 +131,7 @@
 
 **Ramp (before July 15 or immediately after):**
 - **Spend Program corrections:** Move Arianna Deibert, Amara Boerner, and Melanie Avila from flight-restricted to gas/hotel Spend Program in Ramp (DEC-041, DEC-043). Execution pending — Eric must do this in Ramp.
-- **Ramp invitations:** 14 draft guest users created, no invites sent. Minor authorization mechanism unresolved before invites go out for the 4 minors.
+- **Ramp invitations:** 14 draft guest users created, no invites sent. Minor status is not a blocker (confirmed July 13, DEC-027) — the 4 minors proceed through the same process as other students.
 - **Ramp email (`Email_Ramp.gs`):** Sitting on GitHub main, unapproved. Gates sends on docs approval, excludes minors, tracks "Ramp Email Sent" column. The "held until travel confirmations land" gate has now cleared — travel is reconciled as of July 12. Confirm whether to proceed.
 
 **Travel / Pro Forma:**
@@ -329,7 +329,8 @@ See **Grant Fulfillment Operations** section above for current operational state
 - **Lock companion policy before outreach starts.** The one-guardian / one-night / distance-tier-rate rule (DEC-031) was established reactively in response to Cole. Set it in advance.
 - **Data audit before comms planning.** Three data errors surfaced during the July 10 session (Osvaldo's Travel Helper, Yadira's RSVP, Cole's stale travel plan). Run a reconciliation pass before drafting begins.
 - **Verify flight cost estimates with live fares before setting card amounts.** The $135/$200 caps were still unverified estimates as of July 10.
-- **Resolve the minors mechanism before invite season.** Daniel/Sofia (minors attending without on-site guardian) was unresolved going into the event. Needs a decision — release form, designated point of contact — before any minor is invited or issued a card.
+- **Ramp card issuance for minors is not a blocker (DEC-027).** Minor status does not restrict invitation, acceptance, or virtual card issuance. No separate mechanism needed.
+- **Resolve the on-site guardian question for minors before invite season.** Daniel Sanchez and Sofia Alvarez (minors attending without an on-site guardian) — this is a separate issue from Ramp and remains unresolved. Needs a decision — release form, designated point of contact — before those students are invited to future events.
 - **Ramp limit increase conversation.** $5K credit limit looks adequate for 2026's estimated $2–3K exposure but uses unverified fare inputs. Raise the limit discussion with Ramp before 2027 cohort numbers are set.
 - **The travel-confirmation message template (DEC-029) is proven.** Use it as the starting point next year.
 

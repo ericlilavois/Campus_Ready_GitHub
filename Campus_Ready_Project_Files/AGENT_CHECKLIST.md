@@ -63,6 +63,8 @@ This Claude project is synced directly from a GitHub repository. All committed f
 
 If a file exists in the repo, it's in project knowledge. The sync is not real-time — if a commit was pushed minutes ago, confirm with the user before relying on it.
 
+**For `CURRENT_STATUS.md` and `DECISION_LOG.md` specifically:** Do not rely on `project_knowledge_search` for these two files. They change daily during active operations and the index has been observed lagging same-day commits. Use the GitHub connector's file read tool to fetch them live at the start of each session.
+
 ---
 
 ## Before You Respond
