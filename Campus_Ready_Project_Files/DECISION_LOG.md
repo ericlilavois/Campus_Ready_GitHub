@@ -421,7 +421,7 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 | DEC-024 to DEC-026 | Infrastructure overhaul — June 14, 2026 |
 | DEC-027 to DEC-046 | Grant Fulfillment operations — July 2026 |
 
-**Next available decision number: DEC-047**
+**Next available decision number: DEC-049**
 
 ---
 
@@ -641,6 +641,46 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 1. **Budget vs. Actual tab** (build post–July 15): One side is the frozen 2026 board-approved total (static). The other is a live SUMIF from Travel Detail. The variance is the point — neither side writes back into the other.
 2. **2027 Pro Forma seed** (build after 2026 travel is finalized): AVERAGEIF by transport mode pulls 2026's realized average cost per student into a 2027 Assumptions tab. That average × 2027's projected headcount generates the 2027 Pro Forma.
 3. **Partner/rate assumptions** (Lyft rate, credit cap, hotel table) live in a per-year Assumptions tab, referenced by formula. A future partner swap touches a few cells in Assumptions, not a rebuild.
+
+---
+
+### DEC-047: Companion Return Gas Column Added to Travel Detail (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Implemented — one manual correction pending
+
+**Context:** Travel Detail only captured one-way gas for driving students. Companion return trips (parent driving home after drop-off) had no column and were tracked only in notes.
+
+**Decision:** Add a "Companion Return Gas" formula column (inserted after Companion Ground, before Hotel). Formula: `=IF(AND([Driving?]="Yes",[Companion Traveling?]="Yes"), ROUNDUP([Miles]*gas_rate/25,0)*25, 0)`. Feeds into Total Travel Cost and flows through to CRF Cash Outlay (Lyft Credit formula already returns $0 for driving students, so no separate offset needed).
+
+**Known exception:** Anastasia Guerrier's companion is flying back (MN→FL), not driving. The formula fires for her because she is driving AND has a companion — but there is no return drive. Her Companion Return Gas cell must be manually set to 0 with a note. The Travel Detail has no mechanism to distinguish "companion driving back" from "companion flying back." If this pattern recurs at scale (125+ students), add a "[Input] Companion Driving Back? (Y/N)" column to avoid the manual override.
+
+**Rationale:** Companion return gas is CRF outlay regardless of payment mechanism (Ramp card or separate Visa gift card). The Travel Detail is the source of truth for all CRF travel spend and should capture it.
+
+---
+
+### DEC-048: Companion Return Gas — Payment Mechanisms by Return Distance (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Decided — Visa gift cards not yet sourced
+
+**Context:** Ramp virtual card lives on the student's phone. After drop-off, the parent can no longer access it. For long return drives, the parent needs independent access to gas funds.
+
+**Decision:** Tier the solution by return distance:
+
+| Student | Return miles | Mechanism | Notes |
+|---------|-------------|-----------|-------|
+| Amara Boerner | 531 mi | Separate Visa gift card ~$125, mailed to student | Parent needs card after drop-off — 2+ fill-ups |
+| Henry Ray | 483 mi | Separate Visa gift card ~$100, mailed to student | Parent needs card after drop-off — 2+ fill-ups |
+| Melanie Avila | 272 mi | Ramp virtual card — parent fills up at departure | Single fill-up; student present at pump |
+| Licendi Clavel Lopez | 220 mi | Ramp virtual card — parent fills up at departure | Single fill-up; student present at pump |
+| Daniel Sanchez | 133 mi | Covered within $100 Ramp card floor | Short trip; no separate action needed |
+| Sara Roberts | 42 mi | Covered within $100 Ramp card floor | Short trip; no separate action needed |
+| Wlises Ramirez Santos | 89 mi | Covered within $100 Ramp card floor | Short trip; no separate action needed |
+
+**Action required:** Source two physical Visa gift cards ($100–$125 each) for Henry Ray and Amara Boerner's parents. Mail to student before move-in.
+
+**Rationale:** Visa gift card requires no signup, no phone, and can be handed to the parent at drop-off. For parents who are not tech-savvy or don't have a smartphone, this is more reliable than sharing a virtual card number.
+
+**Note for 2027:** Consider issuing Ramp physical cards to parents of long-distance drivers. Parents would need to complete a simple Guest signup (email required), but Ramp ships a physical card to any address. Lead time: 5–7 business days standard; plan accordingly.
 
 ---
 
