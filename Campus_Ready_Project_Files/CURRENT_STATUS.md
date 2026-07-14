@@ -166,7 +166,7 @@
 
 **Standing:**
 - **Arianna stale RSVP row:** Delete her June 26 `not_attending` row from RSVP_Responses.
-- **Daniel Sanchez & Sofia Alvarez (minors, no on-site guardian):** No outreach until release/signature mechanism resolved.
+- **Daniel Sanchez & Sofia Alvarez (minors, no on-site guardian):** Hold is for **photo release only** — general outreach (travel confirmation, Ramp card, event comms) is not blocked.
 - **Flight cost estimates:** $135/$200 caps are unverified estimates. Confirm before setting Ramp card limits.
 - **Marisol Navarro:** Confirmed eligible, not yet in Ramp. Travel mode TBD.
 
