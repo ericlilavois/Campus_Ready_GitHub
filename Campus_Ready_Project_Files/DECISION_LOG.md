@@ -767,6 +767,29 @@ If transport mode changes after a student is already in Ramp, update the Spend P
 
 ---
 
+### DEC-054: Lyft Is Not a Primary Transport Mode — Driving or Flying Only (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active
+
+**Context:** Several 2026 students were listed in the Travel Detail as "Lyft" transport mode, implying Lyft would get them from home to campus. DEC-042 described the Lyft credit as "general-purpose — rides to campus, airport, or around town after arrival," which was ambiguous about whether Lyft is a valid primary mode.
+
+**Decision:** Lyft is not a primary transport mode. All students travel to campus by Driving or Flying. The $150 Lyft credit (DEC-042, DEC-053) exists for two purposes only:
+1. Airport transfers — getting to and from the departure/arrival airport
+2. Local use around campus after arrival (errands, orientation, around town)
+
+Any student currently listed as "Lyft" in the Transport Mode column is pending confirmation of their actual mode (Driving or Flying). These rows should be updated once transport is confirmed; the Ramp card should be set up for their actual mode, not for Lyft.
+
+**Exception:** If a student has no viable driving or flying option and Lyft is genuinely their only way to reach campus, CRF would cover Lyft cost above the $150 credit. No 2026 student is in this situation.
+
+**Impact on Ramp working file:**
+- Marisol Navarro: Transport Mode was "Lyft, $88 outlay" (Lyft $238 − $150 credit). Under this decision, the $88 outlay is removed. Her Ramp outlay = $0 (card = $100 floor) until she confirms driving or flying.
+- Jimena Reynaga-Castro: Airport Lyft ($168) was included in CRF Cash Outlay per prior (incorrect) calculation. Under DEC-053 + this decision, airport Lyft is not a Ramp card expense. Her Ramp outlay corrects to $1,050 (card = $1,200).
+- Cristian Fonseca Nunez, Luna Juarez Alvarez, Sofia Alvarez: Previously noted as "Lyft covered by code." Reframed as pending driving/flying confirmation. Outlay stays $0; card stays $100 floor.
+
+**Impact on Travel Detail:** The formula for CRF Cash Outlay must exclude airport Lyft entirely (handled by code, not Ramp card). Jimena's Travel Detail row currently shows $1,068 — should be $1,050.
+
+---
+
 ### DEC-051: Travel Detail Gas Formula vs. Ramp Working File — Source of Truth (July 14, 2026)
 **System:** FULFILLMENT
 **Status:** ✅ Active rule
