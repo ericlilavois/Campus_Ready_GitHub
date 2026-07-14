@@ -87,6 +87,17 @@ function _stampKitEmailSent(sheet, rowIndex) {
   sheet.getRange(rowIndex, GR_COL_KIT_EMAIL_SENT_AT + 1).setValue(ts);
 }
 
+// Menu-triggered wrapper: prompts for an email address, then resends.
+function promptResendKitFormEmail() {
+  const ui       = SpreadsheetApp.getUi();
+  const response = ui.prompt('Resend Kit Form Email', 'Enter the student\'s email address:', ui.ButtonSet.OK_CANCEL);
+  if (response.getSelectedButton() !== ui.Button.OK) return;
+  const email = response.getResponseText().trim();
+  if (!email) { ui.alert('No email entered.'); return; }
+  resendKitFormEmailToOne(email);
+  ui.alert('Done', 'Kit form email resent to ' + email, ui.ButtonSet.OK);
+}
+
 // Resend the kit form email to a single student by email address.
 // Bypasses the "already sent" check — use when a student claims they never received it.
 function resendKitFormEmailToOne(targetEmail) {

@@ -6,6 +6,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
   .createMenu('Fulfillment Tools')
   .addItem('📧 1 — Send Kit Form Emails',    'sendKitFormEmails')
+  .addItem('🔁 1b — Resend Kit Email to One Student', 'promptResendKitFormEmail')
   .addSeparator()
   .addItem('📋 2 — Send Rejection Emails',   'sendRejectionEmails')
   .addSeparator()
