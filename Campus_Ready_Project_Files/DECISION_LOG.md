@@ -420,8 +420,9 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 | DEC-007 to DEC-023 | Decisions made May–June 2026 |
 | DEC-024 to DEC-026 | Infrastructure overhaul — June 14, 2026 |
 | DEC-027 to DEC-046 | Grant Fulfillment operations — July 2026 |
+| DEC-047 to DEC-051 | Travel Detail + Ramp card rules — July 14, 2026 |
 
-**Next available decision number: DEC-049**
+**Next available decision number: DEC-052**
 
 ---
 
@@ -676,11 +677,67 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 | Sara Roberts | 42 mi | Covered within $100 Ramp card floor | Short trip; no separate action needed |
 | Wlises Ramirez Santos | 89 mi | Covered within $100 Ramp card floor | Short trip; no separate action needed |
 
-**Action required:** Source two physical Visa gift cards ($100–$125 each) for Henry Ray and Amara Boerner's parents. Mail to student before move-in.
+**Action required:** Source two physical Visa gift cards ($100–$125 each) for Henry Ray and Amara Boerner's parents. Order and mail to student **at least 2 weeks before move-in** — the student hands the card to the parent at drop-off. Do not wait until move-in week.
 
 **Rationale:** Visa gift card requires no signup, no phone, and can be handed to the parent at drop-off. For parents who are not tech-savvy or don't have a smartphone, this is more reliable than sharing a virtual card number.
 
-**Note for 2027:** Consider issuing Ramp physical cards to parents of long-distance drivers. Parents would need to complete a simple Guest signup (email required), but Ramp ships a physical card to any address. Lead time: 5–7 business days standard; plan accordingly.
+**Note for 2027:** Consider issuing Ramp physical cards to parents of long-distance drivers. Parents would need to complete a simple Guest signup (email required), but Ramp ships a physical card to any address. Lead time: 5–7 business days standard; plan accordingly. Either way, the card or card number must be in the parent's hands at the moment of drop-off — not mailed after.
+
+---
+
+### DEC-049: Ramp Card Amount Rounding Rule and $100 Floor (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — apply to all student Ramp card amounts
+
+**Context:** Needed a consistent, defensible method for setting Ramp card spending limits across 37 students with varying travel costs.
+
+**Decision:** Card amount = `ROUND(CRF Cash Outlay × 1.15 / 25, 0) × 25`, with a floor of $100.
+1. Multiply CRF Cash Outlay by 1.15 (15% contingency buffer)
+2. Round to the nearest $25
+3. Apply $100 minimum floor
+
+**Examples:**
+- Outlay $25 → $28.75 → nearest $25 = $25 → floor applied → **$100**
+- Outlay $50 → $57.50 → nearest $25 = $50 → floor applied → **$100**
+- Outlay $125 → $143.75 → nearest $25 = $150 → **$150**
+- Outlay $350 → $402.50 → nearest $25 = $400 → **$400**
+
+**Rationale:** The 15% buffer provides headroom for price variation at the pump or in hotel rates. Rounding to $25 keeps amounts clean — grant recipients see these numbers. The $100 floor ensures no student receives a trivially small card; it signals CRF is not nickeling and diming them.
+
+**Note:** The Travel Detail gas column uses `ROUNDUP` (always rounds up to the nearest $25), while the Ramp card amount formula uses standard nearest-$25 rounding applied to a contingency-buffered outlay. These are different calculations with different purposes — do not conflate them. See DEC-051.
+
+---
+
+### DEC-050: Ramp Spend Program Must Be Set at Point of Creation (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active rule
+
+**Context:** In 2026, Arianna Deibert, Amara Boerner, Melanie Avila, and Henry Ray were created in Ramp under the flight-restricted Spend Program and later confirmed as driving. Each required a separate manual correction in the Ramp platform before cards could be issued.
+
+**Decision:** Do not add a student to the Ramp working file until their transport mode is confirmed. Assign Spend Program at creation based on confirmed mode:
+- Driving → **"Student Gas & Hotel"**
+- Flying → **"Student Travel Expenses"**
+- Lyft/local → **"Student Travel Expenses"**
+
+If transport mode changes after a student is already in Ramp, update the Spend Program in the Ramp platform immediately — do not leave it stale and plan to fix later.
+
+**Rationale:** The Ramp platform does not support bulk Spend Program reassignment — each correction is a separate admin action. Four corrections in 2026 were caught before cards issued, but only by accident of timing. Setting programs correctly at creation costs nothing; correcting after the fact burns admin time and creates risk of issuing a card under the wrong program.
+
+**What "Pending" rows in the working file mean:** In 2026, some students were pre-loaded as Pending (transport unconfirmed) to reduce future data entry. These rows should default to "Student Gas & Hotel" as a placeholder only — update to the correct program before the invite goes out. Never issue a card on a Pending row.
+
+---
+
+### DEC-051: Travel Detail Gas Formula vs. Ramp Working File — Source of Truth (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active rule
+
+**Context:** During the July 14 session, Melanie Avila's Ramp working file showed a $329 CRF Cash Outlay while the Travel Detail showed $350 for the same student. Root cause: the Ramp file used raw miles × $0.20 for companion return gas ($54.40), while the Travel Detail formula uses `ROUNDUP(miles × 0.20 / 25, 0) × 25` which rounded to $75. The $21 difference cascaded into a $25 card amount discrepancy ($375 vs. $400).
+
+**Decision:** Travel Detail is the source of truth for all outlay figures. When building or updating the Ramp working file, pull CRF Cash Outlay totals from the Travel Detail — do not recalculate from raw mileage. If the two files show different totals for the same student, the Travel Detail wins; update the Ramp file to match.
+
+**Gas formula in Travel Detail:** `ROUNDUP(Miles × $0.20 / 25, 0) × 25` — always rounds up to the nearest $25. This is intentional: estimate high rather than leave a student short at the pump.
+
+**Card amount formula in Ramp working file:** `ROUND(Outlay × 1.15 / 25, 0) × 25`, floor $100. This is applied to the Travel Detail outlay total, not recalculated from raw miles. See DEC-049.
 
 ---
 

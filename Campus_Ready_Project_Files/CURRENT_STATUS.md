@@ -351,6 +351,9 @@ See **Grant Fulfillment Operations** section above for current operational state
 - **Resolve the on-site guardian question for minors before invite season.** Daniel Sanchez and Sofia Alvarez (minors attending without an on-site guardian) — this is a separate issue from Ramp and remains unresolved. Needs a decision — release form, designated point of contact — before those students are invited to future events.
 - **Ramp limit increase conversation.** $5K credit limit looks adequate for 2026's estimated $2–3K exposure but uses unverified fare inputs. Raise the limit discussion with Ramp before 2027 cohort numbers are set.
 - **The travel-confirmation message template (DEC-029) is proven.** Use it as the starting point next year.
+- **Set Ramp Spend Programs at point of creation, not after (DEC-050).** Four 2026 students had to be manually corrected in the Ramp platform because they were added before transport was confirmed. Don't add a student until their transport mode is confirmed; set the Spend Program correctly the first time.
+- **Source Visa gift cards for long-distance companion drivers at least 2 weeks before move-in (DEC-048).** Buy and mail to the student — the student hands the card to the parent at drop-off. If 2027 has more long-distance companion drivers, consider Ramp physical cards instead (5–7 day lead time, parent needs an email address to accept).
+- **Pull Ramp card outlay figures from the Travel Detail, not from raw miles (DEC-051).** The Travel Detail uses ROUNDUP for gas (always rounds up to nearest $25). Recalculating from raw mileage produces lower figures that diverge from the source of truth. Copy the CRF Cash Outlay column from Travel Detail into the Ramp working file.
 
 ---
 
