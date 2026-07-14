@@ -745,24 +745,25 @@ If transport mode changes after a student is already in Ramp, update the Spend P
 
 ---
 
-### DEC-053: Lyft Credit Cap — $150 Per Student; Excess Is CRF Cash Outlay (July 14, 2026)
+### DEC-053: Lyft Credit Cap — $150 Per Student; Student Pays Any Excess (July 14, 2026)
 **System:** FULFILLMENT
-**Status:** ✅ Active — must be reflected in Assumptions tab
+**Status:** ✅ Active — Assumptions tab row already exists; update wording as noted below
 
-**Context:** DEC-042 established the Lyft credit as $150/student and general-purpose. The cap behavior — what happens when the airport Lyft estimate exceeds $150 — was not formally documented, and the Assumptions tab in Travel Detail did not contain an explicit cap value.
+**Context:** DEC-042 established the Lyft credit as $150/student. The cap behavior — what happens when a Lyft estimate exceeds $150 — needed explicit documentation.
 
-**Decision:** $150 is the hard per-student cap. The Lyft code covers up to $150; any airport Lyft estimate exceeding $150 falls to CRF as cash outlay and is included in CRF Cash Outlay.
+**Decision:** $150 is a hard ceiling on CRF's Lyft contribution. CRF provides a Lyft code worth $150. If the actual ride costs more, the student pays the difference out of pocket. CRF does not cover the excess — not via Ramp card, not by any other mechanism.
 
 **Formula logic in Travel Detail:**
-- `Lyft Credit = MIN(Airport Lyft estimate, $150)`
-- `CRF Cash Outlay includes: (Airport Lyft estimate − Lyft Credit) + all other non-Lyft expenses`
+- `Lyft Credit = MIN(Lyft estimate, $150)`
+- `CRF Cash Outlay excludes all Lyft` — the Lyft code is a separate budget item, not a Ramp card charge. The Ramp card covers flight, companion transport, companion ground, hotel, and gas only.
 
-**Example:** Jimena Reynaga-Castro — airport Lyft estimated at $168. Lyft credit = $150. Excess = $18, included in her $1,068 CRF cash outlay.
+**Implication for the Ramp working file:** Airport Lyft estimates should NOT appear in a student's CRF Cash Outlay or card amount. Lyft is handled entirely by the code. Any amount above $150 is the student's cost.
 
-**Assumptions tab entry required (Eric to add in Google Sheets):**
-> Lyft Credit Cap: $150 per student. Lyft code covers the first $150 of airport Lyft cost. Any amount above $150 is CRF cash outlay. Formula: `MIN([Airport Lyft Estimate], 150)`.
+**Example:** Jimena Reynaga-Castro — airport Lyft estimated at $168. CRF provides $150 code. Student pays $18 excess. Her Ramp card outlay = $200 (flight) + $400 (companion) + $50 (companion ground) + $400 (hotel) = $1,050. Card = $1,200.
 
-**Rationale:** Documenting the cap in Assumptions prevents future builders from treating all Lyft as covered or from recalculating the excess manually. The cap should be a named cell (e.g., `lyft_credit_cap`) so the formula references it and a rate change touches one cell.
+**Assumptions tab:** The Lyft Credit Cap row already exists. Update the Notes column to add: *"Hard cap — student covers any amount above $150. CRF does not reimburse excess via Ramp card or any other mechanism."*
+
+**Rationale:** The $150 Lyft code is a defined grant benefit, not an open-ended reimbursement. Documenting the ceiling prevents future builders from treating all Lyft as fully covered.
 
 ---
 
