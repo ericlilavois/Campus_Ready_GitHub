@@ -661,7 +661,7 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 
 ### DEC-048: Companion Return Gas — Payment Mechanisms by Return Distance (July 14, 2026)
 **System:** FULFILLMENT
-**Status:** ✅ Decided — Visa gift cards not yet sourced
+**Status:** ⚠️ Superseded by DEC-052 — physical card replaces all Visa gift card tiers
 
 **Context:** Ramp virtual card lives on the student's phone. After drop-off, the parent can no longer access it. For long return drives, the parent needs independent access to gas funds.
 
@@ -724,6 +724,45 @@ If transport mode changes after a student is already in Ramp, update the Spend P
 **Rationale:** The Ramp platform does not support bulk Spend Program reassignment — each correction is a separate admin action. Four corrections in 2026 were caught before cards issued, but only by accident of timing. Setting programs correctly at creation costs nothing; correcting after the fact burns admin time and creates risk of issuing a card under the wrong program.
 
 **What "Pending" rows in the working file mean:** In 2026, some students were pre-loaded as Pending (transport unconfirmed) to reduce future data entry. These rows should default to "Student Gas & Hotel" as a placeholder only — update to the correct program before the invite goes out. Never issue a card on a Pending row.
+
+---
+
+### DEC-052: All Students Switched to Employee Role with Physical Ramp Cards (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — implemented in Ramp Working File v3
+
+**Context:** Ramp virtual cards (Guest role) are online-only and are declined at all physical POS terminals, including gas pumps and hotel front desks. Students cannot hand a virtual card to a parent after drop-off. The two-program approach (DEC-050) was also producing wrong-program corrections.
+
+**Decision:** Switch all students from Guest to Employee role. Enable physical card issuance for all. Use a single Spend Program ("Student Travel Expenses") for all students; apply card-level category restrictions per student if needed. Wipe the 14 students previously imported to Ramp as Guests and re-import the full 36-student roster (Lilian excluded — reimbursed by check) as Employees with physical cards enabled and `is_draft=TRUE`.
+
+**Impact on companion return gas:** Physical card replaces the Visa gift card mechanism for all students. Parent takes the student's physical Ramp card at drop-off and fills up for the return drive. No separate Visa gift cards needed for Henry Ray or Amara Boerner. DEC-048 Visa gift card tier is superseded.
+
+**Impact on hotel check-in:** Physical card works at hotel front desk for incidental holds. No reimbursement workflow needed for hotel students.
+
+**Role visibility:** The Employee role label is not displayed to students in Ramp — they see only their card and spending limits. No optics issue.
+
+**Note for 2027:** Assign Employee role and physical card as default for all grant recipients from initial import. Do not use Guest role for students who have any in-person spending need.
+
+---
+
+### DEC-053: Lyft Credit Cap — $150 Per Student; Excess Is CRF Cash Outlay (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — must be reflected in Assumptions tab
+
+**Context:** DEC-042 established the Lyft credit as $150/student and general-purpose. The cap behavior — what happens when the airport Lyft estimate exceeds $150 — was not formally documented, and the Assumptions tab in Travel Detail did not contain an explicit cap value.
+
+**Decision:** $150 is the hard per-student cap. The Lyft code covers up to $150; any airport Lyft estimate exceeding $150 falls to CRF as cash outlay and is included in CRF Cash Outlay.
+
+**Formula logic in Travel Detail:**
+- `Lyft Credit = MIN(Airport Lyft estimate, $150)`
+- `CRF Cash Outlay includes: (Airport Lyft estimate − Lyft Credit) + all other non-Lyft expenses`
+
+**Example:** Jimena Reynaga-Castro — airport Lyft estimated at $168. Lyft credit = $150. Excess = $18, included in her $1,068 CRF cash outlay.
+
+**Assumptions tab entry required (Eric to add in Google Sheets):**
+> Lyft Credit Cap: $150 per student. Lyft code covers the first $150 of airport Lyft cost. Any amount above $150 is CRF cash outlay. Formula: `MIN([Airport Lyft Estimate], 150)`.
+
+**Rationale:** Documenting the cap in Assumptions prevents future builders from treating all Lyft as covered or from recalculating the excess manually. The cap should be a named cell (e.g., `lyft_credit_cap`) so the formula references it and a rate change touches one cell.
 
 ---
 
