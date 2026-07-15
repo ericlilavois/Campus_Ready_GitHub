@@ -1,7 +1,7 @@
 # Decision Log — Campus Ready Foundation
 
-**Active decisions:** DEC-001 through DEC-023
-**Last updated:** June 11, 2026
+**Active decisions:** DEC-001 through DEC-059
+**Last updated:** July 14, 2026
 
 ---
 
@@ -420,9 +420,10 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 | DEC-007 to DEC-023 | Decisions made May–June 2026 |
 | DEC-024 to DEC-026 | Infrastructure overhaul — June 14, 2026 |
 | DEC-027 to DEC-046 | Grant Fulfillment operations — July 2026 |
-| DEC-047 to DEC-051 | Travel Detail + Ramp card rules — July 14, 2026 |
+| DEC-047 to DEC-054 | Travel Detail + Ramp card rules — July 14, 2026 |
+| DEC-055 to DEC-059 | Ramp finalization — July 14, 2026 |
 
-**Next available decision number: DEC-052**
+**Next available decision number: DEC-060**
 
 ---
 
@@ -687,7 +688,7 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 
 ### DEC-049: Ramp Card Amount Rounding Rule and $100 Floor (July 14, 2026)
 **System:** FULFILLMENT
-**Status:** ✅ Active — apply to all student Ramp card amounts
+**Status:** ⚠️ Partially superseded by DEC-055 — $100 floor removed; formula and rounding are correct
 
 **Context:** Needed a consistent, defensible method for setting Ramp card spending limits across 37 students with varying travel costs.
 
@@ -800,7 +801,55 @@ Any student currently listed as "Lyft" in the Transport Mode column is pending c
 
 **Gas formula in Travel Detail:** `ROUNDUP(Miles × $0.20 / 25, 0) × 25` — always rounds up to the nearest $25. This is intentional: estimate high rather than leave a student short at the pump.
 
-**Card amount formula in Ramp working file:** `ROUND(Outlay × 1.15 / 25, 0) × 25`, floor $100. This is applied to the Travel Detail outlay total, not recalculated from raw miles. See DEC-049.
+**Card amount formula in Ramp working file:** `ROUND(Outlay × 1.15 / 25, 0) × 25`, no floor (DEC-055). This is applied to the Travel Detail outlay total, not recalculated from raw miles. See DEC-049.
+
+---
+
+### DEC-055: Ramp Card Amount — No Minimum Floor (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — supersedes $100 floor in DEC-049
+
+**Context:** A previous agent added a $100 minimum card amount without explicit authorization. This resulted in ~19 students receiving inflated card amounts.
+
+**Decision:** No minimum floor on Ramp card amounts. The formula is: `ROUND(CRF Cash Outlay × 1.15 / 25, 0) × 25`. A student with $25 outlay gets a $25 card.
+
+**Rationale:** A minimum floor gives money away unnecessarily. The 15% contingency is sufficient buffer. Students with small outlays (short-distance driving) don't need extra padding.
+
+---
+
+### DEC-056: Ramp Allowed Categories — Gas, Airlines, Hotels Only (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Active — configured in Student Travel Expenses spend program
+
+**Decision:** Three categories allowed on all student Ramp cards: Gas and fuel stations, Airlines, Hotels and lodging. All other categories blocked, including rideshare and restaurants. Lyft is covered by separate $150 credit codes. DoorDash is covered by separate Community Credits.
+
+---
+
+### DEC-057: Lilian Barrientos Aceituno — Excluded from Ramp (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Resolved
+
+**Decision:** Lilian is excluded from Ramp and was deleted from the platform on July 14. Her flight (SFO → ORD, $284.20) was already purchased and is being reimbursed by check. She has no remaining travel expenses requiring a card.
+
+---
+
+### DEC-058: Lizbeth Perez Solano — Deemed Ineligible (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Resolved
+
+**Decision:** Lizbeth is deemed ineligible as of July 14, 2026. No contact was made after a July 9 follow-up nudge went unanswered. She is enrolled at Napa Valley College (on campus, no travel required). Deleted from Ramp. Email on file: lizbethperezsolano369@gmail.com.
+
+---
+
+### DEC-059: Ramp Invitations Sent — 33 Students, July 14, 2026 (July 14, 2026)
+**System:** FULFILLMENT
+**Status:** ✅ Complete
+
+**Decision:** 33 students were invited to Ramp on July 14, 2026 via bulk email from the Student Travel Expenses spend program. Bulk issuance CSV used (Ramp's 5-column template: email, spend_limit_amount, spend_limit_currency, spend_limit_frequency, should_request_cardholder_mailing_address). Individual card limits set per student (range: $25–$1,200). `spend_limit_frequency = TOTAL`. `should_request_cardholder_mailing_address = TRUE` — students provide their **home address** (not dorm) so cards ship before departure. Deactivation date: October 15, 2026.
+
+**Not invited:** Sofia Alvarez (transport unconfirmed, $25 card ready when confirmed); Lilian (DEC-057); Lizbeth (DEC-058).
+
+**Student text sent July 14:** Advised students to check inbox for Ramp invite, accept, and enter home address for card shipping.
 
 ---
 

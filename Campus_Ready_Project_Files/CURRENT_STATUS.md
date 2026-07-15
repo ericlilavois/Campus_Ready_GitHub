@@ -18,7 +18,7 @@
 
 **Application System operational.** Scoring rubric (100 points: 70 objective + 30 board-scored essays) implemented. Personalized essay scoring sheets distributed to all three board members. IPEDS-backed college picker shipped May 21 — replaced free-text college fields, distance scoring corruption resolved. Vercel proxy merged to main. Apps Script in version control. API key rotated and moved to Script Properties.
 
-**Grant Fulfillment System active.** Kit form emails sent (July 1 send confirmed — all 37 eligible rows stamped Kit Email Sent = Yes). 36 students in active travel coordination. Orientation & Celebration event is tomorrow, July 15 at Napa Valley Community Foundation. Travel Detail v20 exported July 14 — Companion Return Gas column added (DEC-047); Anastasia Guerrier's row needs manual correction (formula fires incorrectly for flying-back companion). Ramp Onboarding Working File finalized July 14: 37 students pre-loaded, card amounts set. Spend Program corrections still pending in Ramp platform.
+**Grant Fulfillment System active.** Kit form emails sent (July 1 send confirmed — all 37 eligible rows stamped Kit Email Sent = Yes). 36 students in active travel coordination. Orientation & Celebration event is tomorrow, July 15 at Napa Valley Community Foundation. Travel Detail v20 exported July 14 — Companion Return Gas column added (DEC-047); Anastasia Guerrier's row needs manual correction (formula fires incorrectly for flying-back companion). **33 Ramp invitations sent July 14** — students now receiving invite emails; physical cards ship to home addresses once students accept. Sofia Alvarez invite pending transport confirmation.
 
 **Travel cost model — reconciled July 12, 2026.** Lyft credit confirmed at $7,500 (50 credits × $150, general-purpose). See DEC-042, DEC-046.
 
@@ -78,32 +78,23 @@
 
 **Active action plan:** `ACTION_PLAN_July_2026_Event.md` — read this before advising on any fulfillment task for the July 14–17 window. It contains step-by-step sequencing, hold logic, ready-to-send text messages, Ramp funding amounts, and gas card guide.
 
-### Ramp Virtual Cards
+### Ramp Physical Cards
 
-**Working file finalized July 14** (`Ramp_Onboarding_Working_File.csv` in Grant Fulfillment repo). 37 students pre-loaded:
+**33 invitations sent July 14** via bulk issuance CSV (Student Travel Expenses spend program). Students are Employee role with physical cards — cards ship to their home address once they accept the invite. Deactivation date: October 15, 2026.
 
-| Status | Count | Meaning |
+| Status | Count | Students |
 |--------|-------|---------|
-| Ready | 24 | Invite eligible once Ramp platform updated |
-| Hold | 2 | Jimena Reynaga-Castro, Osvaldo Ramirez Hernandez — docs pending, do not invite |
-| Pending | 10 | Transport unconfirmed — do not invite until confirmed |
-| Pending (on campus) | 1 | Lizbeth Perez Solano — no travel outlay; include if she confirms and needs transport |
+| Ready — invited | 33 | Invitations sent July 14 |
+| Pending — invite held | 1 | Sofia Alvarez — transport unconfirmed; $25 card ready when confirmed |
+| Excluded | 2 | Lilian Barrientos (flight reimbursed by check, DEC-057); Lizbeth Perez Solano (ineligible, DEC-058) |
 
-- Invitations not yet published (Stage 2 not started)
-- No student has accepted or set up a Ramp account (Stage 3 not started)
-- No cards have been issued (Stage 4 not started)
-- Alice Baxter confirmed driving July 14 — updated to Ready in working file
-- 4 students are minors (Gabrielle Pina, Amara Boerner, Arianna Deibert, Osvaldo Ramirez Hernandez) — minor status does not block Ramp invitation, acceptance, or card issuance (DEC-027). No separate mechanism needed.
-
-**Spend Program corrections needed in Ramp platform (DEC-041, DEC-043):** Arianna Deibert, Amara Boerner, Melanie Avila, and Henry Ray were created under the flight-restricted Spend Program but are confirmed driving. All four must be moved to the gas/hotel Spend Program before cards are issued. Eric must execute in Ramp.
-
-**Companion return gas — payment mechanisms decided (DEC-048):**
-- Henry Ray (483 mi), Amara Boerner (531 mi): Separate Visa gift card (~$100–$125 each), mailed to student before move-in. Return gas NOT on Ramp card.
-- Licendi Clavel Lopez (220 mi), Melanie Avila (272 mi): Parent fills up with Ramp virtual card at departure while student is present.
-- Sara Roberts, Wlises Ramirez Santos, Daniel Sanchez: Return gas covered within $100 Ramp card floor.
-
-**Approved student-facing language for explaining virtual cards (from Ramp support):**
-> "A virtual card is a digital payment card that's connected to funds allocated to them by your organization's finance team. Rather than using a physical card, they'll receive a secure card number that can be used for approved purchases, such as their college travel expenses. The virtual card draws from the funds your organization has assigned to it and is subject to any spending limits or controls your team has configured."
+- **Invitations sent** (Stage 2 complete — July 14)
+- Students must accept invite and enter **home address** for card shipping (not dorm)
+- No cards physically issued yet — ships after student acceptance
+- Spend program "Student Travel Expenses": Gas/fuel, Airlines, Hotels only. Rideshare and restaurants blocked. (DEC-056)
+- All companion return gas: parent takes student's physical Ramp card at drop-off and fills up — no separate Visa gift cards needed (DEC-052)
+- Card amounts: individual per student, $25–$1,200. Formula: `ROUND(Outlay × 1.15 / 25, 0) × 25`, no floor (DEC-055)
+- Jimena Reynaga-Castro, Marisol Navarro, Osvaldo Ramirez Hernandez: docs approved July 14 — included in 33-student send
 
 ### Student Communications Status
 
@@ -130,10 +121,6 @@
 | Alice Lilliane Baxter | Not attending | Non-attendee email held — re-run script when docs approved |
 | Andrea Elia Suarez | Attending w/guest | Handle at event |
 | Antonio Rivera | Attending w/guest | Handle at event |
-| Jimena Reynaga-Castro | Attending | Handle at event |
-| Lizbeth Pérez Solano | Unknown | No RSVP on file — follow up directly |
-| Marisol Navarro | Attending w/guest | Handle at event; Lyft credit held until docs clear |
-| Osvaldo Jr. Ramirez Hernandez | Attending (minor) | Handle at event |
 | Wlises Ramirez Santos | Attending | Handle at event |
 | Xadani Irais Ramirez Herrera | Not attending | Non-attendee email held — re-run script when docs approved |
 
@@ -144,11 +131,9 @@
 - **Alice & Xadani docs:** When approved, re-run `sendNonAttendeeNoTravelEmails()`.
 - **Event materials — board/advisor printable:** Alpha-order error identified, hasn't been reviewed since initial flag. Fix before July 15.
 
-**Ramp (before cards issued):**
-- **Spend Program corrections:** Move Arianna Deibert, Amara Boerner, Melanie Avila, and Henry Ray from flight-restricted to gas/hotel Spend Program in Ramp (DEC-041, DEC-043). Execution pending — Eric must do this in Ramp.
-- **Ramp invitations:** Working file finalized with 37 students. Pending transport confirmations from 10 students before their invites can go out. 24 Ready students can be invited once Spend Program corrections are made.
-- **Visa gift cards for Henry and Amara:** Two ~$100–$125 physical Visa gift cards needed for parents' return gas. Mail to student before move-in (DEC-048).
-- **Ramp email (`Email_Ramp.gs`):** Sitting on GitHub main, unapproved. Gates sends on docs approval, excludes minors, tracks "Ramp Email Sent" column. Confirm whether to proceed.
+**Ramp (post-invite):**
+- **Sofia Alvarez invite:** Held pending transport confirmation. $25 card ready; invite her once confirmed.
+- **Student acceptance:** Students must accept invite and enter home address. Physical cards ship after acceptance (allow 5–7 days).
 - **Anastasia Guerrier Travel Detail correction:** Set Companion Return Gas (column Q) to 0 manually — formula fires incorrectly because her companion is flying back, not driving (DEC-047).
 
 **Travel / Pro Forma:**
@@ -311,11 +296,9 @@ See **Grant Fulfillment Operations** section above for current operational state
 
 | Item | Owner | Deadline |
 |------|-------|----------|
-| Correct Ramp Spend Program for Arianna Deibert, Amara Boerner, Melanie Avila | Eric | Before cards issued |
-| Confirm Ramp email gate cleared — approve or hold `Email_Ramp.gs` | Eric | This week |
+| Invite Sofia Alvarez to Ramp once transport confirmed | Eric | Before move-in |
+| Set Anastasia Guerrier Companion Return Gas to 0 in Travel Detail (column Q) | Eric | This week |
 | Confirm flight fare revision go-ahead | Eric | This week |
-| Confirm Henry Ray against Grant_Recipients (Travel Detail driving student) | Eric | This week |
-| Confirm Isabella Jones status (in old Pro Forma, not in Travel Detail) | Eric | This week |
 | Follow up: Lightspeed and GoGuardian vendor emails | Eric | Overdue (sent May 13) |
 | Rename column 38 header from "Internal Notes" to "Processing Timestamp" | Eric | Before 2027 window |
 | Delete Arianna's June 26 stale RSVP row from RSVP_Responses | Eric | Cleanup |
@@ -334,7 +317,7 @@ See **Grant Fulfillment Operations** section above for current operational state
 | July 11, 2026 | ✅ Non-attendee emails sent |
 | July 12, 2026 | ✅ Travel Detail fully reconciled |
 | July 13, 2026 | ✅ "Everything locked" for July 15 event |
-| July 14, 2026 | Travel Detail v20 + Ramp Working File finalized — TODAY |
+| July 14, 2026 | ✅ Travel Detail v20 + Ramp Working File finalized; 33 Ramp invitations sent; Jimena/Marisol/Osvaldo approved; Lizbeth deemed ineligible |
 | Wednesday, July 15, 2026 | Orientation & Celebration — Napa Valley Community Foundation |
 | August 2026 | Kit delivery (before move-in) |
 | September 2026 | Testimonial outreach begins / Annual web filter vendor recheck |
