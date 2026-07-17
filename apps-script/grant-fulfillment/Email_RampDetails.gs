@@ -405,13 +405,13 @@ function _fmtAmt_(n) {
 function _travelRows_(student) {
   var rows = [];
   if (student.flight_amount) {
-    rows.push({ emoji: '✈️', label: 'Getting you to campus',         amount: _fmtAmt_(student.flight_amount) });
+    rows.push({ emoji: '✈️',  htmlEmoji: '&#x2708;&#xFE0F;', label: 'Getting you to campus',         amount: _fmtAmt_(student.flight_amount) });
   }
   if (student.gas_amount) {
-    rows.push({ emoji: '⛽', label: 'Fueling the road there',         amount: _fmtAmt_(student.gas_amount) });
+    rows.push({ emoji: '⛽',  htmlEmoji: '&#x26FD;',         label: 'Fueling the road there',         amount: _fmtAmt_(student.gas_amount) });
   }
   if (student.hotel_amount) {
-    rows.push({ emoji: '🏨', label: 'A place to rest along the way', amount: _fmtAmt_(student.hotel_amount) });
+    rows.push({ emoji: '🏨', htmlEmoji: '&#x1F3E8;',         label: 'A place to rest along the way', amount: _fmtAmt_(student.hotel_amount) });
   }
   return rows;
 }
@@ -435,7 +435,7 @@ function _buildRampDetailsHTML(student) {
         '<td style="padding:16px 20px;' + border + '">' +
           '<table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">' +
             '<tr>' +
-              '<td style="width:28px;vertical-align:middle;font-size:18px;line-height:1;">' + row.emoji + '</td>' +
+              '<td style="width:28px;vertical-align:middle;font-size:18px;line-height:1;">' + row.htmlEmoji + '</td>' +
               '<td style="vertical-align:middle;padding-left:8px;' + FONT_ + 'font-size:14px;color:#0f172a;font-weight:500;">' + row.label + '</td>' +
               '<td style="vertical-align:middle;text-align:right;white-space:nowrap;' + FONT_ + 'font-size:15px;font-weight:700;color:#0d9488;">' + row.amount + '</td>' +
             '</tr>' +
@@ -482,16 +482,7 @@ function _buildRampDetailsHTML(student) {
   // What it's for: icon circle + eyebrow
   '<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 12px;">' +
     '<tr>' +
-      '<td width="40" height="40" style="width:40px;height:40px;border-radius:50%;background:#f0fdfa;border:1.5px solid #99f6e4;text-align:center;vertical-align:middle;padding:0;">' +
-        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">' +
-          '<line x1="8" y1="6" x2="21" y2="6"></line>' +
-          '<line x1="8" y1="12" x2="21" y2="12"></line>' +
-          '<line x1="8" y1="18" x2="21" y2="18"></line>' +
-          '<line x1="3" y1="6" x2="3.01" y2="6"></line>' +
-          '<line x1="3" y1="12" x2="3.01" y2="12"></line>' +
-          '<line x1="3" y1="18" x2="3.01" y2="18"></line>' +
-        '</svg>' +
-      '</td>' +
+      '<td width="40" height="40" style="width:40px;height:40px;border-radius:50%;background:#f0fdfa;border:1.5px solid #99f6e4;text-align:center;vertical-align:middle;padding:0;font-size:16px;line-height:40px;color:#14b8a6;">&#9776;</td>' +
       '<td style="padding-left:12px;vertical-align:middle;' + FONT_ + 'font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#14b8a6;">What it’s for</td>' +
     '</tr>' +
   '</table>' +
@@ -518,12 +509,7 @@ function _buildRampDetailsHTML(student) {
   // Two cards: icon circle + eyebrow
   '<table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 12px;">' +
     '<tr>' +
-      '<td width="40" height="40" style="width:40px;height:40px;border-radius:50%;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;vertical-align:middle;padding:0;">' +
-        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">' +
-          '<rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>' +
-          '<line x1="1" y1="10" x2="23" y2="10"></line>' +
-        '</svg>' +
-      '</td>' +
+      '<td width="40" height="40" style="width:40px;height:40px;border-radius:50%;background:#f8fafc;border:1.5px solid #e2e8f0;text-align:center;vertical-align:middle;padding:0;font-size:16px;line-height:40px;color:#14b8a6;">&#9646;</td>' +
       '<td style="padding-left:12px;vertical-align:middle;' + FONT_ + 'font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#14b8a6;">Two cards, two jobs</td>' +
     '</tr>' +
   '</table>' +
