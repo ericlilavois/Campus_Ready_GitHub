@@ -476,7 +476,7 @@ function _buildRampDetailsHTML(student) {
 
   // Opening
   '<p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:#374151;">' +
-    ‘Hi ‘ + firstName + ‘,<br>Here’s what your Campus Ready Foundation travel card from Ramp covers, and how to use it.’ +
+    'Hi ' + firstName + ',<br>Here\u2019s what your Campus Ready Foundation travel card from Ramp covers, and how to use it.' +
   '</p>' +
 
   // ── WHAT IT'S FOR ────────────────────────────────────────────────────────────
@@ -587,7 +587,7 @@ function _buildRampDetailsText(student) {
 
   lines.push('CAMPUS READY FOUNDATION');
   lines.push('');
-  lines.push(‘Hi ‘ + student.FirstName + ‘, Here’s what your Campus Ready Foundation travel card from Ramp covers, and how to use it.’);
+  lines.push('Hi ' + student.FirstName + ', Here\u2019s what your Campus Ready Foundation travel card from Ramp covers, and how to use it.');
   lines.push('');
   lines.push('WHAT IT’S FOR');
   lines.push(div);
