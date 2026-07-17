@@ -59,12 +59,11 @@ var RD_SENT_COL_NAME_ = 'Ramp Details Email Sent';
  * }} student
  */
 function sendRampDetailsEmail(student) {
-  MailApp.sendEmail({
-    to:        student.email,
-    subject:   'What your Ramp travel card covers',
-    htmlBody:  _buildRampDetailsHTML(student),
-    plainBody: _buildRampDetailsText(student),
-    name:      'Campus Ready Foundation'
+  GmailApp.sendEmail(student.email, 'What your Ramp travel card covers', _buildRampDetailsText(student), {
+    htmlBody: _buildRampDetailsHTML(student),
+    name:     'Campus Ready Foundation',
+    from:     'hello@campusready.org',
+    replyTo:  'hello@campusready.org'
   });
 }
 
