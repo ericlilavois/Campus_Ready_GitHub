@@ -1,6 +1,6 @@
 # Current Status — Campus Ready Foundation
 
-**Last Updated:** July 14, 2026
+**Last Updated:** July 18, 2026
 **Maintained by:** Eric Lilavois
 
 > **Single source of truth for all Campus Ready programs.**
@@ -213,6 +213,7 @@ See **Grant Fulfillment Operations** section above for current operational state
 - Google Analytics tracking (G-C6B2GRMESL)
 - SEO/OpenGraph tags on all pages
 - DoorDash added to Partners page
+- GitHub branch protection active on `main` (July 18, 2026) — direct pushes blocked; all changes must go through a pull request from `staging`
 
 ### Web Filter Vendor Status
 - Cisco Talos: Correct (Non-governmental Organizations) — no action needed
