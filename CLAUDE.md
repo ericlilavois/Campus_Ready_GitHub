@@ -6,7 +6,7 @@ This is the public website and grant application for Campus Ready Foundation, a 
 
 ## Communication Rules
 
-Write in plain English. No jargon, no inline code references in prose. When you describe a change, describe what it does, not how it does it — "this sends the form to our server instead of Google directly" not "this replaces the native form submit with a fetch POST to the Vercel edge function." If something needs technical detail, put it in a code comment, not in the explanation to me. Be direct about uncertainty — if something could go wrong, say so plainly before proceeding.
+Write in plain English. Simple, clear sentences. No jargon, no inline code references in prose. When you describe a change, describe what it does, not how it does it — "this sends the form to our server instead of Google directly" not "this replaces the native form submit with a fetch POST to the Vercel edge function." If something needs technical detail, put it in a code comment, not in the explanation to me. Be direct about uncertainty — if something could go wrong, say so plainly before proceeding.
 
 Never present multiple-choice option lists when asking a decision. Ask in plain prose, or take the best-judgment path and let me redirect.
 
