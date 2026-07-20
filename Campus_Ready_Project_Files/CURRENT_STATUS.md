@@ -201,6 +201,10 @@ See **Grant Fulfillment Operations** section above for current operational state
 - Testimonial templates: Ready
 - Script version: v2.4 (last updated Jun 7, 2026)
 
+### Grant_Recipients Column-Index Refactor (Priority — Pre-2027)
+
+Grant_Recipients reads and writes are hardcoded by column position in at least three confirmed files: `DocumentUpload.gs`, `WebHandlers.gs`, and `Application_Admin_Script.gs`. `Final_Review` and `Product_Logic` already use header-name lookup (the same fix DEC-018 applied to Product_Logic). Goal: convert all Grant_Recipients access to header-name addressing before the 2027 cycle so future column additions don't require hunting for a "safe zone" at the end of the sheet.
+
 ### Application Analysis Pipeline
 - Internal FINAL (board copy): `CRF_Application_Analysis_Internal_20260516_FINAL.docx` — complete
 - External FINAL (donor copy): `CRF_Application_Analysis_External_20260516_FINAL.docx` — complete
