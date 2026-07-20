@@ -96,6 +96,18 @@
 - Card amounts: individual per student, $25–$1,200. Formula: `ROUND(Outlay × 1.15 / 25, 0) × 25`, no floor (DEC-055)
 - Jimena Reynaga-Castro, Marisol Navarro, Osvaldo Ramirez Hernandez: docs approved July 14 — included in 33-student send
 
+### Kit Shopping — Status as of July 20, 2026
+
+**Not yet started.** Generate Shopping List has not been run. Resolver data is clean and ready: 1,348 rows, all `data_type = Live`, `cohort_year = 2026`, `shopping_list_generated = FALSE`. All 35 approved recipients show Housing Status = Approved and Acceptance Status = Approved.
+
+**Outstanding kit form submission:** 1 approved student has not yet submitted the Kit Customization form — **Andrea Elia Suarez**. (Note: Fernanda Guadalupe Contreras Alcaraz *has* submitted — she appears in Student_Selections and Resolver under the shortened name "Fernanda Contreras," matched correctly by email. An earlier session incorrectly flagged her as not submitted due to a full-name mismatch; corrected here.)
+
+**Universal Bulk Order tab corrected and now self-maintaining (DEC-062).** Total Students, Total Qty Needed, and Total Cost are formula-driven off Meta_Data and Student_Selections rather than hardcoded. Feminine Hygiene correctly isolates to Women-preference students (25 confirmed as of July 20) via a new Gender Specific? column. Summary block rebuilt with bounded SUMIF/COUNTIF formulas. Verified grand total: 28 items, $13,950.20. Ready to execute — no further data corrections needed before placing orders.
+
+**Amazon Business multi-address ordering — real constraint confirmed (see DEC-061):** 50 total items per checkout, 50 addresses max per Shared Address group. 27 of 28 universal items fit in a single multi-address order at 35 units. Pillow Protectors (qty 2/student = 70 units) must be split into 2 batches. Real total order count for universal items: 29.
+
+**Next step:** Run Fulfillment Tools → Generate Shopping List. Data is clean — no Errors tab entries expected other than the 2 students' worth of rows correctly absent (Andrea has none yet; everyone else is fully resolved).
+
 ### Student Communications Status
 
 **Sent / Complete:**

@@ -1,7 +1,7 @@
 # Decision Log — Campus Ready Foundation
 
-**Active decisions:** DEC-001 through DEC-059
-**Last updated:** July 14, 2026
+**Active decisions:** DEC-001 through DEC-062
+**Last updated:** July 20, 2026
 
 ---
 
@@ -422,8 +422,9 @@ IPEDS raw files are gitignored but recoverable via four-line curl recipe documen
 | DEC-027 to DEC-046 | Grant Fulfillment operations — July 2026 |
 | DEC-047 to DEC-054 | Travel Detail + Ramp card rules — July 14, 2026 |
 | DEC-055 to DEC-059 | Ramp finalization — July 14, 2026 |
+| DEC-060 to DEC-062 | Retailer strategy + Amazon bulk-order mechanics + formula rebuild — July 20, 2026 |
 
-**Next available decision number: DEC-060**
+**Next available decision number: DEC-063**
 
 ---
 
@@ -850,6 +851,93 @@ Any student currently listed as "Lyft" in the Transport Mode column is pending c
 **Not invited:** Sofia Alvarez (transport unconfirmed, $25 card ready when confirmed); Lilian (DEC-057); Lizbeth (DEC-058).
 
 **Student text sent July 14:** Advised students to check inbox for Ramp invite, accept, and enter home address for card shipping.
+
+---
+
+### DEC-060: All Choice-Item Products Now Sourced from Amazon — Target/Walmart No Longer Primary (Confirmed July 20, 2026)
+
+**System:** FULFILLMENT
+**Status:** ✅ Reflects current state of live product data — retroactively documented
+
+**Context:** The Ops Manual (v3, Jan 2026) and this log's prior guidance had Target as primary retailer for choice items (Bedding, Pillows, Towels, Personal Care, Accessories), with Walmart as backup, and Amazon reserved for Universal Products plus a single named exception (Bedsure Twin XL duvet covers). Live product research tabs, reviewed July 20, 2026, show every choice-item tab already carrying `PRIMARY RETAILER = Amazon` for all researched rows:
+
+| Tab | Rows | Primary Retailer |
+|-----|------|-------------------|
+| Bedding | 13 | Amazon |
+| Pillows | 3 | Amazon |
+| Towels | 6 | Amazon |
+| Accessories | 51 | Amazon |
+| Personal_Care | 74 | Amazon |
+| Universal Products | 28 | Amazon |
+
+Walmart survives only as a backup retailer on two Personal_Care rows (Toothbrush, Toothpaste) — not as a primary sourcing path anywhere. No decision was ever logged when this changed. Exact date/rationale unconfirmed.
+
+**Decision:** Amazon is the primary retailer for all product categories — choice items and universal items alike. Target and Walmart are no longer part of the default sourcing path for any category. This decision formalizes what the live data already reflects.
+
+**Rationale:** Documenting current reality so future sessions stop giving guidance from the stale Target/Walmart model in the Ops Manual.
+
+**Downstream impact:**
+- Ops Manual v3, Section 6 (Retailer Strategy) is stale and needs revision (see v4 of the manual).
+- `rebuildProductLogic()` reads `PRIMARY RETAILER` directly from research tabs by header name — no code change needed, Product_Logic already reflects Amazon once rebuilt.
+- DormShopper's `checkout.js` (separate consumer platform, separate repo) is unaffected — that code is not part of CRF Grant Fulfillment operations.
+
+---
+
+### DEC-061: Amazon Business "Ship to Multiple Addresses" — Real Constraint Is 50 Total Items Per Order, Not 20 Addresses (July 20, 2026)
+
+**System:** FULFILLMENT
+**Status:** ✅ Confirmed against Amazon's published documentation — apply to all Universal Bulk Order execution
+
+**Context:** Eric raised a concern that the Universal Bulk Order tab's flat "20" student count (see DEC-060 context and the corrected file referenced below) might reflect a real Amazon-imposed cap rather than a stale planning assumption. Checked against Amazon's official Ship to Multiple Addresses documentation.
+
+**Confirmed mechanics:**
+1. A Shared Address group used for multi-address shipping must contain **50 or fewer addresses**.
+2. The feature caps at **a total quantity of 50 items per checkout** — e.g., 1 item to 50 addresses, 2 items to 25 addresses, and so on. If item quantity × address count exceeds 50, the order must be split into multiple batches.
+3. This is unrelated to per-listing "max order quantity" limits, which are set independently by each seller and vary by SKU — worth spot-checking at checkout regardless, but not the source of the "20" figure in the stale Universal Bulk Order tab.
+
+**Decision:** For the 2026 cohort (35 approved recipients):
+- **27 of 28 universal items** ship at qty 1/student → 35 total units needed, under the 50-item cap. One multi-address order each.
+- **Pillow Protectors** ship at qty 2/student → 70 total units needed, **over the 50-item cap**. Must be split into two batches (e.g., 25 addresses × 2 = 50, then remaining 10 addresses × 2 = 20).
+- **Feminine Hygiene** ships to the Women-preference subset only (25 confirmed as of July 20, pending 1 outstanding submission) → well under the 50-item cap regardless.
+- **Real total order count for universal items: 29** (26 single-item-type orders at qty 1, 1 order for Feminine Hygiene, 2 orders for Pillow Protectors) — not 28, not 20.
+
+**Rationale:** Documenting the actual platform constraint prevents future sessions from either under-planning (assuming no cap exists) or over-correcting (capping at the wrong number, 20, which would force unnecessary batch-splitting on items that don't need it).
+
+**Note for 2027 planning:** At a projected ~125 students, *every* universal item will need batch-splitting under the 50-item cap, not just Pillow Protectors. Build the batching math into whatever tooling handles the 2027 bulk order — this won't scale as a single order per item past 50 total units.
+
+---
+
+### DEC-062: Universal Bulk Order Tab Converted to Self-Maintaining Formulas (July 20, 2026)
+
+**System:** FULFILLMENT
+**Status:** ✅ Implemented and verified
+
+**Context:** DEC-060/061 identified that the Universal Bulk Order tab's Total Students figure was stale (hardcoded at 20). Updating Meta_Data's student count to 35 fixed 27 of 28 rows, but Feminine Hygiene remained wrong — every row referenced the identical Meta_Data cell with no gender awareness, so Feminine Hygiene showed 35 instead of the real Women-preference count. The "BULK ORDER SUMMARY" block at the bottom of the tab was also static text, not formula-driven, and had drifted out of sync with the line items above it (miscounted Laundry as 3 items instead of 4).
+
+**Decision:** Rebuilt the tab to be fully self-maintaining:
+
+1. **Added a `Gender Specific?` column (K)** that pulls each product's gender restriction from the Universal Products tab by SKU match:
+   `=IFERROR(IF(VLOOKUP(D2,'Universal Products'!$F:$H,3,FALSE)="","No",VLOOKUP(D2,'Universal Products'!$F:$H,3,FALSE)),"No")`
+   Returns "No" for unrestricted items, or the actual gender (e.g., "Women") for restricted ones. This is the single source of truth for which items need gender-aware counting — adding a future gender-restricted item requires only filling in its GENDER field on Universal Products; no formula changes anywhere else.
+
+2. **Total Students (column H)** now checks each row's own Gender Specific value instead of blindly referencing Meta_Data:
+   `=IF(K2="No", Meta_Data!$B$3, COUNTIF(Student_Selections!J:J, K2))`
+   Unrestricted rows fall through to the normal approved-cohort count; restricted rows count matching students directly from Student_Selections column J (Gender Preference).
+
+3. **Total Qty Needed (I) and Total Cost (J)** were already formula-driven (`=G*H` and `=I*F` respectively) — unchanged, just confirmed correct.
+
+4. **BULK ORDER SUMMARY block (rows 38–45) rebuilt with bounded-range formulas:**
+   - Item count per category: `=COUNTIF($A$2:$A$29,$A38)&" items"`
+   - Cost per category: `=SUMIF($A$2:$A$29,$A38,$J$2:$J$29)`
+   - Grand total items: `=SUMPRODUCT(--($A$2:$A$29<>""))&" items"`
+   - Grand total cost: `=SUM($J$2:$J$29)`
+   Ranges are deliberately bound to `$A$2:$A$29` (the 28 real product rows only) rather than left open-ended, because the summary rows themselves repeat category names in column A — an unbounded range would double-count the summary against itself.
+
+**Verified output (July 20, 2026):** Feminine Hygiene = 25 students, $670.50. Grand Total = 28 items, $13,950.20. Matches independent hand calculation from DEC-060/061 review.
+
+**Rationale:** Eliminates the entire class of "someone forgot to update a hardcoded number" bug this tab has now hit twice. Both the headcount and the gender-restriction logic now recalculate live off Meta_Data and Student_Selections — no manual per-cycle maintenance required.
+
+**Note for 2027:** This pattern (lookup-driven flag column + conditional formula) is the right model to extend if more gender-restricted or otherwise-conditional universal items are added at higher cohort scale.
 
 ---
 
