@@ -11,6 +11,7 @@ function onOpen() {
   .addItem('📋 2 — Send Rejection Emails',   'sendRejectionEmails')
   .addSeparator()
   .addItem('🛒 3 — Generate Shopping List',  'generateShoppingList')
+  .addItem('🔗 3b — Generate Cart Links',    'generateCartLinks')
   .addSeparator()
   .addItem('🎓 4 — Send Testimonial Invites','sendTestimonialInvites')
   .addSeparator()
