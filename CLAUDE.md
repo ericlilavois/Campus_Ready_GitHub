@@ -6,13 +6,13 @@ This is the public website and grant application for Campus Ready Foundation, a 
 
 ## Communication Rules
 
-Write in plain English. No jargon, no inline code references in prose. When you describe a change, describe what it does, not how it does it — "this sends the form to our server instead of Google directly" not "this replaces the native form submit with a fetch POST to the Vercel edge function." If something needs technical detail, put it in a code comment, not in the explanation to me. Be direct about uncertainty — if something could go wrong, say so plainly before proceeding.
+Write in plain English. Simple, clear sentences. No jargon, no inline code references in prose. When you describe a change, describe what it does, not how it does it — "this sends the form to our server instead of Google directly" not "this replaces the native form submit with a fetch POST to the Vercel edge function." If something needs technical detail, put it in a code comment, not in the explanation to me. Be direct about uncertainty — if something could go wrong, say so plainly before proceeding.
 
 Never present multiple-choice option lists when asking a decision. Ask in plain prose, or take the best-judgment path and let me redirect.
 
 ## Branch and Deploy Rules
 
-All work happens on the `staging` branch. Never push directly to `main`. When changes on `staging` are approved and ready, they merge to `main` via a standard merge commit (not squash and merge) — each commit's history is preserved on `main` so `git blame` and per-step review still work after integration. That push to `main` is what triggers a live update on Vercel. Pushes to `staging` produce a Vercel preview URL where changes can be verified before promotion. Test on `staging` first, confirm it works, then and only then merge to `main`. Never commit or push anything without explicit approval — always show changes before asking.
+All work happens on the `staging` branch. Never push directly to `main`. GitHub branch protection is active on `main` — direct pushes are blocked at the repository level. Changes reach `main` only through a pull request from `staging`. When changes on `staging` are approved and ready, they merge to `main` via a standard merge commit (not squash and merge) — each commit's history is preserved on `main` so `git blame` and per-step review still work after integration. That push to `main` is what triggers a live update on Vercel. Pushes to `staging` produce a Vercel preview URL where changes can be verified before promotion. Test on `staging` first, confirm it works, then and only then merge to `main`. Never commit or push anything without explicit approval — always show changes before asking. At the start of every session, pull both branches from the remote before touching anything — this keeps your local copy in sync with GitHub and prevents false conflicts.
 
 ## Architecture
 
