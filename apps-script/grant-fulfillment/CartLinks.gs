@@ -168,7 +168,7 @@ function buildAmazonCartUrl_(items) {
   const params = items.map((item, i) =>
     `ASIN.${i + 1}=${encodeURIComponent(item.sku)}&Quantity.${i + 1}=${item.qty}`
   ).join('&');
-  return `https://www.amazon.com/gp/aws/cart/add.html?${params}`;
+  return `https://www.amazon.com/gp/cart/add.html?${params}`;
 }
 
 // ── Test function ─────────────────────────────────────────────────────────────

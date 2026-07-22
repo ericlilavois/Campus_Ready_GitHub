@@ -148,4 +148,22 @@
 
 ---
 
+### P-012: Resolver Validation for Unmatched Gender+Scent+Category Combinations (Pre-2027 Priority)
+
+**What it is:** Add a validation step to the resolver that flags — rather than silently drops — any Gender+Scent+Category combination for which no Product_Logic entry exists. The flag should identify the student name, category, scent, and gender, surface the issue in the Errors tab, and block Shopping List generation from proceeding with an incomplete list.
+
+**Why it matters:** In 2026, "Vanilla & Botanicals" had zero catalog entries for four personal care categories. The resolver dropped those line items with no error, no flag, and nothing in Shopping_List or the order files to indicate anything was missing. 19 of 35 students (54%) were each missing up to 4 items — 72 missing line items total — and the gap was only caught by manually diffing two students' order files. At 2027's target scale (100–125 students), a 54%-affected rate would produce 270+ missing items before anyone notices. The silent-drop behavior is the more important fix — it would catch any future catalog gap, not just this one scent.
+
+**Fix scope (two parts):**
+1. **Resolver validation pass:** After the resolver runs, check every resolved student row against the full expected set of categories. Log any unmatched combination (student + category + criteria) to the Errors tab and surface a clear summary before Shopping List generation proceeds.
+2. **Vanilla & Botanicals catalog entries:** Add real, vetted SKUs to the Personal_Care research tab for all four affected categories (Deodorant, Body Wash, Shampoo & Conditioner Set, Shaving Cream) so the resolver can match the scent directly. Until this is done, the Soft & Floral fallback (DEC-067) must be applied manually to any Vanilla & Botanicals student's order file.
+
+**Also recommended:** Audit all other scent-dependent categories for the same class of gap before 2027 — only the four personal care categories were confirmed affected in 2026, but no systematic check was run across all categories and all scent values.
+
+**Dependencies:** Grant Fulfillment Database (Personal_Care research tab) and Apps Script codebase (resolver function). This is a Claude Code task.
+
+**When to revisit:** Before the 2027 product research phase (Phase 2A, October–November 2026). High priority — do before any new scent options are added to the intake form.
+
+---
+
 *Ideas captured here are respected, not forgotten. They'll get their turn when the time is right.*

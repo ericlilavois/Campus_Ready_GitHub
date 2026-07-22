@@ -1,6 +1,6 @@
 # Current Status — Campus Ready Foundation
 
-**Last Updated:** July 18, 2026
+**Last Updated:** July 22, 2026
 **Maintained by:** Eric Lilavois
 
 > **Single source of truth for all Campus Ready programs.**
@@ -96,17 +96,43 @@
 - Card amounts: individual per student, $25–$1,200. Formula: `ROUND(Outlay × 1.15 / 25, 0) × 25`, no floor (DEC-055)
 - Jimena Reynaga-Castro, Marisol Navarro, Osvaldo Ramirez Hernandez: docs approved July 14 — included in 33-student send
 
-### Kit Shopping — Status as of July 20, 2026
+### Kit Shopping — Status as of July 22, 2026
 
-**Not yet started.** Generate Shopping List has not been run. Resolver data is clean and ready: 1,348 rows, all `data_type = Live`, `cohort_year = 2026`, `shopping_list_generated = FALSE`. All 35 approved recipients show Housing Status = Approved and Acceptance Status = Approved.
+**Ordering underway.** 30 of 35 students are in the active batch. 5 students (Anastasia Guerrier, Gabrielle Pina, Lilian Barrientos Aceituno, Elizabeth Carmichael, Nicholas Avery Joy) are excluded pending shipping address confirmation — all are school-bound, waiting on confirmation that facilities can receive deliveries.
 
-**Outstanding kit form submission:** 1 approved student has not yet submitted the Kit Customization form — **Andrea Elia Suarez**. (Note: Fernanda Guadalupe Contreras Alcaraz *has* submitted — she appears in Student_Selections and Resolver under the shortened name "Fernanda Contreras," matched correctly by email. An earlier session incorrectly flagged her as not submitted due to a full-name mismatch; corrected here.)
+**Ordering method — combined per-student Amazon Business List (DEC-063, pending).** Track A (Amazon "Ship to Multiple Addresses" for choice items) is abandoned. Eric personally confirmed with Amazon that manual address selection and per-item shipping instructions are still required at checkout regardless of the feature, and bulk-discount eligibility is uncertain. Active method: one Amazon Business List per student (Universal + Choice items merged), one checkout per student. Revisit for 2027 if Amazon offers a better mechanism.
 
-**Universal Bulk Order tab corrected and now self-maintaining (DEC-062).** Total Students, Total Qty Needed, and Total Cost are formula-driven off Meta_Data and Student_Selections rather than hardcoded. Feminine Hygiene correctly isolates to Women-preference students (25 confirmed as of July 20) via a new Gender Specific? column. Summary block rebuilt with bounded SUMIF/COUNTIF formulas. Verified grand total: 28 items, $13,950.20. Ready to execute — no further data corrections needed before placing orders.
+**Three SKU substitutions applied to all 30 active order files (DEC-064, DEC-065, DEC-066, pending):**
 
-**Amazon Business multi-address ordering — real constraint confirmed (see DEC-061):** 50 total items per checkout, 50 addresses max per Shared Address group. 27 of 28 universal items fit in a single multi-address order at 35 units. Pillow Protectors (qty 2/student = 70 units) must be split into 2 batches. Real total order count for universal items: 29.
+| Item | Old SKU | New SKU | Notes |
+|---|---|---|---|
+| Under-Bed Storage | B004I8Q6RQ (discontinued) | B09Q38H2J4 (Budding Joy 90L, 4-pack) | Qty 1 per student = one full 4-pack |
+| Feminine Hygiene | B06XRW5H48 (102-count — sourcing error) | B0BPBB21N3 (Tampax Pearl, 47-count) | Women-preference students only |
+| Comforter | B07CMN2H2S (ViscoSoft — Aug 12–Sep 12 delivery) | B07XM834N6 (Utopia Bedding Twin XL, White) | All 30 students |
 
-**Next step:** Run Fulfillment Tools → Generate Shopping List. Data is clean — no Errors tab entries expected other than the 2 students' worth of rows correctly absent (Andrea has none yet; everyone else is fully resolved).
+**Personal Care scent defect found — Vanilla & Botanicals silently dropped by resolver (DEC-067, pending).** "Vanilla & Botanicals" is a valid intake form scent option but has no corresponding entries in Personal_Care for four categories: Deodorant, Body Wash, Shampoo & Conditioner Set, and Shaving Cream. When the resolver finds no catalog match, it silently drops the line item — no error is logged, no flag is raised, and nothing in Shopping_List or the order files indicates an item is missing. 19 of 35 students selected Vanilla & Botanicals; all 19 were missing up to 4 personal care items each (72 missing line items total across the cohort).
+
+**Fallback rule confirmed (DEC-067, pending):** Vanilla & Botanicals → Soft & Floral for all four affected categories, consistent with a pre-existing catalog note on the Deodorant row. Confirmed SKUs (Women, Soft & Floral):
+
+| Category | Brand | SKU | Price |
+|---|---|---|---|
+| Deodorant | Native | B07GB1KJN3 | $11.25 |
+| Body Wash | EOS | B0DPHQRLJC | $11.99 |
+| Shampoo & Conditioner Set | Native | B0BBBSMV94 | $19.99 |
+| Shaving Cream | EOS | B0CVCTQ1DK | $9.98 |
+
+**Correction status:**
+- 14 in-batch Vanilla & Botanicals students: fallback items added to individual order files ✅
+- Amara S. Boerner, Yadira Lizbeth Pelayo Avina: already checked out before bug was caught — supplemental orders built and placed ✅
+- Andrea E. Suarez: confirmed not affected (Cool & Herbal, Antiperspirant) ✅
+- Anastasia Guerrier, Gabrielle Pina, Lilian Barrientos Aceituno: all three are Vanilla & Botanicals — fallback must be applied manually when their order files are generated. Underlying catalog gap not yet fixed at source.
+
+**Source files not yet updated.** Universal_Bulk_Order and Shopping_List still reference old SKUs (B06XRW5H48, B07CMN2H2S) and have no Vanilla & Botanicals fallback. If any file is regenerated from source before the source is corrected, all substitutions must be reapplied.
+
+**Standing data anomalies (non-blocking):**
+- **Henry Ray:** Resolver produced separate Shampoo and Conditioner line items instead of a combined Shampoo & Conditioner Set. Men/Unscented/Antiperspirant — unrelated to the scent bug. Not urgent, but should be corrected for data cleanliness.
+- **Sofia Alvarez:** Phone number shows (170) area code in Application Master — likely a data-entry error. Correct if needed for delivery contact.
+- **Gabrielle Pina:** Street Address and Street Address 2 fields contain the same full address string in Universal_Order_Addresses.csv — must be corrected before she is added to the active ordering list.
 
 ### Student Communications Status
 
@@ -138,10 +164,11 @@
 
 ### Open Items
 
-**Time-sensitive (before Wednesday July 15):**
-- **Lizbeth Pérez Solano RSVP:** No RSVP, docs pending, last contact July 9 with no reply. Follow up directly.
-- **Alice & Xadani docs:** When approved, re-run `sendNonAttendeeNoTravelEmails()`.
-- **Event materials — board/advisor printable:** Alpha-order error identified, hasn't been reviewed since initial flag. Fix before July 15.
+**Kit Shopping:**
+- **3 excluded students (Anastasia Guerrier, Gabrielle Pina, Lilian Barrientos Aceituno):** All three are Vanilla & Botanicals — when their order files are generated, apply the 4-category Soft & Floral fallback (DEC-067) manually before ordering. Do not assume the source files will do this; the catalog gap is not yet fixed.
+- **Gabrielle Pina address:** Street Address and Street Address 2 are duplicated in Universal_Order_Addresses.csv — fix before adding her to the active ordering list.
+- **Update source files:** Universal_Bulk_Order and Shopping_List must be updated with the three substituted SKUs and Vanilla & Botanicals fallback logic before any order file is regenerated from source.
+- **DEC-063 through DEC-067:** Decision log entries drafted, awaiting Eric's go-ahead to assign numbers and log.
 
 **Ramp (post-invite):**
 - **Sofia Alvarez invite:** Held pending transport confirmation. $25 card ready; invite her once confirmed.
@@ -153,7 +180,6 @@
 - **Anastasia's Reconciliation Notes cell:** Confirm it reflects the finalized Legacy Override arrangement (DEC-044).
 - **2026 Pro Forma flagged items:** Reconciliation agent identified internal inconsistencies. Eric to decide which are real errors vs. accepted-as-approved.
 - **Isabella Jones (Houston → San Antonio):** Referenced in old Pro Forma, absent from current Travel Detail. Status unknown.
-- **Henry Ray cross-check:** Present in Travel Detail as driving-mode student (Oregon State Univ-Cascades). Confirm against Grant_Recipients.
 
 **Post–July 15:**
 - **Budget vs. Actual tab:** Build per DEC-046 architecture.
