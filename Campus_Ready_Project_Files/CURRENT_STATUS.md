@@ -1,6 +1,6 @@
 # Current Status — Campus Ready Foundation
 
-**Last Updated:** July 22, 2026
+**Last Updated:** July 23, 2026
 **Maintained by:** Eric Lilavois
 
 > **Single source of truth for all Campus Ready programs.**
@@ -170,10 +170,12 @@
 - **3 excluded students (Anastasia Guerrier, Gabrielle Pina, Lilian Barrientos Aceituno):** All three are Vanilla & Botanicals — when their order files are generated, apply the 4-category Soft & Floral fallback (DEC-067) manually before ordering. Do not assume the source files will do this; the catalog gap is not yet fixed.
 - **Gabrielle Pina address:** Street Address and Street Address 2 are duplicated in Universal_Order_Addresses.csv — fix before adding her to the active ordering list.
 - **Update source files:** Universal_Bulk_Order and Shopping_List must be updated with the three substituted SKUs and Vanilla & Botanicals fallback logic before any order file is regenerated from source.
-- **QTY / pack size audit:** Some catalog SKUs are sold as multi-unit packs (Standard Pillow = Set of 2, Under-Bed Storage = 4-pack). QTY PER STUDENT must be divided by units per pack before entering the order quantity. Full catalog audit needed before 2027; see P-013 in PARKING_LOT.md.
+- **QTY / pack size — code fix done, data entry pending:** ShoppingList.gs now reads a UNITS PER PACK column from Product_Logic and outputs three quantity columns: Qty Per Student, Units Per Pack, and Order Qty (the number to enter on Amazon). The code is on staging and must be pasted into the Apps Script editor. Remaining data work: set UNITS PER PACK = 2 on all Pillow rows in the Pillows source tab; set UNITS PER PACK = 4 on the Under-Bed Storage row in the Universal Products source tab. Then run Rebuild Product Logic. See P-013 in PARKING_LOT.md.
 - **Firm pillow backup SKU:** If Love Attitude Firm (B0C5D5XPLJ) goes out of stock again, substitute EASELAND Firm Shredded Memory Foam Standard, Set of 2 — ASIN B0BY7T3K2R.
 - **Amazon Request Quotes:** Start quote requests as soon as the 2027 catalog is finalized (October–November) — at least two weeks before orders are placed.
-- **DEC-063 through DEC-067:** Decision log entries drafted, awaiting Eric's go-ahead to assign numbers and log.
+- **Apps Script updates (staging — paste into editor before use):** ShoppingList.gs updated to output Order Qty based on UNITS PER PACK. Resolver.gs updated with validateResolverCoverage() — logs any Gender+Scent+ProductType gaps to the Errors tab after each submission instead of silently dropping items.
+
+**Customize_Your_Kit.html fix (committed, not yet pushed live):** The Soft & Floral scent option was submitting "Vanilla & Botanicals" as its catalog value, causing resolver silent-drops for all Soft & Floral students. Fix committed to the grant fulfillment repo — push to award.campusready.org to take effect for new submissions.
 
 **Ramp (post-invite):**
 - **Sofia Alvarez invite:** Held pending transport confirmation. $25 card ready; invite her once confirmed.

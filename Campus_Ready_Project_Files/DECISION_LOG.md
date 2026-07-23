@@ -1,7 +1,7 @@
 # Decision Log — Campus Ready Foundation
 
-**Active decisions:** DEC-001 through DEC-062
-**Last updated:** July 20, 2026
+**Active decisions:** DEC-001 through DEC-067
+**Last updated:** July 23, 2026
 
 ---
 
@@ -938,6 +938,84 @@ Walmart survives only as a backup retailer on two Personal_Care rows (Toothbrush
 **Rationale:** Eliminates the entire class of "someone forgot to update a hardcoded number" bug this tab has now hit twice. Both the headcount and the gender-restriction logic now recalculate live off Meta_Data and Student_Selections — no manual per-cycle maintenance required.
 
 **Note for 2027:** This pattern (lookup-driven flag column + conditional formula) is the right model to extend if more gender-restricted or otherwise-conditional universal items are added at higher cohort scale.
+
+---
+
+### DEC-063: 2026 Ordering Method — Amazon Business List Per Student; Track A Deferred; Request Quotes for 2027 (July 22, 2026)
+
+**Context:** First full kit ordering run. Three approaches were on the table: Track A (Amazon "Ship to Multiple Addresses" for bulk consolidation), Track B (individual per-student orders), and a bookmarked Amazon bulk upload tool that had not yet been tested.
+
+**Decision:**
+- **Active 2026 method:** One Amazon Business List per student — Universal and choice items merged into a single list, one checkout per student. The bookmarked bulk upload tool was tested and confirmed to work: uploading a student's product list automatically creates a ready-to-place order.
+- **Track A (Ship to Multiple Addresses) is deferred, not abandoned.** The real constraint is 50 total line items per order (not the 20-address display limit per DEC-061). Revisit for 2027 if cohort scale and order complexity make consolidation worthwhile.
+- **Amazon Request Quotes for 2027:** Amazon Business allows requesting quotes directly from sellers. As soon as the 2027 catalog is finalized (October–November), submit a Request for Quote covering full bulk quantities across all students. Request at least two weeks before the ordering window opens so there is time to review pricing and negotiate before committing.
+
+**Rationale:** The bulk upload tool works well enough for 2026's scale and avoids the complexity of Track A's multi-address consolidation. Track A remains viable for 2027 if the Foundation orders a larger number of identical items where bulk pricing matters. Request Quotes is the best path to bulk pricing — it engages sellers directly rather than relying on Amazon's automated pricing logic.
+
+**Status:** Implemented (2026). Request Quotes strategy queued for 2027.
+
+---
+
+### DEC-064: Under-Bed Storage SKU Substitution — B004I8Q6RQ → B09Q38H2J4 (July 22, 2026)
+
+**Context:** The original Under-Bed Storage SKU (B004I8Q6RQ) was discontinued and unavailable during the ordering window.
+
+**Decision:** Substitute with Budging Joy 90L Under Bed Storage Bags, 4-pack (B09Q38H2J4). Qty = 1 per student, which equals one full 4-pack. Applied to all 30 active order files.
+
+**Rationale:** Direct functional replacement. 4-pack format at Qty 1 matches the student's actual storage need and is in stock.
+
+**Status:** Implemented. Source files (Universal_Bulk_Order, Shopping_List) not yet updated — substitution must be reapplied if any order file is regenerated before the source is corrected. See Open Items in CURRENT_STATUS.md.
+
+---
+
+### DEC-065: Feminine Hygiene SKU Substitution — B06XRW5H48 → B0BPBB21N3 (July 22, 2026)
+
+**Context:** The original SKU (B06XRW5H48) was a 102-count pack — a sourcing error; the intended quantity was a standard single-cycle supply.
+
+**Decision:** Substitute with Tampax Pearl Tampons, 47-count (B0BPBB21N3). Applied to Women-preference students only. Applied to all 30 active order files.
+
+**Rationale:** Correct pack size for a one-time supply. The 102-count was disproportionate and likely a catalog error from initial sourcing.
+
+**Status:** Implemented. Source files not yet updated — same caveat as DEC-064.
+
+---
+
+### DEC-066: Comforter SKU Substitution — B07CMN2H2S → B07XM834N6 (July 22, 2026)
+
+**Context:** The original comforter SKU (B07CMN2H2S, ViscoSoft) had an estimated delivery window of August 12 – September 12 — too late for move-in.
+
+**Decision:** Substitute with Utopia Bedding Twin XL Comforter, White (B07XM834N6). Applied to all 30 active order files.
+
+**Rationale:** Delivery timing was the sole disqualifier for the original SKU. The Utopia Bedding replacement ships within the required window.
+
+**Status:** Implemented. Source files not yet updated — same caveat as DEC-064.
+
+---
+
+### DEC-067: Vanilla & Botanicals Personal Care — Fallback to Soft & Floral (July 22, 2026)
+
+**Context:** "Vanilla & Botanicals" is a valid scent option on the kit customization form but had no corresponding entries in the Personal_Care catalog for four categories: Deodorant, Body Wash, Shampoo & Conditioner Set, and Shaving Cream. When the resolver found no match, it silently dropped those line items with no error or flag. 19 of 35 students selected Vanilla & Botanicals and were each missing up to 4 personal care items (72 missing line items total). The gap was caught by manually comparing two students' order files.
+
+**Decision:** Vanilla & Botanicals students receive Soft & Floral SKUs for all four affected personal care categories. Consistent with a pre-existing catalog note on the Deodorant row. Confirmed SKUs (Women, Soft & Floral):
+
+| Category | Brand | SKU | Price |
+|---|---|---|---|
+| Deodorant | Native | B07GB1KJN3 | $11.25 |
+| Body Wash | EOS | B0DPHQRLJC | $11.99 |
+| Shampoo & Conditioner Set | Native | B0BBBSMV94 | $19.99 |
+| Shaving Cream | EOS | B0CVCTQ1DK | $9.98 |
+
+**Correction status:**
+- 14 in-batch Vanilla & Botanicals students: fallback items added to individual order files ✅
+- Amara S. Boerner, Yadira Lizbeth Pelayo Avina: already checked out — supplemental orders built and placed ✅
+- Andrea E. Suarez: confirmed not affected (Cool & Herbal, Antiperspirant) ✅
+- Anastasia Guerrier, Gabrielle Pina, Lilian Barrientos Aceituno: Vanilla & Botanicals — fallback must be applied manually when their order files are generated
+
+**Root cause fix:** The form's catalogValue for the Soft & Floral option was incorrectly set to "Vanilla & Botanicals" instead of "Soft & Floral," causing all Soft & Floral students to submit the wrong scent value to the resolver. This was fixed in Customize_Your_Kit.html (committed July 2026, not yet pushed live). Once pushed, new submissions will submit the correct value. Catalog entries for Vanilla & Botanicals as a standalone scent remain absent — add real SKUs before 2027 if Vanilla & Botanicals is kept as an option.
+
+**Rationale:** Fallback is directionally consistent with existing catalog notes. Four SKUs were available and already vetted. Manual application was the only viable path for the 2026 cohort given the ordering timeline.
+
+**Status:** Implemented for 2026. Root cause fix in code, not yet live. Catalog gap remains open (P-012).
 
 ---
 
