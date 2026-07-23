@@ -96,6 +96,7 @@ function processLatestSubmission(ss) {
   Logger.log(`Processing submission for: ${studentChoices.StudentName}`);
   const resolvedProducts = applyResolverLogic(studentChoices, logicData);
   writeResolvedProducts(ss, resolvedProducts);
+  validateResolverCoverage(ss, studentChoices, resolvedProducts, logicData);
   Logger.log(`✅ Processed ${resolvedProducts.length} product matches for ${studentChoices.StudentName}`);
 }
 
@@ -235,6 +236,81 @@ function getColorValueForProduct(productType, studentChoices) {
     case 'Slides': return studentChoices.SlidesColor || '';
     default:       return '';
   }
+}
+
+function validateResolverCoverage(ss, studentChoices, resolvedProducts, logicData) {
+  const genderMap = {
+    'Male': 'Men', 'Female': 'Women',
+    'Prefer Not to Say (PNS)': 'Unisex', 'PNS': 'Unisex'
+  };
+  const normalizedGender = genderMap[studentChoices.Gender] || studentChoices.Gender;
+  const studentScent     = studentChoices.Scent;
+
+  // These product types bypass scent matching for PNS students (mirrors applyResolverLogic)
+  const PNS_BYPASS = new Set(['Shaving Cream', 'Deodorant', 'Antiperspirant']);
+
+  // Build a map of which scents the catalog covers for each product type + this gender
+  const typeInfo = {};
+  for (const product of logicData) {
+    const genderCrit = product.GENDER_CRIT;
+    if (genderCrit && genderCrit !== 'All' && genderCrit !== normalizedGender) continue;
+
+    const type = product.PRODUCT_TYPE;
+    if (!typeInfo[type]) typeInfo[type] = { scentsAvailable: new Set(), hasCatchAll: false };
+
+    const scentCrit = product.SCENT_CRIT;
+    if (!scentCrit || scentCrit === 'All') {
+      typeInfo[type].hasCatchAll = true;
+    } else {
+      typeInfo[type].scentsAvailable.add(scentCrit);
+    }
+  }
+
+  // Find product types where the catalog has scent entries for this gender but none for
+  // this student's scent — those items were silently dropped
+  const gaps = [];
+  for (const [type, info] of Object.entries(typeInfo)) {
+    if (info.hasCatchAll)                                         continue;
+    if (info.scentsAvailable.size === 0)                          continue;
+    if (info.scentsAvailable.has(studentScent))                   continue;
+    if (normalizedGender === 'Unisex' && PNS_BYPASS.has(type))   continue;
+    gaps.push({ type, available: [...info.scentsAvailable].sort().join(', ') });
+  }
+
+  if (gaps.length === 0) return;
+
+  // Log to Errors tab
+  const errorsSheet = ss.getSheetByName('Errors') || ss.insertSheet('Errors');
+  if (errorsSheet.getLastRow() < 1) {
+    errorsSheet.getRange(1, 1, 1, 6).setValues([
+      ['Timestamp', 'Student Name', 'Email', 'Product Type', 'Issue', 'Details']
+    ]);
+    errorsSheet.getRange(1, 1, 1, 6)
+      .setFontWeight('bold').setBackground('#ea4335').setFontColor('#ffffff');
+  }
+  const ts = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm');
+  errorsSheet.getRange(errorsSheet.getLastRow() + 1, 1, gaps.length, 6).setValues(
+    gaps.map(g => [
+      ts,
+      studentChoices.StudentName,
+      studentChoices.Email,
+      g.type,
+      'No catalog entry for Gender + Scent + Product Type — item omitted from resolver output',
+      `Gender: ${normalizedGender} | Student scent: ${studentScent} | Catalog has: ${g.available}`
+    ])
+  );
+
+  Logger.log(`⚠️ Resolver coverage gaps for ${studentChoices.StudentName}: ${gaps.length} item(s) dropped`);
+  gaps.forEach(g => Logger.log(`   Missing: ${g.type} — no "${studentScent}" entry for ${normalizedGender}`));
+
+  SpreadsheetApp.getUi().alert(
+    `⚠️ Coverage warning — ${studentChoices.StudentName}`,
+    `${gaps.length} product type(s) were dropped because the catalog has no entry for ` +
+    `${normalizedGender} + ${studentScent}:\n\n` +
+    gaps.map(g => `• ${g.type}`).join('\n') +
+    `\n\nLogged to the Errors tab. Fix the catalog and re-run the resolver before generating the Shopping List.`,
+    SpreadsheetApp.getUi().ButtonSet.OK
+  );
 }
 
 function writeResolvedProducts(ss, resolvedProducts) {

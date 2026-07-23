@@ -115,12 +115,14 @@ function generateShoppingList() {
     const prefs        = buildConditionalPreferences(product.ProductType, student);
     const productLookup = buildProductLookupKey(product.ProductType, student, product);
 
-    const qty = parseFloat(product.Qty) || 1;
+    const qtyPerStudent = parseFloat(product.Qty) || 1;
+    const unitsPerPack  = Math.max(1, parseFloat(product.UnitsPerPack) || 1);
+    const orderQty      = Math.ceil(qtyPerStudent / unitsPerPack);
     let unitPrice = 0;
     if (product.Price) {
       unitPrice = parseFloat(product.Price.toString().replace(/[$,]/g, '')) || 0;
     }
-    const totalCost = qty * unitPrice;
+    const totalCost = orderQty * unitPrice;
 
     outputRows.push([
       studentName, studentEmail,
@@ -128,7 +130,7 @@ function generateShoppingList() {
       productLookup,
       product.ProductType, product.Brand || '', product.ProductName,
       product.SKU || productId, product.Retailer, product.URL,
-      qty, unitPrice, totalCost,
+      qtyPerStudent, unitsPerPack, orderQty, unitPrice, totalCost,
       prefs.gender, prefs.scent, prefs.deodorantType, prefs.style,
       prefs.beddingColor, prefs.pillowFirmness, prefs.towelColor, prefs.slidesSize, prefs.slidesColor,
       row[resolverHeaderMap['data_type']], row[resolverHeaderMap['cohort_year']]
@@ -184,7 +186,7 @@ function generateShoppingList() {
       'Student Name', 'Student Email', 'Street Address', 'Street Address 2',
       'City', 'State', 'Zip Code', 'Shipping Pref', 'Product Selection',
       'Product Type', 'Brand', 'Product Name', 'SKU', 'Retailer', 'URL',
-      'Quantity', 'Unit Price', 'Total Cost',
+      'Qty Per Student', 'Units Per Pack', 'Order Qty', 'Unit Price', 'Total Cost',
       'Gender', 'Scent', 'Deodorant Type', 'Style',
       'Bedding Color', 'Pillow Firmness', 'Towel Color', 'Slides Size', 'Slides Color'
     ];
@@ -299,9 +301,10 @@ function buildProductMap(data) {
         ProductType: row[headerMap['PRODUCT TYPE']],
         Brand:       row[headerMap['PRIMARY BRAND']],
         ProductName: row[headerMap['PRODUCT']],
-        SKU:         row[headerMap['PRIMARY SKU']],
-        Price:       row[headerMap['PRIMARY PRICE']],
-        Qty:         row[headerMap['QTY PER STUDENT']],
+        SKU:          row[headerMap['PRIMARY SKU']],
+        Price:        row[headerMap['PRIMARY PRICE']],
+        Qty:          row[headerMap['QTY PER STUDENT']],
+        UnitsPerPack: row[headerMap['UNITS PER PACK']] || 1,
         Retailer:    row[headerMap['PRIMARY RETAILER']],
         URL:         row[headerMap['PRIMARY URL']],
         Gender:      row[headerMap['GENDER']],
