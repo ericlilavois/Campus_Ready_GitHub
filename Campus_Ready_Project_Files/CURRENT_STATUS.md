@@ -100,7 +100,9 @@
 
 **Ordering underway.** 30 of 35 students are in the active batch. 5 students (Anastasia Guerrier, Gabrielle Pina, Lilian Barrientos Aceituno, Elizabeth Carmichael, Nicholas Avery Joy) are excluded pending shipping address confirmation — all are school-bound, waiting on confirmation that facilities can receive deliveries.
 
-**Ordering method — combined per-student Amazon Business List (DEC-063, pending).** Track A (Amazon "Ship to Multiple Addresses" for choice items) is abandoned. Eric personally confirmed with Amazon that manual address selection and per-item shipping instructions are still required at checkout regardless of the feature, and bulk-discount eligibility is uncertain. Active method: one Amazon Business List per student (Universal + Choice items merged), one checkout per student. Revisit for 2027 if Amazon offers a better mechanism.
+**Ordering method — combined per-student Amazon Business List (DEC-063, pending).** Active method for 2026: one Amazon Business List per student (Universal + Choice items merged), one checkout per student. Amazon's bulk upload tool was evaluated and confirmed to work — uploading a student's product list automatically creates a ready-to-place order. It does not enable bulk pricing on individual products across students. Track A (Amazon "Ship to Multiple Addresses") is deferred, not permanently abandoned; revisit for 2027.
+
+**2027 ordering strategy — Amazon Request Quotes.** Amazon allows Request Quotes on Business accounts. Recommended approach for 2027: as soon as the product catalog is finalized (likely October–November), submit a Request for Quote covering the full bulk quantities needed across all students. This engages sellers directly and allows pricing negotiations before orders are placed. Request quotes at least two weeks before the ordering window opens.
 
 **Three SKU substitutions applied to all 30 active order files (DEC-064, DEC-065, DEC-066, pending):**
 
@@ -168,6 +170,9 @@
 - **3 excluded students (Anastasia Guerrier, Gabrielle Pina, Lilian Barrientos Aceituno):** All three are Vanilla & Botanicals — when their order files are generated, apply the 4-category Soft & Floral fallback (DEC-067) manually before ordering. Do not assume the source files will do this; the catalog gap is not yet fixed.
 - **Gabrielle Pina address:** Street Address and Street Address 2 are duplicated in Universal_Order_Addresses.csv — fix before adding her to the active ordering list.
 - **Update source files:** Universal_Bulk_Order and Shopping_List must be updated with the three substituted SKUs and Vanilla & Botanicals fallback logic before any order file is regenerated from source.
+- **QTY / pack size audit:** Some catalog SKUs are sold as multi-unit packs (Standard Pillow = Set of 2, Under-Bed Storage = 4-pack). QTY PER STUDENT must be divided by units per pack before entering the order quantity. Full catalog audit needed before 2027; see P-013 in PARKING_LOT.md.
+- **Firm pillow backup SKU:** If Love Attitude Firm (B0C5D5XPLJ) goes out of stock again, substitute EASELAND Firm Shredded Memory Foam Standard, Set of 2 — ASIN B0BY7T3K2R.
+- **Amazon Request Quotes:** Start quote requests as soon as the 2027 catalog is finalized (October–November) — at least two weeks before orders are placed.
 - **DEC-063 through DEC-067:** Decision log entries drafted, awaiting Eric's go-ahead to assign numbers and log.
 
 **Ramp (post-invite):**

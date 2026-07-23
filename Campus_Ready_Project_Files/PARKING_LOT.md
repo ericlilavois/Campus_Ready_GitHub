@@ -166,4 +166,16 @@
 
 ---
 
+### P-013: QTY PER STUDENT vs. Pack Size — Catalog Field and Order Quantity Fix (Pre-2027 Priority)
+
+**What it is:** Some catalog SKUs are sold as multi-unit packs. The `QTY PER STUDENT` field records the number of units a student needs, not the number of packs to order. When that value is copied directly into the Amazon order quantity field, it overorders whenever the SKU contains more than one unit per pack.
+
+**Confirmed instances in 2026:** Standard Pillow (all three firmness tiers — Firm, Medium, Soft) sold as Set of 2; Under-Bed Storage sold as 4-pack. Entering QTY PER STUDENT = 2 for the pillow produced 4 pillows (2 packs × 2 each) per student.
+
+**Fix:** Add a `UNITS PER PACK` column to the Product_Logic catalog. Order quantity = `ceil(QTY PER STUDENT / UNITS PER PACK)`. For SKUs sold individually, UNITS PER PACK = 1 and the formula produces the same result as today. Before the 2027 ordering window, audit every SKU in the catalog for pack size and populate the field. This is a catalog data fix — the resolver and Shopping List generator may also need to be updated to use the corrected order quantity rather than the raw QTY PER STUDENT value.
+
+**When to revisit:** Before Phase 2A (October–November 2026). Do this alongside the resolver validation fix (P-012) since both involve the catalog and resolver codebase. High priority — pack-size errors at 2027 scale would mean systematically overordering across all students with no in-process check.
+
+---
+
 *Ideas captured here are respected, not forgotten. They'll get their turn when the time is right.*
